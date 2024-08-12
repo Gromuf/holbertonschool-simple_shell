@@ -2,6 +2,8 @@
 
 int main(void)
 {
+	char *cmd = NULL;
+
 	while (1)
 	{
 		display_prompt();
