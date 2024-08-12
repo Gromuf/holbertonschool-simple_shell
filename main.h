@@ -8,4 +8,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+void display_prompt(void);
+
+char *read_cmd(void);
+
+void exec_cmd(char *cmd);
+
 #endif
