@@ -8,27 +8,26 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ "); // Print the prompt
+		printf("$ ");
 
-		read = getline(&cmd, &len, stdin); // Read the user input
+		read = getline(&cmd, &len, stdin);
 		if (read == -1)
-		{		   // Check for EOF or error
-			break; // Exit the loop if end-of-file is encountered
+		{
+			break;
 		}
 
-		printf("%s", line); // Print the command back to the user
-		command[strcspn(command, "\n")] = 0;
+		printf("%s", read);
+		cmd[strcspn(cmd, "\n")] = 0;
 
 		pid_t pid = fork();
 		if (pid == 0)
 		{
-			// Child process
-			char *argv[] = {command, NULL}; // Command without arguments
+			char *argv[] = {command, NULL};
 			if (execve(command, argv, NULL) == -1)
 			{
 				perror("Error");
 			}
-			exit(EXIT_FAILURE); // Exit child process if execve fails
+			exit(EXIT_FAILURE);
 		}
 	}
 
