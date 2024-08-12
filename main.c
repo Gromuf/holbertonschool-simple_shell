@@ -12,6 +12,7 @@ int main(void)
 	{
 		printf("$ ");
 		fflush(stdout);
+
 		read = getline(&cmd, &len, stdin);
 		if (read == -1)
 		{
@@ -22,7 +23,14 @@ int main(void)
 		cmd[strcspn(cmd, "\n")] = 0;
 
 		pid = fork();
-		if (pid == 0)
+
+		if (pid == -1)
+		{
+			perror("Fork failed");
+			continue;
+		}
+
+		else if (pid == 0)
 		{
 			argv[0] = cmd;
 			argv[1] = NULL;
@@ -32,6 +40,9 @@ int main(void)
 			}
 			exit(EXIT_FAILURE);
 		}
+
+		else
+			wait(NULL);
 	}
 
 	free(cmd);
