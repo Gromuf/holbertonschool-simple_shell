@@ -1,13 +1,14 @@
 #include "main.h"
 
 /**
- * read_cmd - Lit une commande entrée par l'utilisateur.
+ * read_cmd - Reads a command from standard input.
  *
- * Cette fonction utilise getline pour lire une ligne de l'entrée standard
- * et renvoie la commande lue. Si une erreur se produit ou si EOF est
- * détecté, elle libère la mémoire allouée et retourne NULL.
+ * This function reads a line of input from the user using getline().
+ * If the input is successfully read, it removes the newline character
+ * and returns the command. If an error occurs or EOF is detected,
+ * it frees the allocated memory and returns NULL.
  *
- * Retourne: Un pointeur vers la commande lue, ou NULL en cas d'erreur.
+ * Return: A pointer to the command string, or NULL on failure.
  */
 char *read_cmd(void)
 {

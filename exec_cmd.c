@@ -1,14 +1,14 @@
 #include "main.h"
 
 /**
- * exec_cmd - Exécute une commande donnée.
+ * exec_cmd - Executes a command in a new process.
  *
- * @cmd: La commande à exécuter.
+ * @cmd: The command to be executed.
  *
- * Cette fonction crée un nouveau processus pour exécuter la commande
- * fournie. Si le fork échoue, un message d'erreur est affiché. Si le
- * processus enfant échoue à exécuter la commande, un message d'erreur
- * est également affiché.
+ * This function creates a new process using fork(). If the fork is
+ * successful, the child process attempts to execute the specified command
+ * using execve(). If execve() fails, an error message is printed.
+ * The parent process waits for the child process to finish execution.
  */
 void exec_cmd(char *cmd)
 {

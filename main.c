@@ -1,13 +1,14 @@
 #include "main.h"
 
 /**
- * main - Point d'entrée du programme shell simple.
+ * main - Entry point of the simple shell program.
  *
- * Cette fonction exécute une boucle infinie qui affiche un prompt,
- * lit une commande entrée par l'utilisateur, puis exécute cette
- * commande. La boucle se termine si une entrée EOF est détectée.
+ * This function runs an infinite loop that displays a prompt,
+ * reads a command input by the user, executes the command,
+ * and handles end-of-file (EOF) conditions. The loop terminates
+ * when an EOF is detected (e.g., via Ctrl+D).
  *
- * Retourne: Toujours 0 (succès).
+ * Return: Always 0 (success).
  */
 int main(void)
 {

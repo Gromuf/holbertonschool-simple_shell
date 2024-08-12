@@ -1,10 +1,10 @@
 #include "main.h"
 
 /**
- * display_prompt - Affiche le prompt de commande.
+ * display_prompt - Displays the command prompt.
  *
- * Cette fonction affiche un prompt "$ " et force l'affichage immédiat
- * à l'écran en vidant le tampon de sortie standard.
+ * This function prints the prompt character '$ ' to the standard output
+ * and ensures that it is immediately visible by flushing the output buffer.
  */
 void display_prompt(void)
 {
