@@ -1,0 +1,21 @@
+^[[Aroot@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_projet30/holbertonschool-simple_shell# gcc -Wall -Wextra -Werror -pedantic -std=gnu89 -Wno-format *.c -o shell
+root@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_projet30/holbertonschool-simple_shell# ./shell
+#cisfun$ ls
+ls
+./shell: No such file or directory
+#cisfun$ /bin/ls
+/bin/ls
+ AUTHORS.txt                             README.md   display_prompt.c   glibc    main.h   read_cmd.c  'simple shell.drawio'
+'Copie de simple shell.drawio (1).pdf'   betty       exec_cmd.c         main.c   man      shell        test
+#cisfun$ ^[[D^[[D^[[D
+
+./shell: No such file or directory
+#cisfun$ ^[[C^[[C^[[C^[[C
+
+./shell: No such file or directory
+#cisfun$ ^C
+root@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_projet30/holbertonschool-simple_shell# echo "/bin/ls" | ./shell
+#cisfun$ /bin/ls
+ AUTHORS.txt                             README.md   display_prompt.c   glibc    main.h   read_cmd.c  'simple shell.drawio'
+'Copie de simple shell.drawio (1).pdf'   betty       exec_cmd.c         main.c   man      shell        test
+root@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_projet30/holbertonschool-simple_shell#

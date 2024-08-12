@@ -3,22 +3,27 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**",
-        "C:/msys64/mingw64/include",
-        "C:/msys64/mingw64/x86_64-w64-mingw32/include",
-        "C:/msys64/mingw64/x86_64-w64-mingw32/include/c++/10.2.0",
-        "C:/msys64/mingw64/x86_64-w64-mingw32/include/c++/10.2.0/x86_64-w64-mingw32",
-        "C:/msys64/mingw64/x86_64-w64-mingw32/include/sys/wait.h"
+        "${workspaceFolder}",
+        "C:/msys64/mingw64/include/**",
+        "C:/msys64/mingw64/include/sys/wait.h",
+        "C:/msys64/mingw64/include"
+        //"C:/msys64/mingw64/x86_64-w64-mingw32/include/**"
+        //"C:/msys64/mingw64/x86_64-w64-mingw32/include/c++/10.2.0",
+        //"C:/msys64/mingw64/x86_64-w64-mingw32/include/c++/10.2.0/x86_64-w64-mingw32",
+        //"C:/msys64/mingw64/x86_64-w64-mingw32/include/sys/wait.h"
     ],
       "defines": [],
       "intelliSenseMode": "windows-gcc-x64",
       "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
-      "cStandard": "c11", //"${default}",
-      "cppStandard": "c++17", //"${default}",
+      "cStandard": "c89", //"${default}", //"c11", //"${default}",
+      "cppStandard": "${default}", //"c++17", //"${default}",
       "browse": {
         "path": [
-                    "C:/msys64/mingw64/include",
-                    "C:/msys64/mingw64/x86_64-w64-mingw32/include"
+            "${workspaceFolder}",
+            "C:/msys64/mingw64/include/**",
+            "C:/msys64/mingw64/include/sys/wait.h",
+            "C:/msys64/mingw64/include"
+            //"C:/msys64/mingw64/x86_64-w64-mingw32/include/**"
                 ],
         "limitSymbolsToIncludedHeaders": true
       }

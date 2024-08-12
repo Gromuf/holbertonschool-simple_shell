@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/wait.h> /*non défini dans std89*/
+#include <sys/wait.h> /*non defini dans std89*/
 #include <errno.h>
 
 /*display_prompt.c*/
