@@ -11,7 +11,7 @@ int main(void)
 	while (1)
 	{
 		printf("$ ");
-
+		fflush(stdout);
 		read = getline(&cmd, &len, stdin);
 		if (read == -1)
 		{
