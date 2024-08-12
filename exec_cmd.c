@@ -1,5 +1,15 @@
 #include "main.h"
 
+/**
+ * exec_cmd - Exécute une commande donnée.
+ *
+ * @cmd: La commande à exécuter.
+ *
+ * Cette fonction crée un nouveau processus pour exécuter la commande
+ * fournie. Si le fork échoue, un message d'erreur est affiché. Si le
+ * processus enfant échoue à exécuter la commande, un message d'erreur
+ * est également affiché.
+ */
 void exec_cmd(char *cmd)
 {
 	pid_t pid;
