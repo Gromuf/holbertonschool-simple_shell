@@ -19,3 +19,5 @@ root@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_proje
  AUTHORS.txt                             README.md   display_prompt.c   glibc    main.h   read_cmd.c  'simple shell.drawio'
 'Copie de simple shell.drawio (1).pdf'   betty       exec_cmd.c         main.c   man      shell        test
 root@UID7E:/mnt/c/Users/steph/Documents/projet30 Simple shell/simple_shell_projet30/holbertonschool-simple_shell#
+
+ si test  ctrl + d  --> affichage logout et fermeture du terminal immediat
