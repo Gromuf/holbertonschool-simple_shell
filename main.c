@@ -5,6 +5,8 @@ int main(void)
 	char *cmd = NULL;
 	size_t len = 0;
 	ssize_t read;
+	pid_t pid;
+	char *argv[2];
 
 	while (1)
 	{
@@ -16,14 +18,15 @@ int main(void)
 			break;
 		}
 
-		printf("%s", read);
+		printf("%s", cmd);
 		cmd[strcspn(cmd, "\n")] = 0;
 
-		pid_t pid = fork();
+		pid = fork();
 		if (pid == 0)
 		{
-			char *argv[] = {command, NULL};
-			if (execve(command, argv, NULL) == -1)
+			argv[0] = cmd;
+			argv[1] = NULL;
+			if (execve(cmd, argv, NULL) == -1)
 			{
 				perror("Error");
 			}
@@ -31,6 +34,6 @@ int main(void)
 		}
 	}
 
-	free(command);
+	free(cmd);
 	return (0);
 }
