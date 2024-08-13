@@ -24,4 +24,6 @@ int is_empty_cmd(char *cmd);
 
 int _isspace(char c);
 
+void execute_command(const char *cmd); /*shell 0.3 + usage exit*/
+
 #endif
