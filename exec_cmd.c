@@ -39,6 +39,7 @@ void exec_cmd(char *cmd)
 	char *argv[100];
 	char *token;
 	int i = 0;
+	int status; /* ajout pour waitpid exit*/
 
 	if (is_empty_cmd(cmd))
 		return;
@@ -78,7 +79,18 @@ void exec_cmd(char *cmd)
 		}
 	}
 	else
-		wait(NULL);
+	/*wait(NULL);*/
+	{
+		waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
+		if (WIFEXITED(status))
+		{
+			int exit_status = WEXITSTATUS(status);
+			if (exit_status != 0)
+			{
+				/* Logique pour gérer les codes d'erreur, si nécessaire*/
+			}
+		}
+	}
 }
 
 /**
