@@ -49,7 +49,7 @@ void exec_cmd(char *cmd)
 	argv[i] = NULL;
 
 	/*Si la commande est "exit", sortir du shell*/
-	if (strcmp(cmd, "exit") == 0)
+	if (strcmp(argv[0], "exit") == 0)
 	{
 		my_exit(EXIT_SUCCESS);
 	}
