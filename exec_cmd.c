@@ -69,6 +69,7 @@ void exec_cmd(char *cmd)
 		{
 			/* Sinon, sortir avec le code de retour 0*/
 			exit(EXIT_SUCCESS);
+			return;
 		}
 	}
 
