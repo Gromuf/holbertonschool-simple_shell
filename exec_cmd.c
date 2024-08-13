@@ -33,9 +33,9 @@ void exec_cmd(char *cmd)
 	char *token;
 	int i = 0;
 
-	if (is_empty_cmd(cmd))
+	/*if (is_empty_cmd(cmd))
 		return;
-
+*/
 	token = strtok(cmd, " \n");
 	while (token != NULL)
 	{
