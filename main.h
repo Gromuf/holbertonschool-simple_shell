@@ -15,4 +15,6 @@ char *read_cmd(void);
 void exec_cmd(char *cmd);
 
 size_t _strcspn(const char *s1, const char *s2);
+
+int is_interactive(void);
 #endif
