@@ -51,7 +51,7 @@ void exec_cmd(char *cmd)
 	/*Si la commande est "exit", sortir du shell*/
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		my_exit(EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 
 	pid = fork();
