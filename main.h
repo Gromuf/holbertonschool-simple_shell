@@ -24,6 +24,8 @@ int is_empty_cmd(char *cmd);
 
 int _isspace(char c);
 
-/*void exit(int status);*/
+extern int should_exit; /* Déclaration de la variable globale exit e */
+
+void exit(int status);
 
 #endif

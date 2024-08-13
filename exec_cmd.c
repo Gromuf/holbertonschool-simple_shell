@@ -1,7 +1,9 @@
 #include "main.h"
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
-extern int should_exit; /* Variable globale pour control la sortie du shell*/
+/*extern int should_exit;  Variable globale pour control la sortie du shell*/
+int should_exit = 0; /* Variable globale pour contrôler la sortie du shell */
+
 
 /**
  * is_empty_cmd - Checks if a command string is empty or contains only
@@ -38,7 +40,8 @@ void exec_cmd(char *cmd)
 	pid_t pid;
 	char *argv[100];
 	char *token;
-	int i = 0;
+	/*int i = 0;*/
+	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
 
 	if (is_empty_cmd(cmd))
@@ -47,32 +50,39 @@ void exec_cmd(char *cmd)
 	token = strtok(cmd, " \n");
 	while (token != NULL)
 	{
-		argv[i++] = token;
-		token = strtok(NULL, " \n");
+		argv[argc++] = token;
+		token = strtok(NULL, " ");
+		/*argv[i++] = token;*/
+		/*token = strtok(NULL, " \n");*/
 	}
-	argv[i] = NULL;
+	/*argv[i] = NULL;*/
+	argv[argc] = NULL;
 
 	if (argv[0] != NULL)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
+			should_exit = 1;
+			return; /* Sortir de la fonction après avoir mis à jour should_exit */
 			/*Si la commande est "exit", sortir du shell*/
 			/*if (strcmp(argv[0], "exit") == 0)*/
 			/* Si un argument est fourni, utiliser ce code de sortie */
-			if (argv[1] != NULL)
-			{
+			/*if (argv[1] != NULL)*/
+			/*{*/
+				/*should_exit = 1;*/
+				/*return;  Sortir de la fonction après avoir mis à jour should_exit */
 				/*int exit_code = atoi(argv[1]);*/
 				/*exit(exit_code);*/
 				/*should_exit = exit_code;*/
-				should_exit = atoi(argv[1]); /* Mettre à jour should_exit */
-			}
-			else
-			{
-				should_exit = 0;
+				/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
+			/*}*/
+			/*else*/
+			/*{*/
+				/*should_exit = 0;*/
 				/* Sinon, utiliser le code de sortie 0 */
 				/*exit(EXIT_SUCCESS);*/
-			}
-			return;
+			/*}*/
+			/*return;*/
 		}
 		else if (strcmp(argv[0], "env") == 0)
 		{

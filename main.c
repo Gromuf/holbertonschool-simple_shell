@@ -1,6 +1,6 @@
 #include "main.h"
 
-int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
+/*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
 /**
  * main - Entry point of the simple shell program.
@@ -39,7 +39,7 @@ int main(void)
 	/* code 0 pour exit et 2 pour /bin/ls: cannot*/
 	/* access '/test_hbtn': No such file or directory*/
 	/*return (should_exit ? 2 : 0);*/
-	return (should_exit);
+	/*return (should_exit);*/
 
-	/*return (0);*/
+	return (0); /* Sortir avec code 0 lorsque le shell se termine */
 }
