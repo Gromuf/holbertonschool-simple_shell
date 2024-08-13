@@ -52,24 +52,24 @@ void exec_cmd(char *cmd)
 	}
 	argv[i] = NULL;
 
+	if (argv[0] != NULL && strcmp(argv[0], "exit") == 0)
 	/*Si la commande est "exit", sortir du shell*/
-	if (strcmp(argv[0], "exit") == 0)
+	/*if (strcmp(argv[0], "exit") == 0)*/
 	{
-		/*exit(EXIT_SUCCESS);*/
-		should_exit = 1;  /*marquer que le shell doit se termine*/
+		/* Si un argument est fourni, utiliser ce code de sortie */
+		if (argv[1] != NULL)
+		{
+			int exit_code = atoi(argv[1]);
+			/*exit(exit_code);*/
+			should_exit = exit_code;
+		}
+		else
+		{
+			should_exit = 1;
+			/* Sinon, utiliser le code de sortie 0 */
+			/*exit(EXIT_SUCCESS);*/
+		}
 		return;
-
-		/*should_exit = 1;*/
-		/*if (argv[1] != NULL)*/
-		/*{*/
-			/* Exit avec un code de retour spécifique si un argument est four*/
-		/*	exit(atoi(argv[1]));*/
-		/*}*/
-		/*else*/
-		/*{*/
-			/* Sinon, sortir avec le code de retour 0*/
-		/*	exit(EXIT_SUCCESS);*/
-		/*}*/
 	}
 
 	pid = fork();
