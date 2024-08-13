@@ -56,21 +56,20 @@ void exec_cmd(char *cmd)
 	if (strcmp(argv[0], "exit") == 0)
 	{
 		/*exit(EXIT_SUCCESS);*/
-		/*should_exit = 1;  marquer que le shell doit se termine*/
-		/*return;*/
+		should_exit = 1;  /*marquer que le shell doit se termine*/
+		return;
 
-		should_exit = 1;
-		if (argv[1] != NULL)
-		{
+		/*should_exit = 1;*/
+		/*if (argv[1] != NULL)*/
+		/*{*/
 			/* Exit avec un code de retour spécifique si un argument est four*/
-			exit(atoi(argv[1]));
-		}
-		else
-		{
+		/*	exit(atoi(argv[1]));*/
+		/*}*/
+		/*else*/
+		/*{*/
 			/* Sinon, sortir avec le code de retour 0*/
-			exit(EXIT_SUCCESS);
-			return;
-		}
+		/*	exit(EXIT_SUCCESS);*/
+		/*}*/
 	}
 
 	pid = fork();
