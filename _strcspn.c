@@ -1,5 +1,15 @@
 #include "main.h"
 
+/**
+ * _strcspn - Calculates the length of the initial segment of s1
+ *            which consists of characters not in s2.
+ *
+ * @s1: The string to be searched.
+ * @s2: The string containing the characters to exclude.
+ *
+ * Return: The length of the initial segment of s1 not containing
+ *         any characters from s2.
+ */
 size_t _strcspn(const char *s1, const char *s2)
 {
 	size_t i;

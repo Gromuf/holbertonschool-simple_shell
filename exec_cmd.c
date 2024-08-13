@@ -19,6 +19,7 @@ int is_empty_cmd(char *cmd)
 	}
 	return (1);
 }
+
 /**
  * exec_cmd - Executes a command in a new process.
  * @cmd: The command to be executed.
