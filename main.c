@@ -16,7 +16,8 @@ int main(void)
 
 	while (1)
 	{
-		display_prompt();
+		if (is_interactive())
+			display_prompt();
 
 		cmd = read_cmd();
 		if (cmd == NULL)
