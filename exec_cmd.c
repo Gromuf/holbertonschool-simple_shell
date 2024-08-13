@@ -81,6 +81,7 @@ void exec_multiple_cmd(char *cmds)
 {
 	char *line;
 	const char delim[2] = "\n";
+
 	line = strtok(cmds, delim);
 
 	while (line != NULL)
