@@ -1,0 +1,49 @@
+#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+/**
+ * display_prompt - Displays the command prompt and reads user input.
+ *
+ * This function prints the prompt character '#cisfun$ ' to the standard output,
+ * then reads a line of user input using getline and handles EOF (Ctrl + D) to exit the loop.
+ */
+void display_prompt(void)
+{
+	char *input = NULL;
+	size_t len = 0;
+	ssize_t read;
+
+	while (1)
+	{
+		/* Print the prompt*/
+		printf("#cisfun$ ");
+		fflush(stdout);
+
+		/* Read a line of input*/
+		read = getline(&input, &len, stdin);
+
+		/* Check for EOF (Ctrl + D) or error*/
+		if (read == -1)
+		{
+			if (feof(stdin))
+			{
+				/* End-of-file reached*/
+				printf("\nEOF detected, exiting...\n");
+				break;
+			}
+			else
+			{
+				/* Error occurred*/
+				perror("getline");
+				break;
+			}
+		}
+
+		/* Process the input (for demonstration purposes, just print it)*/
+		printf("You entered: %s", input);
+	}
+
+	/* Free the allocated memory*/
+	free(input);
+}
