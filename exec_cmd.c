@@ -30,10 +30,11 @@ void exec_cmd(char *cmd)
 		if (execve(cmd, argv, NULL) == -1)
 		{
 			/*perror("Error");*/
+			perror("./shell");
 		}
 		/*ajout SD ./shell: No such file or directory*/
 		/*fprintf(stderr, "./shell: %s: %s\n", cmd, strerror(errno));*/
-		fprintf(stderr, "./shell: %s\n", strerror(errno));
+		/*fprintf(stderr, "./shell: %s\n", strerror(errno));*/
 		exit(EXIT_FAILURE);
 	}
 
