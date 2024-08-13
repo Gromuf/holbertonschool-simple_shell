@@ -6,7 +6,7 @@
  *
  * Return: 1 if the command is empty or only contains spaces, 0 otherwise.
  */
-int is_empty_cmd(char *cmd)
+/*int is_empty_cmd(char *cmd)
 {
 	while (*cmd)
 	{
@@ -15,7 +15,7 @@ int is_empty_cmd(char *cmd)
 		cmd++;
 	}
 	return (1);
-}
+}*/
 /**
  * exec_cmd - Executes a command in a new process.
  * @cmd: The command to be executed.
