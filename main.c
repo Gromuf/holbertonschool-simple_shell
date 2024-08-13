@@ -23,7 +23,7 @@ int main(void)
 		if (cmd == NULL)
 			break;
 
-		exec_cmd(cmd);
+		exec_multiple_cmd(cmd);
 		free(cmd);
 	}
 	return (0);

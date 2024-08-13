@@ -17,4 +17,6 @@ void exec_cmd(char *cmd);
 size_t _strcspn(const char *s1, const char *s2);
 
 int is_interactive(void);
+
+void exec_multiple_cmd(char *cmds);
 #endif
