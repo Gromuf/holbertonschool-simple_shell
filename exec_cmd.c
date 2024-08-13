@@ -4,7 +4,6 @@
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
 int should_exit = 0; /* Variable globale pour contrôler la sortie du shell */
 
-
 /**
  * is_empty_cmd - Checks if a command string is empty or contains only
  * whitespace.
@@ -41,11 +40,16 @@ void exec_cmd(char *cmd)
 	char *argv[100];
 	char *token;
 	/*int i = 0;*/
-	int argc = 0;
+	/*int argc = 0;*/
+	int argc;
 	int status; /* ajout pour waitpid exit*/
+	char *executable_path;
 
 	if (is_empty_cmd(cmd))
 		return;
+
+	/* Initialize argc */
+	argc = 0;
 
 	token = strtok(cmd, " \n");
 	while (token != NULL)
@@ -64,25 +68,25 @@ void exec_cmd(char *cmd)
 		{
 			should_exit = 1;
 			return; /* Sortir de la fonction après avoir mis à jour should_exit */
-			/*Si la commande est "exit", sortir du shell*/
-			/*if (strcmp(argv[0], "exit") == 0)*/
-			/* Si un argument est fourni, utiliser ce code de sortie */
-			/*if (argv[1] != NULL)*/
-			/*{*/
-				/*should_exit = 1;*/
-				/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-				/*int exit_code = atoi(argv[1]);*/
-				/*exit(exit_code);*/
-				/*should_exit = exit_code;*/
-				/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
-			/*}*/
-			/*else*/
-			/*{*/
-				/*should_exit = 0;*/
-				/* Sinon, utiliser le code de sortie 0 */
-				/*exit(EXIT_SUCCESS);*/
-			/*}*/
-			/*return;*/
+					/*Si la commande est "exit", sortir du shell*/
+					/*if (strcmp(argv[0], "exit") == 0)*/
+					/* Si un argument est fourni, utiliser ce code de sortie */
+					/*if (argv[1] != NULL)*/
+					/*{*/
+					/*should_exit = 1;*/
+					/*return;  Sortir de la fonction après avoir mis à jour should_exit */
+					/*int exit_code = atoi(argv[1]);*/
+					/*exit(exit_code);*/
+					/*should_exit = exit_code;*/
+					/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
+					/*}*/
+					/*else*/
+					/*{*/
+					/*should_exit = 0;*/
+					/* Sinon, utiliser le code de sortie 0 */
+					/*exit(EXIT_SUCCESS);*/
+					/*}*/
+					/*return;*/
 		}
 		else if (strcmp(argv[0], "env") == 0)
 		{
@@ -98,44 +102,55 @@ void exec_cmd(char *cmd)
 		}
 	}
 
-		pid = fork();
+	/* Trouver le chemin complet de la commande */
+	executable_path = find_executable(argv[0]);
+	if (executable_path == NULL)
+	{
+		fprintf(stderr, "Command not found: %s\n", argv[0]);
+		return;
+	}
 
-		if (pid == -1)
+	pid = fork();
+
+	if (pid == -1)
+	{
+		perror("Fork failed");
+		free(executable_path);
+		return;
+	}
+
+	if (pid == 0)
+	{
+		if (execve(argv[0], argv, NULL) == -1)
 		{
-			perror("Fork failed");
-			return;
+			/*perror("Error");*/
+			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
+			perror("./shell");
+			free(executable_path);
+			exit(EXIT_FAILURE);
+			/*_exit(2);  Code d'erreur pour commandes échouées */
 		}
-
-		if (pid == 0)
+	}
+	else
+	/*wait(NULL);*/
+	{
+		waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
+		if (WIFEXITED(status))
 		{
-			if (execve(argv[0], argv, NULL) == -1)
+			int exit_status = WEXITSTATUS(status);
+			if (exit_status != 0)
 			{
-				/*perror("Error");*/
-				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				perror("./shell");
-				exit(EXIT_FAILURE);
-				/*_exit(2);  Code d'erreur pour commandes échouées */
+				/* Code d'erreur spécifique pour commandes échouées */
+				/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
 			}
 		}
 		else
-		/*wait(NULL);*/
 		{
-			waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
-			if (WIFEXITED(status))
-			{
-				int exit_status = WEXITSTATUS(status);
-				if (exit_status != 0)
-				{
-					/* Code d'erreur spécifique pour commandes échouées */
-					/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
-				}
-			}
-			else
-			{
-				/* Si le processus ne se termine pas normalement */
-				/*fprintf(stderr, "Command terminated abnormally\n");*/
-			}
+			/* Si le processus ne se termine pas normalement */
+			/*fprintf(stderr, "Command terminated abnormally\n");*/
 		}
+		free(executable_path);
+	}
 }
 
 /**
@@ -148,14 +163,14 @@ void exec_cmd(char *cmd)
  */
 void exec_multiple_cmd(char *cmds)
 {
-		char *line;
-		const char delim[2] = "\n";
+	char *line;
+	const char delim[2] = "\n";
 
-		line = strtok(cmds, delim);
+	line = strtok(cmds, delim);
 
-		while (line != NULL)
-		{
-			exec_cmd(line);
-			line = strtok(NULL, delim);
-		}
+	while (line != NULL)
+	{
+		exec_cmd(line);
+		line = strtok(NULL, delim);
+	}
 }

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>  /* Inclure pour struct stat et les constantes S_IXUSR */
 
 void display_prompt(void);
 
@@ -27,5 +28,9 @@ int _isspace(char c);
 extern int should_exit; /* Déclaration de la variable globale exit e */
 
 void exit(int status);
+
+char *find_executable(const char *cmd);
+
+/*int main(int argc, char *argv[]);*/
 
 #endif
