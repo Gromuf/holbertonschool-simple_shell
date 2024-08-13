@@ -7,7 +7,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <ctype.h>
 
 void display_prompt(void);
 
@@ -22,4 +21,7 @@ int is_interactive(void);
 void exec_multiple_cmd(char *cmds);
 
 int is_empty_cmd(char *cmd);
+
+int _isspace(char c)
+
 #endif

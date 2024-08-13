@@ -10,7 +10,7 @@ int is_empty_cmd(char *cmd)
 {
 	while (*cmd)
 	{
-		if (!isspace((unsigned char)*cmd))
+		if (!_isspace((unsigned char)*cmd))
 			return (0);
 		cmd++;
 	}
