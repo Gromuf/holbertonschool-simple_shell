@@ -89,7 +89,7 @@ void exec_cmd(char *cmd)
 			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 			perror("./shell");
 			/*exit(EXIT_FAILURE);*/
-			_exit(2); /* Code d'erreur pour commandes échouées */
+			/*_exit(2);  Code d'erreur pour commandes échouées */
 		}
 	}
 	else
