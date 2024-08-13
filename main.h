@@ -22,6 +22,6 @@ void exec_multiple_cmd(char *cmds);
 
 int is_empty_cmd(char *cmd);
 
-int _isspace(char c)
+int _isspace(char c);
 
 #endif

@@ -1,6 +1,25 @@
 #include "main.h"
 
 /**
+ * is_empty_cmd - Checks if a command string is empty or contains only
+ * whitespace.
+ *
+ * @cmd: A pointer to the command string to be checked.
+ *
+ * Return: 1 if the command is empty or contains only whitespace,
+ *         0 otherwise.
+ */
+int is_empty_cmd(char *cmd)
+{
+	while (*cmd)
+	{
+		if (_isspace((unsigned char)*cmd) == 0)
+			return (0);
+		cmd++;
+	}
+	return (1);
+}
+/**
  * exec_cmd - Executes a command in a new process.
  * @cmd: The command to be executed.
  *
@@ -16,6 +35,9 @@ void exec_cmd(char *cmd)
 	char *argv[100];
 	char *token;
 	int i = 0;
+
+	if (is_empty_cmd(cmd))
+		return;
 
 	token = strtok(cmd, " \n");
 	while (token != NULL)
