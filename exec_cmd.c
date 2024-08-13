@@ -29,7 +29,8 @@ void exec_cmd(char *cmd)
 		argv[1] = NULL;
 		if (execve(cmd, argv, NULL) == -1)
 		{
-			perror("Error");
+			/*perror("Error");*/
+			perror("./shell");
 		}
 		exit(EXIT_FAILURE);
 	}
