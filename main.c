@@ -22,7 +22,7 @@ int main(void)
 		if (cmd == NULL)
 			break;
 
-		printf("%s\n", cmd);
+		/*printf("%s\n", cmd);*/
 
 		exec_cmd(cmd);
 		free(cmd);

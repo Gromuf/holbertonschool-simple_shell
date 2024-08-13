@@ -8,6 +8,9 @@
  */
 void display_prompt(void)
 {
-	printf("#cisfun$ ");
-	fflush(stdout);
+	if (isatty(STDIN_FILENO)) /*add dans use pipe*/
+	{
+		printf("#cisfun$ ");
+		fflush(stdout);
+	}
 }
