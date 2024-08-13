@@ -21,9 +21,6 @@ int main(void)
 		cmd = read_cmd();
 		if (cmd == NULL)
 			break;
-
-		printf("%s\n", cmd);
-
 		exec_cmd(cmd);
 		free(cmd);
 	}
