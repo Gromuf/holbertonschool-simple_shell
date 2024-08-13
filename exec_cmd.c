@@ -1,4 +1,7 @@
 #include "main.h"
+/*#include <stdbool.h>  Inclure pour le type bool*/
+
+extern int should_exit; /* Variable globale pour control la sortie du shell*/
 
 /**
  * is_empty_cmd - Checks if a command string is empty or contains only
@@ -51,7 +54,9 @@ void exec_cmd(char *cmd)
 	/*Si la commande est "exit", sortir du shell*/
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		exit(EXIT_SUCCESS);
+		/*exit(EXIT_SUCCESS);*/
+		should_exit = 1; /* marquer que le shell doit se termine*/
+		return;
 	}
 
 	pid = fork();
@@ -67,6 +72,7 @@ void exec_cmd(char *cmd)
 		if (execve(argv[0], argv, NULL) == -1)
 		{
 			/*perror("Error");*/
+			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 			perror("./shell");
 			exit(EXIT_FAILURE);
 		}

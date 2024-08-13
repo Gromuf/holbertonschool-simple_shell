@@ -1,5 +1,7 @@
 #include "main.h"
 
+int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
+
 /**
  * main - Entry point of the simple shell program.
  *
@@ -13,8 +15,10 @@
 int main(void)
 {
 	char *cmd = NULL;
+	/*char input[1024];*/
 
-	while (1)
+	/*while (1)*/
+	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
@@ -26,5 +30,7 @@ int main(void)
 		exec_multiple_cmd(cmd);
 		free(cmd);
 	}
+
+	/*printf("Exiting shell\n");*/
 	return (0);
 }
