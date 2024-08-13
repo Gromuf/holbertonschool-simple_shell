@@ -7,5 +7,5 @@
  */
 int is_interactive(void)
 {
-	return isatty(STDIN_FILENO);
+	return (isatty(STDIN_FILENO));
 }
