@@ -23,6 +23,6 @@ char *read_cmd(void)
 		return (NULL);
 	}
 
-	cmd[strcspn(cmd, "\n")] = 0;
+	cmd[_strcspn(cmd, "\n")] = 0;
 	return (cmd);
 }
