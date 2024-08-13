@@ -88,7 +88,7 @@ void exec_cmd(char *cmd)
 			/*perror("Error");*/
 			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 			perror("./shell");
-			/*exit(EXIT_FAILURE);*/
+			exit(EXIT_FAILURE);
 			/*_exit(2);  Code d'erreur pour commandes échouées */
 		}
 	}
@@ -102,13 +102,13 @@ void exec_cmd(char *cmd)
 			if (exit_status != 0)
 			{
 				/* Code d'erreur spécifique pour commandes échouées */
-				fprintf(stderr, "Command failed with exit status %d\n", exit_status);
+				/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
 			}
 		}
 		else
 		{
 			/* Si le processus ne se termine pas normalement */
-			fprintf(stderr, "Command terminated abnormally\n");
+			/*fprintf(stderr, "Command terminated abnormally\n");*/
 		}
 	}
 }

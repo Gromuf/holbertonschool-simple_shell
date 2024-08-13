@@ -24,6 +24,6 @@ int is_empty_cmd(char *cmd);
 
 int _isspace(char c);
 
-void exit(int status);
+/*void exit(int status);*/
 
 #endif

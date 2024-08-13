@@ -32,7 +32,7 @@ int main(void)
 	}
 
 	/* Affiche un message ou non, selon les besoins */
-	printf("Exiting shell with code %d\n", should_exit);
+	/*printf("Exiting shell with code %d\n", should_exit);*/
 
 	/*printf("Exiting shell\n");*/
 	/*Retourner un code de sortie approprié, selon les besoins*/
