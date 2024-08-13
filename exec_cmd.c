@@ -59,13 +59,14 @@ void exec_cmd(char *cmd)
 		/* Si un argument est fourni, utiliser ce code de sortie */
 		if (argv[1] != NULL)
 		{
-			int exit_code = atoi(argv[1]);
+			/*int exit_code = atoi(argv[1]);*/
 			/*exit(exit_code);*/
-			should_exit = exit_code;
+			/*should_exit = exit_code;*/
+			should_exit = atoi(argv[1]); /* Mettre à jour should_exit */
 		}
 		else
 		{
-			should_exit = 1;
+			should_exit = 2;
 			/* Sinon, utiliser le code de sortie 0 */
 			/*exit(EXIT_SUCCESS);*/
 		}
