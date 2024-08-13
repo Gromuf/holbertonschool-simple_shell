@@ -31,11 +31,15 @@ int main(void)
 		free(cmd);
 	}
 
+	/* Affiche un message ou non, selon les besoins */
+	printf("Exiting shell with code %d\n", should_exit);
+
 	/*printf("Exiting shell\n");*/
 	/*Retourner un code de sortie approprié, selon les besoins*/
 	/* code 0 pour exit et 2 pour /bin/ls: cannot*/
 	/* access '/test_hbtn': No such file or directory*/
-	return (should_exit ? 0 : 2);
+	/*return (should_exit ? 2 : 0);*/
+	return (should_exit);
 
 	/*return (0);*/
 }

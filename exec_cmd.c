@@ -66,7 +66,7 @@ void exec_cmd(char *cmd)
 		}
 		else
 		{
-			should_exit = 2;
+			should_exit = 0;
 			/* Sinon, utiliser le code de sortie 0 */
 			/*exit(EXIT_SUCCESS);*/
 		}
@@ -88,7 +88,8 @@ void exec_cmd(char *cmd)
 			/*perror("Error");*/
 			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 			perror("./shell");
-			exit(EXIT_FAILURE);
+			/*exit(EXIT_FAILURE);*/
+			_exit(2); /* Code d'erreur pour commandes échouées */
 		}
 	}
 	else
@@ -100,8 +101,14 @@ void exec_cmd(char *cmd)
 			int exit_status = WEXITSTATUS(status);
 			if (exit_status != 0)
 			{
-				/* Logique pour gérer les codes d'erreur, si nécessaire*/
+				/* Code d'erreur spécifique pour commandes échouées */
+				fprintf(stderr, "Command failed with exit status %d\n", exit_status);
 			}
+		}
+		else
+		{
+			/* Si le processus ne se termine pas normalement */
+			fprintf(stderr, "Command terminated abnormally\n");
 		}
 	}
 }
