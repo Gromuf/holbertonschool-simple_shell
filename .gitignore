@@ -98,3 +98,41 @@ config/secrets.yml
 
 # Ignorer les fichiers créés par Visual Studio Code
 .vscode/
+ # Fichiers exécutables
+*.out
+*.exe
+*.bin
+*.dmg
+*.app
+
+# Fichiers objets
+*.o
+*.obj
+*.lo
+*.a
+*.lib
+
+# Fichiers de bibliothèque partagée
+*.so
+*.dll
+*.dylib
+
+# Fichiers temporaires générés par les compilateurs
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Répertoires de build
+build/
+bin/
+obj/
+debug/
+release/
+out/
+
+# Fichiers de configuration spécifiques aux outils de build
+*.ninja_deps
+*.ninja_log
+*.cmake
+Makefile

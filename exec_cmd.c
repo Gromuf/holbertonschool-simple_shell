@@ -48,6 +48,12 @@ void exec_cmd(char *cmd)
 	}
 	argv[i] = NULL;
 
+	/*Si la commande est "exit", sortir du shell*/
+	if (strcmp(cmd, "exit") == 0)
+	{
+		exit(EXIT_SUCCESS);
+	}
+
 	pid = fork();
 
 	if (pid == -1)
