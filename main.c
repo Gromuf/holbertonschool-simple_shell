@@ -35,7 +35,7 @@ int main(void)
 	/*Retourner un code de sortie approprié, selon les besoins*/
 	/* code 0 pour exit et 2 pour /bin/ls: cannot*/
 	/* access '/test_hbtn': No such file or directory*/
-	return (should_exit ? 2 : 0);
-	
+	return (should_exit ? 0 : 2);
+
 	/*return (0);*/
 }
