@@ -4,56 +4,98 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define MAX_PATH_LENGTH 1024
+#define PATH_DELIM ':'
 
 /**
- * find_executable - Locate the full path of an executable file.
- * @cmd: The name of the executable to locate.
+ * is_executable - Vérifie si un fichier est exécutable.
  *
- * This function searches for an executable file in the directories listed in
- * the PATH environment variable. It constructs the full path by appending
- * the executable name to each directory in PATH and checks if the file exists
- * and is executable.
+ * @path: Le chemin du fichier à vérifier.
  *
- * Return: A pointer to a dynamically allocated string containing the full path
- *         of the executable if found. The caller is responsible for freeing
- *         the allocated memory. If the executable is not found or an error
- *         occurs, NULL is returned.
+ * Description:
+ * Cette fonction utilise la fonction `stat` pour vérifier si le fichier
+ * spécifié par `path` existe et s'il est exécutable par l'utilisateur.
+ *
+ * Return:
+ * Retourne 1 si le fichier est exécutable, sinon 0.
  */
-char *find_executable(const char *cmd)
+/* Fonction pour vérifier si un fichier est exécutable */
+int is_executable(const char *path)
+{
+	struct stat st;
+
+	/* Vérifie si le fichier existe et est exécutable */
+	if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))
+	{
+		return 1; /* Le fichier est exécutable */
+	}
+	return 0; /* Le fichier n'est pas exécutable */
+}
+
+/**
+ * which - Recherche le chemin complet d'un fichier exécutable dans PATH.
+ *
+ * @filename: Le nom du fichier à rechercher.
+ *
+ * Description:
+ * Cette fonction recherche le fichier spécifié par `filename` dans les
+ * répertoires listés dans la variable d'environnement `PATH`. Elle construit
+ * le chemin complet pour chaque répertoire et vérifie si le fichier est
+ * exécutable en utilisant la fonction `is_executable`.
+ *
+ * Return:
+ * Retourne un pointeur vers une chaîne de caractères contenant le chemin
+ * complet du fichier si trouvé, sinon retourne NULL.
+ * La chaîne de caractères allouée dynamiquement doit être libérée par
+ * l'appelant.
+ */
+/* Fonction qui imite le comportement de 'which' */
+char *which(const char *filename)
 {
 	char *path_env;
-	char *path;
+	char *path_copy;
 	char *dir;
-	char full_path[1024];
-	char *result = NULL;
+	char full_path[1024]; /* Taille maximale du chemin complet */
+	/*FILE *file;*/
+	long unsigned int path_len;
 
-	/* Déclaration des variables au début */
+	/* Récupère la variable d'environnement PATH */
 	path_env = getenv("PATH");
-	if (!path_env)
+	if (path_env == NULL)
 	{
-		return (NULL);
+		return (NULL); /* La variable d'environnement PATH n'est pas définie */
 	}
 
-	path = strdup(path_env); /*Dupliquer la variable d'environnement PATH*/
-	if (!path)
+	/* Crée une copie de la variable PATH pour la manipulation */
+	path_copy = strdup(path_env);
+	if (path_copy == NULL)
 	{
-		perror("strdup");
-		exit(EXIT_FAILURE); /*Gestion des erreurs d'allocation mémoire*/
+		return (NULL); /* Erreur d'allocation mémoire */
 	}
 
-	dir = strtok(path, ":");
+	dir = strtok(path_copy, ":");
 	while (dir != NULL)
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
-		if (access(full_path, X_OK) == 0)
+		/* Construit le chemin complet vers le fichier */
+		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, filename);
+		if (path_len >= sizeof(full_path))
 		{
-			result = strdup(full_path); /*Trouvé l'exécutable*/
-			break;
+			/* Chemin trop long, passe au répertoire suivant */
+			dir = strtok(NULL, ":");
+			continue;
 		}
+
+		/* Vérifie si le fichier est exécutable */
+		if (is_executable(full_path))
+		{
+			/* Alloue et copie le chemin complet vers une nouvelle chaîne */
+			char *result = strdup(full_path);
+			free(path_copy);
+			return result;
+		}
+
 		dir = strtok(NULL, ":");
 	}
 
-	free(path); /* Libération de la mémoire allouée pour `path`*/
-	return (result);
+	free(path_copy);
+	return (NULL); /* Fichier non trouvé dans PATH */
 }

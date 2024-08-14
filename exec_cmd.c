@@ -2,7 +2,7 @@
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
-int should_exit = 0; /* Variable globale pour contrôler la sortie du shell */
+/*int should_exit = 0; Variable globale pour contrôler la sortie du shell */
 
 /**
  * is_empty_cmd - Checks if a command string is empty or contains only
@@ -103,7 +103,7 @@ void exec_cmd(char *cmd)
 	}
 
 	/* Trouver le chemin complet de la commande */
-	executable_path = find_executable(argv[0]);
+	executable_path = which(argv[0]);
 	if (executable_path == NULL)
 	{
 		fprintf(stderr, "Command not found: %s\n", argv[0]);
