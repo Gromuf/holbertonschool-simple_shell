@@ -90,7 +90,7 @@ char *which(const char *filename)
 			/* Alloue et copie le chemin complet vers une nouvelle chaîne */
 			char *result = strdup(full_path);
 			free(path_copy);
-			return result;
+			return (result);
 		}
 
 		dir = strtok(NULL, ":");

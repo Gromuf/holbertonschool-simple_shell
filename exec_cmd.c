@@ -66,27 +66,10 @@ void exec_cmd(char *cmd)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			should_exit = 1;
-			return; /* Sortir de la fonction après avoir mis à jour should_exit */
-					/*Si la commande est "exit", sortir du shell*/
-					/*if (strcmp(argv[0], "exit") == 0)*/
-					/* Si un argument est fourni, utiliser ce code de sortie */
-					/*if (argv[1] != NULL)*/
-					/*{*/
-					/*should_exit = 1;*/
-					/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*int exit_code = atoi(argv[1]);*/
-					/*exit(exit_code);*/
-					/*should_exit = exit_code;*/
-					/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
-					/*}*/
-					/*else*/
-					/*{*/
-					/*should_exit = 0;*/
-					/* Sinon, utiliser le code de sortie 0 */
-					/*exit(EXIT_SUCCESS);*/
-					/*}*/
-					/*return;*/
+			if (argv[1] != NULL)
+				should_exit = atoi(argv[1]);
+			else
+				should_exit = 0;
 		}
 		else if (strcmp(argv[0], "env") == 0)
 		{
@@ -125,11 +108,12 @@ void exec_cmd(char *cmd)
 		{
 			/*perror("Error");*/
 			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-			perror("./shell");
+			perror(argv[0]);
 			free(executable_path);
 			exit(EXIT_FAILURE);
 			/*_exit(2);  Code d'erreur pour commandes échouées */
 		}
+		free(executable_path);
 	}
 	else
 	/*wait(NULL);*/
