@@ -106,7 +106,7 @@ void exec_cmd(char *cmd)
 	executable_path = which(argv[0]);
 	if (executable_path == NULL)
 	{
-		fprintf(stderr, "Command not found: %s\n", argv[0]);
+		/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
 		return;
 	}
 
