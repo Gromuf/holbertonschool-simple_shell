@@ -26,9 +26,9 @@ int is_executable(const char *path)
 	/* Vérifie si le fichier existe et est exécutable */
 	if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))
 	{
-		return 1; /* Le fichier est exécutable */
+		return (1); /* Le fichier est exécutable */
 	}
-	return 0; /* Le fichier n'est pas exécutable */
+	return (0); /* Le fichier n'est pas exécutable */
 }
 
 /**
