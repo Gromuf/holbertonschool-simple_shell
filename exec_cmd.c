@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdlib.h>
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
@@ -41,7 +42,7 @@ void exec_cmd(char *cmd)
 	char *token;
 	/*int i = 0;*/
 	/*int argc = 0;*/
-	int argc;
+	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
 	char *executable_path;
 	char *cmd_copy;
@@ -61,7 +62,7 @@ void exec_cmd(char *cmd)
 	}
 
 	/* Initialize argc */
-	argc = 0;
+	/*argc = 0;*/
 
 	token = strtok(cmd_copy, " \n");
 	while (token != NULL)
@@ -78,25 +79,27 @@ void exec_cmd(char *cmd)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			if (argv[1] != NULL)
-				should_exit = atoi(argv[1]);
-			else
-				should_exit = 0;
+			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;
+			/*if (argv[1] != NULL)*/
+				/*should_exit = atoi(argv[1]);*/
+			/*else*/
+				/*should_exit = 0;*/
 			free(cmd_copy);
-			return;
-		}
-		else if (strcmp(argv[0], "env") == 0)
-		{
+			/*return;*/
+			exit(exit_status);
+		/*}*/
+		/*else if (strcmp(argv[0], "env") == 0)*/
+		/*{*/
 			/* Si la commande est "env", afficher les variables d'environnement */
-			extern char **environ;
-			char **env;
+			/*extern char **environ;*/
+			/*char **env;*/
 
-			for (env = environ; *env != NULL; ++env)
-			{
-				printf("%s\n", *env);
-			}
-			free(cmd_copy);
-			return; /* Sortir de la fonction après avoir affiché les variables d'environnement */
+			/*for (env = environ; *env != NULL; ++env)*/
+			/*{*/
+				/*printf("%s\n", *env);*/
+			/*}*/
+			/*free(cmd_copy);*/
+			/*return;  Sortir de la fonction après avoir affiché les variables d'environnement */
 		}
 	}
 
@@ -135,7 +138,7 @@ void exec_cmd(char *cmd)
 				exit(EXIT_FAILURE);
 				/*_exit(2);  Code d'erreur pour commandes échouées */
 			}
-			free(executable_path);
+			/*free(executable_path);*/
 		}
 		else
 		/*wait(NULL);*/
@@ -158,7 +161,8 @@ void exec_cmd(char *cmd)
 			}
 			free(executable_path);
 		}
-	}
+
+
 	free(cmd_copy);
 }
 
