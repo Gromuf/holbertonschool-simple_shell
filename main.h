@@ -39,7 +39,6 @@ char *which(const char *filename);
 
 extern int should_exit;
 
-
 /*int main(int argc, char *argv[]);*/
 
 #endif
