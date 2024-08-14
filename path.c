@@ -23,43 +23,37 @@
 char *find_executable(const char *cmd)
 {
 	char *path_env;
-	char *path_copy;
+	char *path;
 	char *dir;
-	char full_path[MAX_PATH_LENGTH];
-	struct stat st;
+	char full_path[1024];
+	char *result = NULL;
 
-	/* Retrieve the PATH environment variable */
+	/* Déclaration des variables au début */
 	path_env = getenv("PATH");
-	if (path_env == NULL)
+	if (!path_env)
 	{
-		fprintf(stderr, "PATH environment variable is not set.\n");
 		return (NULL);
 	}
 
-	/* Make a copy of the PATH variable to tokenize */
-	path_copy = strdup(path_env);
-	if (path_copy == NULL)
+	path = strdup(path_env); /*Dupliquer la variable d'environnement PATH*/
+	if (!path)
 	{
 		perror("strdup");
-		return (NULL);
+		exit(EXIT_FAILURE); /*Gestion des erreurs d'allocation mémoire*/
 	}
 
-	/* Tokenize the PATH variable and check each directory */
-	dir = strtok(path_copy, ":");
+	dir = strtok(path, ":");
 	while (dir != NULL)
 	{
 		snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
-
-		if (stat(full_path, &st) == 0 && (st.st_mode & S_IXUSR))
+		if (access(full_path, X_OK) == 0)
 		{
-			free(path_copy);
-			return strdup(full_path);
+			result = strdup(full_path); /*Trouvé l'exécutable*/
+			break;
 		}
-
 		dir = strtok(NULL, ":");
 	}
 
-	fprintf(stderr, "Command not found: %s\n", cmd);
-	free(path_copy);
-	return (NULL);
+	free(path); /* Libération de la mémoire allouée pour `path`*/
+	return (result);
 }
