@@ -17,6 +17,10 @@ int main(void)
 	char *cmd = NULL;
 	/*char input[1024];*/
 
+	/* Définir le PATH ici*/
+	setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1);
+
+
 	/*while (1)*/
 	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
 	{
