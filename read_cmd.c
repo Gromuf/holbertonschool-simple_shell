@@ -12,17 +12,46 @@
  */
 char *read_cmd(void)
 {
-	char *cmd = NULL;
+	char *line = NULL;
 	size_t len = 0;
-	ssize_t read;
+	ssize_t nread;
 
-	read = getline(&cmd, &len, stdin);
-	if (read == -1)
+	/*Affiche le prompt*/
+	printf("#cisfun$ ");
+	fflush(stdout);
+
+	/*Lit une ligne d'entrée*/
+	nread = getline(&line, &len, stdin);
+
+	/*Si getline échoue ou si l'utilisateur appuie sur EOF (Ctrl+D)*/
+	if (nread == -1)
 	{
-		free(cmd);
-		return (NULL);
+		free(line);
+		return NULL; /*Retourne NULL pour indiquer la fin de l'entrée**/
 	}
 
-	cmd[_strcspn(cmd, "\n")] = 0;
-	return (cmd);
+	/*Supprime le caractère de nouvelle ligne, si présent*/
+	if (line[nread - 1] == '\n')
+	{
+		line[nread - 1] = '\0';
+	}
+
+	return (line);
 }
+
+/*char *read_cmd(void)*/
+/*{*/
+/*char *cmd = NULL;*/
+/*size_t len = 0;*/
+/*ssize_t read;*/
+
+/*read = getline(&cmd, &len, stdin);*/
+/*if (read == -1)*/
+/*{*/
+/*	free(cmd);*/
+/*	return (NULL);*/
+/*}*/
+
+/*cmd[_strcspn(cmd, "\n")] = 0;*/
+/*return (cmd);*/
+/*}*/

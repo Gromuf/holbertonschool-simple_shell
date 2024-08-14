@@ -57,6 +57,7 @@ char *which(const char *filename)
 	char full_path[1024]; /* Taille maximale du chemin complet */
 	/*FILE *file;*/
 	long unsigned int path_len;
+	/*size_t path_len;*/
 
 	/* Récupère la variable d'environnement PATH */
 	path_env = getenv("PATH");
@@ -91,6 +92,7 @@ char *which(const char *filename)
 			char *result = strdup(full_path);
 			free(path_copy);
 			return (result);
+			/*return (strdup(full_path));*/
 		}
 
 		dir = strtok(NULL, ":");
