@@ -34,7 +34,7 @@ int is_executable(const char *path)
 /**
  * which - Recherche le chemin complet d'un fichier exécutable dans PATH.
  *
- * @filename: Le nom du fichier à rechercher.
+ * @cmd: Le nom du fichier à rechercher.
  *
  * Description:
  * Cette fonction recherche le fichier spécifié par `filename` dans les
@@ -49,12 +49,12 @@ int is_executable(const char *path)
  * l'appelant.
  */
 /* Fonction qui imite le comportement de 'which' */
-char *which(const char *filename)
+char *which(const char *cmd)
 {
 	char *path_env;
 	char *path_copy;
 	char *dir;
-	char full_path[1024]; /* Taille maximale du chemin complet */
+	char full_path[2048]; /* Taille maximale du chemin complet */
 	/*FILE *file;*/
 	long unsigned int path_len;
 	/*size_t path_len;*/
@@ -77,7 +77,14 @@ char *which(const char *filename)
 	while (dir != NULL)
 	{
 		/* Construit le chemin complet vers le fichier */
-		path_len = sprintf(full_path, "%s/%s", dir, filename);
+		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
+
+		if (access(full_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return strdup(full_path);
+		}
+
 		if (path_len >= sizeof(full_path))
 		{
 			/* Chemin trop long, passe au répertoire suivant */

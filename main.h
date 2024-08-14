@@ -35,7 +35,7 @@ extern int should_exit; /* Déclaration de la variable globale exit e */
 
 int is_executable(const char *path);
 
-char *which(const char *filename);
+char *which(const char *cmd);
 
 extern int should_exit;
 
