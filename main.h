@@ -29,7 +29,7 @@ int _isspace(char c);
 
 extern int should_exit; /* Déclaration de la variable globale exit e */
 
-void exit(int status);
+void _exit(int status);
 
 /*char *find_executable(const char *cmd);*/
 

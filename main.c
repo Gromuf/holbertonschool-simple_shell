@@ -18,7 +18,8 @@ int main(void)
 	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
 
-	if(setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)
+	if(setenv("PATH",
+	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)
 	{
 		perror("setenv");
 		return(EXIT_FAILURE);
