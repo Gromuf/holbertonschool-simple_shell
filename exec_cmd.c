@@ -101,67 +101,66 @@ void exec_cmd(char *cmd)
 			/*free(cmd_copy);*/
 			/*return;  Sortir de la fonction après avoir affiché les variables d'environnement */
 		}
-	}
 
-	/* Trouver le chemin complet de la commande */
-	executable_path = which(argv[0]);
-	if (executable_path == NULL)
-	{
-		/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-		free(cmd_copy);
-		return;
-	}
-
-		pid = fork();
-
-		if (pid == -1)
+		/* Trouver le chemin complet de la commande */
+		executable_path = which(argv[0]);
+		if (executable_path == NULL)
 		{
-			perror("fork");
-			/*perror("Fork failed");*/
-			free(executable_path);
+			/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
 			free(cmd_copy);
 			return;
 		}
 
-		if (pid == 0)
-		{
-			/*Child process*/
-			/*if (execve(argv[0], argv, NULL) == -1)*/
-			if (execve(executable_path, argv, NULL) == -1)
+			pid = fork();
+
+			if (pid == -1)
 			{
-				/*perror("Error");*/
-				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				/*perror(argv[0]);*/
-				perror("execve");
+				perror("fork");
+				/*perror("Fork failed");*/
 				free(executable_path);
 				free(cmd_copy);
-				exit(EXIT_FAILURE);
-				/*_exit(2);  Code d'erreur pour commandes échouées */
+				return;
 			}
-			/*free(executable_path);*/
-		}
-		else
-		/*wait(NULL);*/
-		{
-			/*Parent process*/
-			waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
-			if (WIFEXITED(status))
+
+			if (pid == 0)
 			{
-				int exit_status = WEXITSTATUS(status);
-				if (exit_status != 0)
+				/*Child process*/
+				/*if (execve(argv[0], argv, NULL) == -1)*/
+				if (execve(executable_path, argv, NULL) == -1)
 				{
-					/* Code d'erreur spécifique pour commandes échouées */
-					fprintf(stderr, "Command failed with exit status %d\n", exit_status);
+					/*perror("Error");*/
+					/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
+					/*perror(argv[0]);*/
+					perror("execve");
+					free(executable_path);
+					free(cmd_copy);
+					exit(EXIT_FAILURE);
+					/*_exit(2);  Code d'erreur pour commandes échouées */
 				}
+				/*free(executable_path);*/
 			}
 			else
+			/*wait(NULL);*/
 			{
-				/* Si le processus ne se termine pas normalement */
-				fprintf(stderr, "Command terminated abnormally\n");
+				/*Parent process*/
+				waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
+				if (WIFEXITED(status))
+				{
+					int exit_status = WEXITSTATUS(status);
+					if (exit_status != 0)
+					{
+						/* Code d'erreur spécifique pour commandes échouées */
+						fprintf(stderr, "Command failed with exit status %d\n", exit_status);
+					}
+				}
+				else
+				{
+					/* Si le processus ne se termine pas normalement */
+					fprintf(stderr, "Command terminated abnormally\n");
+				}
+				free(executable_path);
 			}
-			free(executable_path);
 		}
-
 
 	free(cmd_copy);
 }
