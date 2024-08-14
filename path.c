@@ -76,7 +76,7 @@ char *which(const char *filename)
 	while (dir != NULL)
 	{
 		/* Construit le chemin complet vers le fichier */
-		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, filename);
+		path_len = sprintf(full_path, "%s/%s", dir, filename);
 		if (path_len >= sizeof(full_path))
 		{
 			/* Chemin trop long, passe au répertoire suivant */

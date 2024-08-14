@@ -55,7 +55,7 @@ void exec_cmd(char *cmd)
 	while (token != NULL)
 	{
 		argv[argc++] = token;
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
 		/*token = strtok(NULL, " \n");*/
 	}
@@ -70,6 +70,7 @@ void exec_cmd(char *cmd)
 				should_exit = atoi(argv[1]);
 			else
 				should_exit = 0;
+			return;
 		}
 		else if (strcmp(argv[0], "env") == 0)
 		{
@@ -89,7 +90,7 @@ void exec_cmd(char *cmd)
 	executable_path = which(argv[0]);
 	if (executable_path == NULL)
 	{
-		fprintf(stderr, "Command not found: %s\n", argv[0]);
+		/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
 		return;
 	}
 
@@ -97,18 +98,21 @@ void exec_cmd(char *cmd)
 
 	if (pid == -1)
 	{
-		perror("Fork failed");
+		perror("fork");
+		/*perror("Fork failed");*/
 		free(executable_path);
 		return;
 	}
 
 	if (pid == 0)
 	{
-		if (execve(argv[0], argv, NULL) == -1)
+		/*if (execve(argv[0], argv, NULL) == -1)*/
+		if (execve(executable_path, argv, NULL) == -1)
 		{
 			/*perror("Error");*/
 			/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-			perror(argv[0]);
+			/*perror(argv[0]);*/
+			perror("execve");
 			free(executable_path);
 			exit(EXIT_FAILURE);
 			/*_exit(2);  Code d'erreur pour commandes échouées */
@@ -125,13 +129,13 @@ void exec_cmd(char *cmd)
 			if (exit_status != 0)
 			{
 				/* Code d'erreur spécifique pour commandes échouées */
-				/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
+				fprintf(stderr, "Command failed with exit status %d\n", exit_status);
 			}
 		}
 		else
 		{
 			/* Si le processus ne se termine pas normalement */
-			/*fprintf(stderr, "Command terminated abnormally\n");*/
+			fprintf(stderr, "Command terminated abnormally\n");
 		}
 		free(executable_path);
 	}

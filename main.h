@@ -39,6 +39,8 @@ char *which(const char *filename);
 
 extern int should_exit;
 
+/*int my_snprintf(char *buf, size_t size, const char *fmt, ...);*/
+
 /*int main(int argc, char *argv[]);*/
 
 #endif
