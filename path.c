@@ -34,7 +34,7 @@ int is_executable(const char *path)
 /**
  * which - Recherche le chemin complet d'un fichier exécutable dans PATH.
  *
- * @cmd: Le nom du fichier à rechercher.
+ * @cmd: Le nom de la commande à rechercher dans bin.
  *
  * Description:
  * Cette fonction recherche le fichier spécifié par `filename` dans les
@@ -56,8 +56,8 @@ char *which(const char *cmd)
 	char *dir;
 	char full_path[2048]; /* Taille maximale du chemin complet */
 	/*FILE *file;*/
-	long unsigned int path_len;
-	/*size_t path_len;*/
+	/*long unsigned int path_len;*/
+	size_t path_len;
 
 	/* Récupère la variable d'environnement PATH */
 	path_env = getenv("PATH");
@@ -79,30 +79,37 @@ char *which(const char *cmd)
 		/* Construit le chemin complet vers le fichier */
 		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
 
-		if (access(full_path, X_OK) == 0)
+		/*if (access(full_path, X_OK) == 0)*/
+		/*{*/
+		/*	free(path_copy);*/
+		/*	return strdup(full_path);*/
+		/*}*/
+
+		/*if (path_len >= sizeof(full_path))*/
+		/*{*/
+		/*	 Chemin trop long, passe au répertoire suivant */
+		/*		dir = strtok(NULL, ":");*/
+		/*		continue;*/
+		/*}*/
+		if (path_len < sizeof(full_path) && is_executable(full_path))
 		{
 			free(path_copy);
-			return strdup(full_path);
-		}
-
-		if (path_len >= sizeof(full_path))
-		{
-			/* Chemin trop long, passe au répertoire suivant */
-			dir = strtok(NULL, ":");
-			continue;
-		}
-
-		/* Vérifie si le fichier est exécutable */
-		if (is_executable(full_path))
-		{
-			/* Alloue et copie le chemin complet vers une nouvelle chaîne */
-			char *result = strdup(full_path);
-			free(path_copy);
-			return (result);
-			/*return (strdup(full_path));*/
+			return strdup(full_path); /* Alloue et retourne le chemin complet */
 		}
 
 		dir = strtok(NULL, ":");
+
+		/* Vérifie si le fichier est exécutable */
+		/*if (is_executable(full_path))*/
+		/*{*/
+			/* Alloue et copie le chemin complet vers une nouvelle chaîne */
+		/*		char *result = strdup(full_path);*/
+		/*	free(path_copy);*/
+		/*	return (result);*/
+		/*	return (strdup(full_path));*/
+		/*}*/
+
+		/*dir = strtok(NULL, ":");*/
 	}
 
 	free(path_copy);

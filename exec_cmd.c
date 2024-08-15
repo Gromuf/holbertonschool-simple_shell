@@ -44,7 +44,8 @@ void exec_cmd(char *cmd)
 	/*int argc = 0;*/
 	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
-	char *executable_path = NULL;
+	/*char *executable_path = NULL;*/
+	char *path_copy;
 	char *cmd_copy = NULL;
 
 	/* Make a copy of the command string*/
@@ -102,13 +103,16 @@ void exec_cmd(char *cmd)
 		if (argv[0][0] == '/')
 		{
 			/* Commande avec chemin absolu*/
-			executable_path = strdup(argv[0]);
+			/*executable_path = strdup(argv[0]);*/
+			path_copy = strdup(argv[0]);
 		}
 		else
 		{
 			/* Trouver le chemin complet de la commande */
-			executable_path = which(argv[0]);
-			if (executable_path == NULL)
+			/*executable_path = which(argv[0]);*/
+			/*if (executable_path == NULL)*/
+			path_copy = which(argv[0]);
+			if (path_copy == NULL)
 			{
 				fprintf(stderr, "Command not found: %s\n", argv[0]);
 				free(cmd_copy);
@@ -122,7 +126,8 @@ void exec_cmd(char *cmd)
 		{
 			perror("fork");
 			/*perror("Fork failed");*/
-			free(executable_path);
+			/*free(executable_path);*/
+			free (path_copy);
 			free(cmd_copy);
 			return;
 		}
@@ -131,13 +136,15 @@ void exec_cmd(char *cmd)
 		{
 			/*Child process*/
 			/*if (execve(argv[0], argv, NULL) == -1)*/
-			if (execve(executable_path, argv, NULL) == -1)
+			/*if (execve(executable_path, argv, NULL) == -1)*/
+			if (execve(path_copy, argv, NULL) == -1)
 			{
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 				/*perror(argv[0]);*/
 				perror("execve");
-				free(executable_path);
+				/*free(executable_path);*/
+				free (path_copy);
 				free(cmd_copy);
 				exit(EXIT_FAILURE);
 				/*_exit(2);  Code d'erreur pour commandes échouées */
@@ -155,16 +162,17 @@ void exec_cmd(char *cmd)
 				if (exit_status != 0)
 				{
 					/* Code d'erreur spécifique pour commandes échouées */
-					fprintf(stderr, "Command failed with exit status %d\n", exit_status);
+					/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
 				}
 			}
 			else
 			{
 				/* Si le processus ne se termine pas normalement */
-				fprintf(stderr, "Command terminated abnormally\n");
+				/*fprintf(stderr, "Command terminated abnormally\n");*/
 			}
 
-			free(executable_path);
+			/*free(executable_path);*/
+			free(path_copy);
 		}
 	}
 

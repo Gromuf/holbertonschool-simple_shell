@@ -43,4 +43,8 @@ extern int should_exit;
 
 /*int main(int argc, char *argv[]);*/
 
+void signal_handler(int signal);
+
+int main(void);
+
 #endif
