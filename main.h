@@ -43,7 +43,9 @@ extern int should_exit;
 
 /*int main(int argc, char *argv[]);*/
 
-void signal_handler(int signal);
+/*void signal_handler(int signal); desactivé pour la tache 5 -> interdit*/
+
+/*char *find_command_path(const char *cmd);*/
 
 int main(void);
 

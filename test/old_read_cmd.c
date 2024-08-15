@@ -12,46 +12,41 @@
  */
 char *read_cmd(void)
 {
-	char *cmd = NULL;
+	char *line = NULL;
 	size_t len = 0;
 	ssize_t read; /*Utilisez ssize_t pour la valeur de retour de getline*/
 
 	/*Affiche le prompt*/
-	/*printf("#cisfun$ ");*/
-	/*fflush(stdout);*/
+	printf("#cisfun$ ");
+	fflush(stdout);
 
 	/*Lit une ligne d'entrée*/
-	read = getline(&cmd, &len, stdin);
+	read = getline(&line, &len, stdin);
 
 	/*Si getline échoue ou si l'utilisateur appuie sur EOF (Ctrl+D)*/
 	if (read == -1)
 	{
-		free(cmd);
-		/*perror("getline read == -1");*/
-		return (NULL); /*Retourne NULL pour indiquer la fin de l'entrée**/
+		free(line);
+		return NULL; /*Retourne NULL pour indiquer la fin de l'entrée**/
 	}
-
-	if (feof(stdin)) /* End of file (Ctrl+D)*/
-	{
-		free(cmd);
-		exit(EXIT_SUCCESS);
-	}
-	/*perror("getline");*/
-	/*free(cmd);*/
-	/*continue;*/
-
-	/* Supprime le caractère de nouvelle ligne, si présent */
-	cmd[_strcspn(cmd, "\n")] = 0;
+		
+		if (feof(stdin)) /* End of file (Ctrl+D)*/
+		{
+			free(line);
+			exit(EXIT_SUCCESS);
+		}
+		perror("getline");
+		free (line);
+		/*continue;*/
+		}
 
 	/*Supprime le caractère de nouvelle ligne, si présent*/
-	/*if (line[read - 1] == '\n')*/
-	/*{*/
-	/*line[read - 1] = '\0';*/
-	/*}*/
+	if (line[read - 1] == '\n')
+	{
+		line[read - 1] = '\0';
+	}
 
-	/*free(line);*/
-
-	return (cmd);
+	return (line);
 }
 
 /*char *read_cmd(void)*/

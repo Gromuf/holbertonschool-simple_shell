@@ -9,26 +9,26 @@
 /**
  * is_executable - Vérifie si un fichier est exécutable.
  *
- * @path: Le chemin de la commande à vérifier.
+ * @path: Le chemin du fichier à vérifier.
  *
  * Description:
- * Cette fonction utilise la fonction `stat` pour vérifier si la commande
+ * Cette fonction utilise la fonction `stat` pour vérifier si le fichier
  * spécifié par `path` existe et s'il est exécutable par l'utilisateur.
  *
  * Return:
- * Retourne 1 si la commande est exécutable, sinon 0.
+ * Retourne 1 si le fichier est exécutable, sinon 0.
  */
-/* Fonction pour vérifier si la commande est exécutable */
+/* Fonction pour vérifier si un fichier est exécutable */
 int is_executable(const char *path)
 {
 	struct stat st;
 
-	/* Vérifie si la commande existe et est exécutable */
+	/* Vérifie si le fichier existe et est exécutable */
 	if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))
 	{
-		return (1); /* La commande est exécutable */
+		return (1); /* Le fichier est exécutable */
 	}
-	return (0); /* La commande n'est pas exécutable */
+	return (0); /* Le fichier n'est pas exécutable */
 }
 
 /**
@@ -70,7 +70,7 @@ char *which(const char *cmd)
 	path_copy = strdup(path_env);
 	if (path_copy == NULL)
 	{
-		/*perror("erreur d'alocation mémoire --> path_copy");*/
+		printf("erreur d'alocation mémoire --> path_copy");
 		return (NULL); /* Erreur d'allocation mémoire */
 	}
 
@@ -95,7 +95,7 @@ char *which(const char *cmd)
 		if (path_len < sizeof(full_path) && is_executable(full_path))
 		{
 			free(path_copy);
-			return (strdup(full_path)); /* Alloue et retourne le chemin complet */
+			return strdup(full_path); /* Alloue et retourne le chemin complet */
 		}
 
 		dir = strtok(NULL, ":");

@@ -2,6 +2,8 @@
 
 int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
 
+#define BUFFER_SIZE 1024
+
 /**
  * main - Entry point of the simple shell program.
  *
@@ -14,15 +16,16 @@ int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
  */
 int main(void)
 {
-	char *cmd = NULL;
+	char *cmd;
+
 	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
 
-	if(setenv("PATH",
+	if (setenv("PATH",
 	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)
 	{
-		perror("setenv");
-		return(EXIT_FAILURE);
+		/*perror("setenv");*/
+		return (EXIT_FAILURE);
 	}
 
 	/*while (1)*/
@@ -33,11 +36,16 @@ int main(void)
 
 		cmd = read_cmd();
 		if (cmd == NULL)
+		{
+			free(cmd);
 			break;
+		}
 
+		/*exec_cmd(cmd);*/
 		exec_multiple_cmd(cmd);
-		free(cmd);
+
 	}
+	free(cmd);
 
 	/* Affiche un message ou non, selon les besoins */
 	/*printf("Exiting shell with code %d\n", should_exit);*/

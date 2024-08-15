@@ -8,6 +8,6 @@
  */
 void display_prompt(void)
 {
-	/*printf("#cisfun$ ");*/
-	/*fflush(stdout);*/
+	printf("#cisfun$ ");
+	fflush(stdout);
 }

@@ -23,22 +23,20 @@ char *read_cmd(void)
 	/*Lit une ligne d'entrée*/
 	read = getline(&cmd, &len, stdin);
 
-	/*Si getline échoue ou si l'utilisateur appuie sur EOF (Ctrl+D)*/
+	/* Si getline échoue */
 	if (read == -1)
 	{
-		free(cmd);
-		/*perror("getline read == -1");*/
-		return (NULL); /*Retourne NULL pour indiquer la fin de l'entrée**/
-	}
+		/* Si EOF ou une autre erreur, libérez la mémoire */
+		if (feof(stdin))
+		{
+			free(cmd);
+			exit(EXIT_SUCCESS); /* Quittez le programme si EOF est rencontré */
+		}
 
-	if (feof(stdin)) /* End of file (Ctrl+D)*/
-	{
+		/*perror("getline");  Affiche l'erreur en cas d'échec de getline */
 		free(cmd);
-		exit(EXIT_SUCCESS);
+		return NULL;
 	}
-	/*perror("getline");*/
-	/*free(cmd);*/
-	/*continue;*/
 
 	/* Supprime le caractère de nouvelle ligne, si présent */
 	cmd[_strcspn(cmd, "\n")] = 0;

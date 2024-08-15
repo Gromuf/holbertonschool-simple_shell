@@ -46,24 +46,20 @@ void exec_cmd(char *cmd)
 	int status; /* ajout pour waitpid exit*/
 	/*char *executable_path = NULL;*/
 	char *path_copy;
-	char *cmd_copy;
+	char *cmd_copy = NULL;
 	/*char *cmd_path = find_command_path(cmd);*/
 
 	/* Make a copy of the command string*/
 	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
 	if (cmd_copy == NULL)
 	{
-		free(cmd_copy);
-		/*free(path_copy);*/
-		/*perror("strdup --> cmd_copy == NULL");*/
+		perror("strdup");
 		return;
 	}
 
 	if (is_empty_cmd(cmd_copy))
 	{
 		free(cmd_copy);
-		/*free(path_copy);*/
-		/*perror("cmd_copy-->is_empty_cmd(cmd_copy)");*/
 		return;
 	}
 
@@ -72,11 +68,11 @@ void exec_cmd(char *cmd)
 
 	/*Tokenize the command*/
 	token = strtok(cmd_copy, " \n");
-	/*while (token!= NULL && argc < 255)*/
-	while (token != NULL)
+	while (token!= NULL && argc < 255)
+	/*while (token != NULL)*/
 	{
-		if (argc <= 256)
-			argv[argc++] = token;
+		/*if (argc < 255)*/
+		argv[argc++] = token;
 		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
 		/*token = strtok(NULL, " \n");*/
@@ -117,8 +113,7 @@ void exec_cmd(char *cmd)
 			/* Trouver le chemin complet de la commande */
 			/*executable_path = which(argv[0]);*/
 			/*if (executable_path == NULL)*/
-			/*path_copy = which(argv[0]);*/
-			path_copy = which(cmd_copy);
+			path_copy = which(argv[0]);
 			/*path_copy = find_command_path(argv[0]);*/
 			if (path_copy == NULL)
 			{
@@ -132,12 +127,11 @@ void exec_cmd(char *cmd)
 		if (pid == -1)
 
 		{
-			/*perror("fork PID == -1");*/
+			perror("fork");
 			/*perror("Fork failed");*/
 			/*free(executable_path);*/
 			free (path_copy);
 			free(cmd_copy);
-			free (cmd);
 			return;
 		}
 
@@ -151,9 +145,9 @@ void exec_cmd(char *cmd)
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 				/*perror(argv[0]);*/
-				/*perror("execve PID == 0");*/
+				perror("execve");
 				/*free(executable_path);*/
-				/*free (path_copy);*/
+				free (path_copy);
 				free(cmd_copy);
 				exit(EXIT_FAILURE);
 				/*_exit(2);  Code d'erreur pour commandes échouées */
@@ -172,19 +166,16 @@ void exec_cmd(char *cmd)
 				{
 					/* Code d'erreur spécifique pour commandes échouées */
 					/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
-					/*perror("if execve PID == 1");*/
 				}
 			}
 			else
 			{
 				/* Si le processus ne se termine pas normalement */
 				/*fprintf(stderr, "Command terminated abnormally\n");*/
-				/*perror("else execve PID == 1");*/
 			}
 
 			/*free(executable_path);*/
 			free(path_copy);
-			/*free (cmd);*/
 		}
 	}
 
