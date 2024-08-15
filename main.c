@@ -37,15 +37,17 @@ int main(void)
 		cmd = read_cmd();
 		if (cmd == NULL)
 		{
-			free(cmd);
+			/*free(cmd);*/
 			break;
 		}
 
 		/*exec_cmd(cmd);*/
 		exec_multiple_cmd(cmd);
 
+		free (cmd);
+
 	}
-	free(cmd);
+	/*free(cmd);*/
 
 	/* Affiche un message ou non, selon les besoins */
 	/*printf("Exiting shell with code %d\n", should_exit);*/
@@ -57,5 +59,6 @@ int main(void)
 	/*return (should_exit ? 2 : 0);*/
 	/*return (should_exit);*/
 
-	return (0); /* Sortir avec code 0 lorsque le shell se termine */
+	/*return (0);  Sortir avec code 0 lorsque le shell se termine */
+	return (should_exit ? 2 : 0);
 }
