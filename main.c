@@ -16,7 +16,7 @@ int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
  */
 int main(void)
 {
-	char *cmd = NULL;
+	char *cmd;
 
 	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
@@ -35,7 +35,7 @@ int main(void)
 			display_prompt();
 
 		cmd = read_cmd();
-		if (cmd == NULL)
+		if (cmd== NULL)
 		{
 			/*free(cmd);*/
 			break;
@@ -62,7 +62,7 @@ int main(void)
 
 	/* Afficher OK à la fin si tout s'est bien passé */
 	printf("OK\n");
-
+	/*free (cmd); cette commande provoque segmentation fault*/
 
 	return (should_exit ? 2 : 0);
 }

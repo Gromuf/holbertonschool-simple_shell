@@ -90,6 +90,7 @@ void exec_cmd(char *cmd)
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;
+			free (path_copy);
 			free(cmd_copy);
 			exit(exit_status);
 		}
@@ -183,12 +184,16 @@ void exec_cmd(char *cmd)
 			}
 
 			/*free(executable_path);*/
-			/*free(path_copy);*/
+			/*free (path_copy);*/
+			/*free (full_path);*/
+			/*free(cmd_copy);*/
 			/*free (cmd);*/
 		}
 	}
 
-	/*free(cmd_copy);*/
+	free(cmd_copy);
+	free (path_copy);
+	/*free (cmd);*/
 
 	return;
 }

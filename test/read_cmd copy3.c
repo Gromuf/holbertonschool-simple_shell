@@ -12,11 +12,9 @@
  */
 char *read_cmd(void)
 {
-	/*char *cmd = NULL;*/
 	char *cmd = NULL;
 	size_t len = 0;
 	ssize_t read; /*Utilisez ssize_t pour la valeur de retour de getline*/
-
 
 	/*Affiche le prompt*/
 	/*printf("#cisfun$ ");*/
@@ -36,8 +34,7 @@ char *read_cmd(void)
 		/*}*/
 
 		/* If EOF or other error, free cmd and return NULL */
-		/*free(cmd);*/
-		/*free(cmd);*/
+		free(cmd);
 		return (NULL);
 	}
 	/*perror("getline");*/
@@ -66,7 +63,6 @@ char *read_cmd(void)
 	/*free (len);*/
 
 	return (cmd);
-
 }
 
 /*char *read_cmd(void)*/
