@@ -10,10 +10,10 @@
  * Return: The length of the initial segment of s1 not containing
  *         any characters from s2.
  */
-size_t _strcspn(const char *s1, const char *s2)
+long unsigned int _strcspn(const char *s1, const char *s2)
 {
-	size_t i;
-	size_t j;
+	long unsigned int i;
+	long unsigned int j;
 
 	for (i = 0; s1[i] != '\0'; i++)
 	{
@@ -23,5 +23,6 @@ size_t _strcspn(const char *s1, const char *s2)
 				return (i);
 		}
 	}
+
 	return (i);
 }

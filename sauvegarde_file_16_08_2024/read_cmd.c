@@ -12,17 +12,23 @@
  */
 char *read_cmd(void)
 {
+	/*char *cmd = NULL;*/
 	char *cmd = NULL;
 	size_t len = 0;
-	ssize_t read;
+	ssize_t read; /*Utilisez ssize_t pour la valeur de retour de getline*/
 
+	/*Lit une ligne d'entrée*/
 	read = getline(&cmd, &len, stdin);
+
+	/*Si getline échoue ou si l'utilisateur appuie sur EOF (Ctrl+D)*/
 	if (read == -1)
 	{
 		free(cmd);
 		return (NULL);
 	}
 
-	cmd[_strcspn(cmd, "\n")] = 0;
+	cmd[_strcspn(cmd, "\n")] = '\0';
+
 	return (cmd);
+
 }

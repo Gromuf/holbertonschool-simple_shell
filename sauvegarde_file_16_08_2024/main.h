@@ -21,7 +21,7 @@ size_t _strcspn(const char *s1, const char *s2);
 
 int is_interactive(void);
 
-void exec_multiple_cmd(char *cmd);
+void exec_multiple_cmd(char *cmds);
 
 int is_empty_cmd(char *cmd);
 
@@ -29,7 +29,7 @@ int _isspace(char c);
 
 extern int should_exit; /* Déclaration de la variable globale exit e */
 
-void exit(int status);
+/*void _exit(int status);*/
 
 /*char *find_executable(const char *cmd);*/
 
@@ -37,9 +37,17 @@ int is_executable(const char *path);
 
 char *which(const char *cmd);
 
-/*extern int should_exit;*/
+extern int should_exit;
 
+int my_setenv(const char *name, const char *value, int overwrite);
+/*int my_snprintf(char *buf, size_t size, const char *fmt, ...);*/
 
 /*int main(int argc, char *argv[]);*/
 
-#endif
+/*void signal_handler(int signal); desactivé pour la tache 5 -> interdit*/
+
+/*char *find_command_path(const char *cmd);*/
+
+int main(void);
+
+#endif /*MAIN_H*/

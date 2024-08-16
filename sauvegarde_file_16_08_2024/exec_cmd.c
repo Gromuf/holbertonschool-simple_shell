@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdlib.h>
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
@@ -37,15 +38,16 @@ int is_empty_cmd(char *cmd)
 void exec_cmd(char *cmd)
 {
 	pid_t pid;
-	char *argv[1024];
-	char *token;
+	char *argv[2048];
+	char *token = NULL;
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
-	/*char *executable_path;*/
+	/*char *executable_path = NULL;*/
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
+	/*char *cmd_path = find_command_path(cmd);*/
 
 	/* Make a copy of the command string*/
 	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
@@ -56,78 +58,73 @@ void exec_cmd(char *cmd)
 		/*perror("strdup --> cmd_copy == NULL");*/
 		return;
 	}
-	if (is_empty_cmd(cmd))
+
+	if (is_empty_cmd(cmd_copy))
 	{
 		free(cmd_copy);
 		free(path_copy);
+		/*perror("cmd_copy-->is_empty_cmd(cmd_copy)");*/
 		return;
 	}
 
 	/* Initialize argc */
 	/*argc = 0;*/
 
+	/*Tokenize the command*/
 	token = strtok(cmd_copy, " \n");
+	/*while (token!= NULL && argc < 255)*/
 	while (token != NULL)
 	{
-		if (argc < 1023)
+		if (argc < 255)
 			argv[argc++] = token;
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
 		/*token = strtok(NULL, " \n");*/
 	}
-		/*argv[i] = NULL;*/
+	/*argv[i] = NULL;*/
 	argv[argc] = NULL;
 
 	if (argv[0] != NULL)
 	{
+		/* Vérifiez si la commande est une commande intégrée*/
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;
+			/*free (path_copy);*/
 			free(cmd_copy);
 			exit(exit_status);
-				/*should_exit = 1;*/
-				/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*Si la commande est "exit", sortir du shell*/
-					/*if (strcmp(argv[0], "exit") == 0)*/
-					/* Si un argument est fourni, utiliser ce code de sortie */
-					/*if (argv[1] != NULL)*/
-					/*{*/
-					/*should_exit = 1;*/
-					/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*int exit_code = atoi(argv[1]);*/
-					/*exit(exit_code);*/
-					/*should_exit = exit_code;*/
-					/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
-					/*}*/
-					/*else*/
-					/*{*/
-					/*should_exit = 0;*/
-					/* Sinon, utiliser le code de sortie 0 */
-					/*exit(EXIT_SUCCESS);*/
-					/*}*/
-					/*return;*/
 		}
+		/*else if (strcmp(argv[0], "env") == 0)*/
+		/*{*/
+		/*	extern char **environ;*/
+		/*	char **env;*/
+		/*	for (env = environ; *env != NULL; ++env)*/
+		/*	{*/
+			/*printf("%s\n", *env);*/
+		/*	}*/
+		/*	free(cmd_copy);*/
+		/*	return; Sortir de la fonction après avoir affiché les variables d'environnement*/
+		/*}*/
 
-				/* Vérifiez si le chemin est absolu*/
+		/* Vérifiez si le chemin est absolu*/
 		if (argv[0][0] == '/')
 		{
-				/* Commande avec chemin absolu*/
-				/*executable_path = strdup(argv[0]);*/
+			/* Commande avec chemin absolu*/
+			/*executable_path = strdup(argv[0]);*/
 			path_copy = strdup(argv[0]);
 		}
 		else
 		{
-				/* Trouver le chemin complet de la commande */
-				/*executable_path = which(argv[0]);*/
-				/*if (executable_path == NULL)*/
-				/*path_copy = which(argv[0]);*/
+			/* Trouver le chemin complet de la commande */
+			/*executable_path = which(argv[0]);*/
+			/*if (executable_path == NULL)*/
+			/*path_copy = which(argv[0]);*/
 			path_copy = which(cmd_copy);
-				/*path_copy = find_command_path(argv[0]);*/
-
+			/*path_copy = find_command_path(argv[0]);*/
 			if (path_copy == NULL)
 			{
-					/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-					/*free(cmd_copy);*/
+				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
+				/*free(cmd_copy);*/
 				return;
 			}
 
@@ -136,73 +133,67 @@ void exec_cmd(char *cmd)
 		if (pid == -1)
 
 		{
-			perror("Fork failed");
-			/*free(copy_path);*/
+			/*perror("fork PID == -1");*/
+			/*perror("Fork failed");*/
+			/*free(executable_path);*/
+			/*free (path_copy);*/
+			/*free(cmd_copy);*/
+			/*free (cmd);*/
 			return;
 		}
 
 		if (pid == 0)
 		{
+			/*Child process*/
 			/*if (execve(argv[0], argv, NULL) == -1)*/
+			/*if (execve(executable_path, argv, NULL) == -1)*/
 			if (execve(path_copy, argv, NULL) == -1)
 			{
-					/*perror("Error");*/
-					/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				perror("./shell");
-				/*free(path_copy);*/
+				/*perror("Error");*/
+				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
+				/*perror(argv[0]);*/
+				/*perror("execve PID == 0");*/
+				/*free(executable_path);*/
+				/*free (path_copy);*/
+				/*free(cmd_copy);*/
 				exit(EXIT_FAILURE);
-					/*_exit(2);  Code d'erreur pour commandes échouées */
+				/*_exit(2);  Code d'erreur pour commandes échouées */
 			}
+			/*free(executable_path);*/
 		}
 		else
-			/*wait(NULL);*/
+		/*wait(NULL);*/
 		{
+			/*Parent process*/
 			waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
 			if (WIFEXITED(status))
 			{
 				int exit_status = WEXITSTATUS(status);
 				if (exit_status != 0)
 				{
-						/* Code d'erreur spécifique pour commandes échouées */
-						/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
+					/* Code d'erreur spécifique pour commandes échouées */
+					/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
+					/*perror("if execve PID == 1");*/
 				}
 			}
 			else
 			{
-					/* Si le processus ne se termine pas normalement */
-					/*fprintf(stderr, "Command terminated abnormally\n");*/
+				/* Si le processus ne se termine pas normalement */
+				/*fprintf(stderr, "Command terminated abnormally\n");*/
+				/*perror("else execve PID == 1");*/
 			}
 
+			/*free(executable_path);*/
+			/*free (path_copy);*/
+			/*free (full_path);*/
+			/*free(cmd_copy);*/
+			/*free (cmd);*/
 		}
-
-
 	}
 
-	free(path_copy);
 	free(cmd_copy);
+	free (path_copy);
+	/*free (cmd);*/
 
 	return;
-
-}
-
-/**
- * exec_multiple_cmd - Executes multiple commands from a string.
- * @cmd: The string containing commands separated by newlines.
- *
- * This function splits the input string into individual commands
- * and executes each command using exec_cmd. Each command is
- * processed in a separate child process.
- */
-void exec_multiple_cmd(char *cmd)
-{
-	char *line;
-	const char delim[2] = "\n";
-
-	line = strtok(cmd, delim);
-
-	while (line != NULL)
-	{
-		exec_cmd(line);
-		line = strtok(NULL, delim);
-	}
 }
