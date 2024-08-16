@@ -28,8 +28,8 @@ int main(void)
 	/*	return (EXIT_FAILURE);*/
 	/*}*/
 
-	/*while (1)*/
-	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
+	while (1)
+	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
@@ -61,8 +61,9 @@ int main(void)
 	/*return (0);  Sortir avec code 0 lorsque le shell se termine */
 
 	/* Afficher OK à la fin si tout s'est bien passé */
-	printf("OK\n");
+	perror("OK\n");
 	/*free (cmd); cette commande provoque segmentation fault*/
 
-	return (should_exit ? 2 : 0);
+	/*return (should_exit ? 2 : 0);*/
+	return (0);
 }
