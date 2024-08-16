@@ -21,12 +21,12 @@ int main(void)
 	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
 
-	if (setenv("PATH",
-	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)
-	{
-		/*perror("setenv");*/
-		return (EXIT_FAILURE);
-	}
+	/*if (my_setenv("PATH",*/
+	/*"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)*/
+	/*{*/
+		/*perror("my_setenv");*/
+	/*	return (EXIT_FAILURE);*/
+	/*}*/
 
 	/*while (1)*/
 	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/

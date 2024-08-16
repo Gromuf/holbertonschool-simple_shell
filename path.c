@@ -80,19 +80,21 @@ char *which(const char *cmd)
 		/* Construit le chemin complet vers le fichier */
 		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
 
-		/*if (access(full_path, X_OK) == 0)*/
-		/*{*/
-		/*	free(path_copy);*/
-		/*	return strdup(full_path);*/
-		/*}*/
+		if (access(full_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return strdup(full_path);
+		}
 
-		/*if (path_len >= sizeof(full_path))*/
-		/*{*/
-		/*	 Chemin trop long, passe au répertoire suivant */
-		/*		dir = strtok(NULL, ":");*/
-		/*		continue;*/
-		/*}*/
-		if (path_len < sizeof(full_path) && is_executable(full_path))
+		if (path_len >= sizeof(full_path))
+		{
+			/*Chemin trop long, passe au répertoire suivant */
+			dir = strtok(NULL, ":");
+			continue;
+		}
+
+		/*if (path_len < sizeof(full_path) && is_executable(full_path))*/
+		if (is_executable(full_path))
 		{
 			free(path_copy);
 			return (strdup(full_path)); /* Alloue et retourne le chemin complet */

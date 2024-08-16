@@ -26,15 +26,16 @@ char *read_cmd(void)
 	/*Si getline échoue ou si l'utilisateur appuie sur EOF (Ctrl+D)*/
 	if (read == -1)
 	{
-		free(cmd);
-		/*perror("getline read == -1");*/
-		return (NULL); /*Retourne NULL pour indiquer la fin de l'entrée**/
-	}
+		/* Handle end-of-file (EOF) or other errors */
+		if (cmd == NULL)
+		{
+			/* If cmd is NULL, there was an error, so return NULL */
+			return NULL;
+		}
 
-	if (feof(stdin)) /* End of file (Ctrl+D)*/
-	{
+		/* If EOF or other error, free cmd and return NULL */
 		free(cmd);
-		exit(EXIT_SUCCESS);
+		return NULL;
 	}
 	/*perror("getline");*/
 	/*free(cmd);*/
