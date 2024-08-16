@@ -61,7 +61,7 @@ int main(void)
 	/*return (0);  Sortir avec code 0 lorsque le shell se termine */
 
 	/* Afficher OK à la fin si tout s'est bien passé */
-	perror("OK\n");
+	perror("OK");
 	/*free (cmd); cette commande provoque segmentation fault*/
 
 	/*return (should_exit ? 2 : 0);*/
