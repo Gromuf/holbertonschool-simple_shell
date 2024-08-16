@@ -1,6 +1,6 @@
 #include "main.h"
 
-int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
+/*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
 /*#define BUFFER_SIZE 1024*/
 
@@ -30,8 +30,8 @@ int main(void)
 	/*	return (EXIT_FAILURE);*/
 	/*}*/
 
-	/*while (1)*/
-	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
+	while (1)
+	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
@@ -43,10 +43,10 @@ int main(void)
 			break;
 		}
 
-		if (strcmp(cmd, "exit") == 0) /* Gérer la commande "exit" */
+		if (strcmp(cmd, "exit") == 0)  /*Gérer la commande "exit" */
 		{
-			free(cmd); /* Libérer la mémoire avant de quitter */
-			should_exit = 1;
+			free(cmd);  /*Libérer la mémoire avant de quitter */
+			/*should_exit = 1;*/
 			break;
 		}
 
@@ -72,7 +72,7 @@ int main(void)
 	/*printf("OK");*/
 	/*free (cmd); cette commande provoque segmentation fault*/
 
-	return (should_exit ? 2 : 0);
+	/*return (should_exit ? 2 : 0);*/
 
-	/*return (0);*/
+	return (0);
 }
