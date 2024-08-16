@@ -6,4 +6,6 @@ valgrind --leak-check=full --show-leak-kinds=all ./hsh
 
 valgrind --leak-check=full --show-reachable=yes ./hsh
 
+valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./hsh
+
 make re pour recompiler ou make si fichier n'esxiste pas

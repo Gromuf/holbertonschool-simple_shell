@@ -21,15 +21,17 @@ int main(void)
 	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
 
-	/*if (my_setenv("PATH",*/
+	/*if (setenv("PATH",*/
 	/*"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)*/
+
+	/*if (setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)*/
 	/*{*/
-	/*perror("my_setenv");*/
+	/*	perror("setenv");*/
 	/*	return (EXIT_FAILURE);*/
 	/*}*/
 
-	while (1)
-	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
+	/*while (1)*/
+	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
@@ -43,7 +45,6 @@ int main(void)
 
 		/*exec_cmd(cmd);*/
 		exec_multiple_cmd(cmd);
-
 		free(cmd);
 	}
 	/*free(cmd);*/
@@ -61,7 +62,7 @@ int main(void)
 	/*return (0);  Sortir avec code 0 lorsque le shell se termine */
 
 	/* Afficher OK à la fin si tout s'est bien passé */
-	perror("OK");
+	/*printf("OK");*/
 	/*free (cmd); cette commande provoque segmentation fault*/
 
 	/*return (should_exit ? 2 : 0);*/

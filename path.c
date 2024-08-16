@@ -56,8 +56,8 @@ char *which(const char *cmd)
 	char *dir;
 	char full_path[2048]; /* Taille maximale du chemin complet */
 	/*FILE *file;*/
-	/*long unsigned int path_len;*/
-	size_t path_len;
+	long unsigned int path_len;
+	/*size_t path_len;*/
 
 	/* Récupère la variable d'environnement PATH */
 	path_env = getenv("PATH");
@@ -93,8 +93,8 @@ char *which(const char *cmd)
 			continue;
 		}
 
-		/*if (path_len < sizeof(full_path) && is_executable(full_path))*/
-		if (is_executable(full_path))
+		if (path_len < sizeof(full_path) && is_executable(full_path))
+		/*if (is_executable(full_path))*/
 		{
 			/*free(path_copy);*/
 			return (strdup(full_path)); /* Alloue et retourne le chemin complet */
@@ -115,6 +115,6 @@ char *which(const char *cmd)
 		/*dir = strtok(NULL, ":");*/
 	}
 
-	free(path_copy);
+	free(cmd);
 	return (NULL); /* Fichier non trouvé dans PATH */
 }

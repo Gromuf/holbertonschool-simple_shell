@@ -37,7 +37,7 @@ char *read_cmd(void)
 
 		/* If EOF or other error, free cmd and return NULL */
 		/*free(cmd);*/
-		/*free(cmd);*/
+		free(cmd);
 		return (NULL);
 	}
 	/*perror("getline");*/
@@ -45,7 +45,7 @@ char *read_cmd(void)
 	/*continue;*/
 
 	/* Supprime le caractère de nouvelle ligne, si présent */
-	/*cmd[_strcspn(cmd, "\n")] = 0;*/
+	cmd[_strcspn(cmd, "\n")] = '\0';
 
 	/*Supprime le caractère de nouvelle ligne, si présent*/
 	/*if (line[read - 1] == '\n')*/
@@ -54,10 +54,10 @@ char *read_cmd(void)
 	/*}*/
 
 	/* Supprime le caractère de nouvelle ligne, si présent */
-	if (read > 0 && cmd[read - 1] == '\n')
-	{
-		cmd[read - 1] = '\0';
-	}
+	/*if (read > 0 && cmd[read - 1] == '\n')*/
+	/*{*/
+		/*cmd[read - 1] = '\0';*/
+	/*}*/
 	/*else*/
 		/*free (cmd);*/
 

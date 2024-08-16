@@ -39,7 +39,7 @@ char *which(const char *cmd);
 
 extern int should_exit;
 
-/*int my_setenv(const char *name, const char *value, int overwrite);*/
+int my_setenv(const char *name, const char *value, int overwrite);
 /*int my_snprintf(char *buf, size_t size, const char *fmt, ...);*/
 
 /*int main(int argc, char *argv[]);*/
@@ -50,4 +50,4 @@ extern int should_exit;
 
 int main(void);
 
-#endif
+#endif /*MAIN_H*/

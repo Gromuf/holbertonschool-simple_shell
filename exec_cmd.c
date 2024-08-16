@@ -38,15 +38,15 @@ int is_empty_cmd(char *cmd)
 void exec_cmd(char *cmd)
 {
 	pid_t pid;
-	char *argv[256];
-	char *token = 0;
+	char *argv[2048];
+	char *token = NULL;
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
 	/*char *executable_path = NULL;*/
-	char *path_copy = 0;
-	char *cmd_copy = 0;
+	char *path_copy = NULL;
+	char *cmd_copy = NULL;
 	/*char *cmd_path = find_command_path(cmd);*/
 
 	/* Make a copy of the command string*/
@@ -54,7 +54,7 @@ void exec_cmd(char *cmd)
 	if (cmd_copy == NULL)
 	{
 		free(cmd_copy);
-		free(path_copy);
+		/*free (path_copy);*/
 		/*perror("strdup --> cmd_copy == NULL");*/
 		return;
 	}
@@ -75,7 +75,7 @@ void exec_cmd(char *cmd)
 	/*while (token!= NULL && argc < 255)*/
 	while (token != NULL)
 	{
-		if (argc <= 256)
+		if (argc < 255)
 			argv[argc++] = token;
 		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
@@ -90,21 +90,21 @@ void exec_cmd(char *cmd)
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;
-			free (path_copy);
+			/*free (path_copy);*/
 			free(cmd_copy);
 			exit(exit_status);
 		}
-		else if (strcmp(argv[0], "env") == 0)
-		{
-			extern char **environ;
-			char **env;
-			for (env = environ; *env != NULL; ++env)
-			{
-				/*printf("%s\n", *env);*/
-			}
-			free(cmd_copy);
-			return; /* Sortir de la fonction après avoir affiché les variables d'environnement*/
-		}
+		/*else if (strcmp(argv[0], "env") == 0)*/
+		/*{*/
+		/*	extern char **environ;*/
+		/*	char **env;*/
+		/*	for (env = environ; *env != NULL; ++env)*/
+		/*	{*/
+			/*printf("%s\n", *env);*/
+		/*	}*/
+		/*	free(cmd_copy);*/
+		/*	return; Sortir de la fonction après avoir affiché les variables d'environnement*/
+		/*}*/
 
 		/* Vérifiez si le chemin est absolu*/
 		if (argv[0][0] == '/')
