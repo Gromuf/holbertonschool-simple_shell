@@ -96,7 +96,7 @@ char *which(const char *cmd)
 		/*if (path_len < sizeof(full_path) && is_executable(full_path))*/
 		if (is_executable(full_path))
 		{
-			free(path_copy);
+			/*free(path_copy);*/
 			return (strdup(full_path)); /* Alloue et retourne le chemin complet */
 		}
 

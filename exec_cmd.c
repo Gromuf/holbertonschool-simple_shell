@@ -39,14 +39,14 @@ void exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[256];
-	char *token;
+	char *token = 0;
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
 	int status; /* ajout pour waitpid exit*/
 	/*char *executable_path = NULL;*/
-	char *path_copy;
-	char *cmd_copy;
+	char *path_copy = 0;
+	char *cmd_copy = 0;
 	/*char *cmd_path = find_command_path(cmd);*/
 
 	/* Make a copy of the command string*/
@@ -54,7 +54,7 @@ void exec_cmd(char *cmd)
 	if (cmd_copy == NULL)
 	{
 		free(cmd_copy);
-		/*free(path_copy);*/
+		free(path_copy);
 		/*perror("strdup --> cmd_copy == NULL");*/
 		return;
 	}
@@ -62,7 +62,7 @@ void exec_cmd(char *cmd)
 	if (is_empty_cmd(cmd_copy))
 	{
 		free(cmd_copy);
-		/*free(path_copy);*/
+		free(path_copy);
 		/*perror("cmd_copy-->is_empty_cmd(cmd_copy)");*/
 		return;
 	}
@@ -99,7 +99,7 @@ void exec_cmd(char *cmd)
 			char **env;
 			for (env = environ; *env != NULL; ++env)
 			{
-				printf("%s\n", *env);
+				/*printf("%s\n", *env);*/
 			}
 			free(cmd_copy);
 			return; /* Sortir de la fonction après avoir affiché les variables d'environnement*/
@@ -123,7 +123,7 @@ void exec_cmd(char *cmd)
 			if (path_copy == NULL)
 			{
 				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-				free(cmd_copy);
+				/*free(cmd_copy);*/
 				return;
 			}
 
@@ -135,9 +135,9 @@ void exec_cmd(char *cmd)
 			/*perror("fork PID == -1");*/
 			/*perror("Fork failed");*/
 			/*free(executable_path);*/
-			free (path_copy);
-			free(cmd_copy);
-			free (cmd);
+			/*free (path_copy);*/
+			/*free(cmd_copy);*/
+			/*free (cmd);*/
 			return;
 		}
 
@@ -154,7 +154,7 @@ void exec_cmd(char *cmd)
 				/*perror("execve PID == 0");*/
 				/*free(executable_path);*/
 				/*free (path_copy);*/
-				free(cmd_copy);
+				/*free(cmd_copy);*/
 				exit(EXIT_FAILURE);
 				/*_exit(2);  Code d'erreur pour commandes échouées */
 			}
@@ -183,12 +183,12 @@ void exec_cmd(char *cmd)
 			}
 
 			/*free(executable_path);*/
-			free(path_copy);
+			/*free(path_copy);*/
 			/*free (cmd);*/
 		}
 	}
 
-	free(cmd_copy);
+	/*free(cmd_copy);*/
 
 	return;
 }

@@ -22,4 +22,6 @@
 			exec_cmd(line);
 			line = strtok(NULL, delim);
 		}
+		/*free (line);*/
+		/*free (cmds);*/
 	}
