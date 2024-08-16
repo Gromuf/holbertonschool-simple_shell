@@ -37,9 +37,16 @@ int main(void)
 			display_prompt();
 
 		cmd = read_cmd();
-		if (cmd== NULL)
+		if (cmd == NULL)
 		{
 			/*free(cmd);*/
+			break;
+		}
+
+		if (strcmp(cmd, "exit") == 0) /* Gérer la commande "exit" */
+		{
+			free(cmd); /* Libérer la mémoire avant de quitter */
+			should_exit = 1;
 			break;
 		}
 
@@ -65,6 +72,7 @@ int main(void)
 	/*printf("OK");*/
 	/*free (cmd); cette commande provoque segmentation fault*/
 
-	/*return (should_exit ? 2 : 0);*/
-	return (0);
+	return (should_exit ? 2 : 0);
+
+	/*return (0);*/
 }

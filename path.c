@@ -115,6 +115,6 @@ char *which(const char *cmd)
 		/*dir = strtok(NULL, ":");*/
 	}
 
-	free(cmd);
+	/*free(cmd_copy);*/
 	return (NULL); /* Fichier non trouvé dans PATH */
 }
