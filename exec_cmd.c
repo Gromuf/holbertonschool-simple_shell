@@ -42,7 +42,7 @@ void exec_cmd(char *cmd)
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
-	int status; /* ajout pour waitpid exit*/
+	int status = 0; /* ajout pour waitpid exit*/
 	/*char *executable_path;*/
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
@@ -137,6 +137,7 @@ void exec_cmd(char *cmd)
 
 		{
 			perror("Fork failed");
+			free (cmd);
 			/*free(copy_path);*/
 			return;
 		}
@@ -148,11 +149,14 @@ void exec_cmd(char *cmd)
 			{
 					/*perror("Error");*/
 					/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				perror("./shell");
+				/*perror("./shell");*/
 				/*free(path_copy);*/
 				exit(EXIT_FAILURE);
 					/*_exit(2);  Code d'erreur pour commandes échouées */
+				/*status = 2;   Set the exit status code*/
+				/*return;*/
 			}
+			/*return (status);*/
 		}
 		else
 			/*wait(NULL);*/

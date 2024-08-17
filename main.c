@@ -1,6 +1,6 @@
 #include "main.h"
 
-int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
+/*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
 /**
  * main - Entry point of the simple shell program.
@@ -27,9 +27,9 @@ int main(void)
 		if (cmd == NULL)
 			break;
 
-		if (strcmp(cmd, "exit") == 0)  /*Gérer la commande "exit" */
-		{
-			free(cmd);  /*Libérer la mémoire avant de quitter */
+		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3)) /*Gérer la commande "exit" */
+		{ /*3 est le code ASCII pour Ctrl+C*/
+			free(cmd); /*Libérer la mémoire avant de quitter */
 			/*should_exit = 1;*/
 			break;
 		}
