@@ -5,6 +5,28 @@
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell */
 
 /**
+ * exec_multiple_cmd - Executes multiple commands from a string.
+ * @cmd: The string containing commands separated by newlines.
+ *
+ * This function splits the input string into individual commands
+ * and executes each command using exec_cmd. Each command is
+ * processed in a separate child process.
+ */
+void exec_multiple_cmd(char *cmd)
+{
+	char *line;
+	const char delim[2] = "\n";
+
+	line = strtok(cmd, delim);
+
+	while (line != NULL)
+	{
+		exec_cmd(line);
+		line = strtok(NULL, delim);
+	}
+}
+
+/**
  * is_empty_cmd - Checks if a command string is empty or contains only
  * whitespace.
  *
@@ -51,7 +73,7 @@ void exec_cmd(char *cmd)
 	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
 	if (cmd_copy == NULL)
 	{
-		free(cmd_copy);
+		/*free(cmd_copy);*/
 		/*free (path_copy);*/
 		/*perror("strdup --> cmd_copy == NULL");*/
 		return;
@@ -59,7 +81,7 @@ void exec_cmd(char *cmd)
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
-		free(path_copy);
+		/*free(path_copy);*/
 		return;
 	}
 
@@ -71,7 +93,7 @@ void exec_cmd(char *cmd)
 	{
 		if (argc < 1023)
 			argv[argc++] = token;
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
 		/*token = strtok(NULL, " \n");*/
 	}
@@ -138,7 +160,7 @@ void exec_cmd(char *cmd)
 		{
 			perror("Fork failed");
 			free (cmd);
-			/*free(copy_path);*/
+			free(path_copy);
 			return;
 		}
 
@@ -147,10 +169,11 @@ void exec_cmd(char *cmd)
 			/*if (execve(argv[0], argv, NULL) == -1)*/
 			if (execve(path_copy, argv, NULL) == -1)
 			{
-					/*perror("Error");*/
-					/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
+				/*perror("Error");*/
+				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 				/*perror("./shell");*/
-				/*free(path_copy);*/
+				free(cmd_copy);
+				free(path_copy);
 				exit(EXIT_FAILURE);
 					/*_exit(2);  Code d'erreur pour commandes échouées */
 				/*status = 2;   Set the exit status code*/
@@ -176,37 +199,14 @@ void exec_cmd(char *cmd)
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
 			}
-
 		}
-
-
+		
+		free(path_copy);
 	}
 
-	free(path_copy);
+	/*free(path_copy);*/
 	free(cmd_copy);
 
-	return;
+	/*return;*/
 
-}
-
-/**
- * exec_multiple_cmd - Executes multiple commands from a string.
- * @cmd: The string containing commands separated by newlines.
- *
- * This function splits the input string into individual commands
- * and executes each command using exec_cmd. Each command is
- * processed in a separate child process.
- */
-void exec_multiple_cmd(char *cmd)
-{
-	char *line;
-	const char delim[2] = "\n";
-
-	line = strtok(cmd, delim);
-
-	while (line != NULL)
-	{
-		exec_cmd(line);
-		line = strtok(NULL, delim);
-	}
 }

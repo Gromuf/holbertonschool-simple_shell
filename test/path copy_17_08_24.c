@@ -49,23 +49,53 @@ int is_executable(const char *path)
  * l'appelant.
  */
 /* Fonction qui imite le comportement de 'which' */
-char *which(char *cmd)
+char *which(const char *cmd)
 {
-	char *path = getenv("PATH");
-	char *token;
-	char full_path[1024];
+	char *path_env;
+	char *path_copy;
+	char *dir;
+	char full_path[1024]; /* Taille maximale du chemin complet */
+	/*FILE *file;*/
+	long unsigned int path_len;
 
-	if (path == NULL)
-		return NULL;
-
-	token = strtok(path, ":");
-	while (token != NULL)
+	/* Récupère la variable d'environnement PATH */
+	path_env = getenv("PATH");
+	if (path_env == NULL)
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
-		if (access(full_path, X_OK) == 0)
-			return strdup(full_path);
-		token = strtok(NULL, ":");
+		return (NULL); /* La variable d'environnement PATH n'est pas définie */
 	}
 
-	return NULL;
+	/* Crée une copie de la variable PATH pour la manipulation */
+	path_copy = strdup(path_env);
+	if (path_copy == NULL)
+	{
+		return (NULL); /* Erreur d'allocation mémoire */
+	}
+
+	dir = strtok(path_copy, ":");
+	while (dir != NULL)
+	{
+		/* Construit le chemin complet vers le fichier */
+		path_len = snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
+		if (path_len >= sizeof(full_path))
+		{
+			/* Chemin trop long, passe au répertoire suivant */
+			dir = strtok(NULL, ":");
+			continue;
+		}
+
+		/* Vérifie si le fichier est exécutable */
+		if (is_executable(full_path))
+		{
+			/* Alloue et copie le chemin complet vers une nouvelle chaîne */
+			char *result = strdup(full_path);
+			free(path_copy);
+			return result;
+		}
+
+		dir = strtok(NULL, ":");
+	}
+
+	free(path_copy);
+	return (NULL); /* Fichier non trouvé dans PATH */
 }
