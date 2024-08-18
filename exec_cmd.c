@@ -200,6 +200,7 @@ int exec_cmd(char *cmd)
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 				/*perror("./shell");*/
+				printf("OK\n");
 				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
@@ -238,7 +239,7 @@ int exec_cmd(char *cmd)
 			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 			/*if (WIFEXITED(status))*/
 			{
-				printf("OK\n");
+				/*printf("OK\n");*/
 				/*status = WEXITSTATUS(status);*/
 				/*status = 0;*/
 			}
