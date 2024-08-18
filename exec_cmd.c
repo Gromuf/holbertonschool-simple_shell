@@ -167,6 +167,7 @@ int exec_cmd(char *cmd)
 			{
 				fprintf(stderr, "%s: command not found\n", argv[0]);
 				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
+				/*status(2);*/
 				free(cmd_copy);
 				return (127);  /* Retour pour commande non trouvée*/
 			}
@@ -194,7 +195,7 @@ int exec_cmd(char *cmd)
 				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
-				exit(2); /* Retourne 2 en cas d'erreur d'exécution*/
+				exit(0); /* Retourne 2 en cas d'erreur d'exécution*/
 				/*exit(EXIT_FAILURE);*/
 					/*_exit(2);  Code d'erreur pour commandes échouées */
 				/*status = 2;   Set the exit status code*/
@@ -231,12 +232,12 @@ int exec_cmd(char *cmd)
 			{
 				printf("OK\n");
 				/*status = WEXITSTATUS(status);*/
-				/*status = 2;*/
+				/*status = 0;*/
 			}
-			/*else if (WIFSIGNALED(status))*/
-			/*{*/
-				/*status = 128 + WTERMSIG(status);*/
-			/*}*/
+			else if (WIFSIGNALED(status))
+			{
+				status = 128 + WTERMSIG(status);
+			}
 		}
 
 		free(path_copy);
