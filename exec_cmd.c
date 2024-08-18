@@ -72,26 +72,15 @@ int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
-	char *token;
-	/*int i = 0;*/
-	/*int argc = 0;*/
+	char *token = strtok(cmd, " \n");
 	int argc = 0;
-	int status = 0; /*ajout pour waitpid exit*/
-	static int last_exit_status = 0; /*pour  WEXITSTATUS(status);*/
-	/*char *executable_path;*/
+	int status;
+	static int last_exit_status = 0;
 	char *path_copy = NULL;
-	char *cmd_copy = NULL;
-	char relative_path[1024];
-	/* Prepare arguments for execve */
-	/*char *argv[] = {"/usr/bin/env", "echo", "OK", NULL};*/
-	/*char *envp[] = {NULL};   Use default environment*/
+	char *cmd_copy = strdup(cmd);
 
-	/* Make a copy of the command string*/
-	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
-	if (cmd_copy == NULL)
+	if (!cmd_copy)
 	{
-		/*free(cmd_copy);*/
-		/*free (path_copy);*/
 		perror("strdup");
 		return (EXIT_FAILURE);
 	}
@@ -99,92 +88,39 @@ int exec_cmd(char *cmd)
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
-		/*free(path_copy);*/
 		return (0);
 	}
 
-	/* Initialize argc */
-	/*argc = 0;*/
-	token = strtok(cmd_copy, " \n");
 	while (token != NULL && argc < 1023)
-	/*while (token != NULL)*/
 	{
-		/*if (argc < 1023)*/
 		argv[argc++] = token;
 		token = strtok(NULL, " \n");
-		/*argv[i++] = token;*/
-		/*token = strtok(NULL, " \n");*/
 	}
-		/*argv[i] = NULL;*/
 	argv[argc] = NULL;
 
 	if (argv[0] != NULL)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			/*int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;*/
 			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;
 			free(cmd_copy);
 			exit(exit_status);
-				/*should_exit = 1;*/
-				/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*Si la commande est "exit", sortir du shell*/
-					/*if (strcmp(argv[0], "exit") == 0)*/
-					/* Si un argument est fourni, utiliser ce code de sortie */
-					/*if (argv[1] != NULL)*/
-					/*{*/
-					/*should_exit = 1;*/
-					/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*int exit_code = atoi(argv[1]);*/
-					/*exit(exit_code);*/
-					/*should_exit = exit_code;*/
-					/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
-					/*}*/
-					/*else*/
-					/*{*/
-					/*should_exit = 0;*/
-					/* Sinon, utiliser le code de sortie 0 */
-					/*exit(EXIT_SUCCESS);*/
-					/*}*/
-					/*return;*/
-			/*return;*/
 		}
 
-				/* Vérifiez si le chemin est absolu*/
-		if (argv[0][0] == '/')
+		path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
+		if (!path_copy)
 		{
-				/* Commande avec chemin absolu*/
-				/*executable_path = strdup(argv[0]);*/
-			path_copy = strdup(argv[0]);
+			path_copy = construct_relative_path(argv[0]);
 		}
-		else
+
+		if (!path_copy || !is_executable(path_copy))
 		{
-				/* Trouver le chemin complet de la commande */
-				/*executable_path = which(argv[0]);*/
-				/*if (executable_path == NULL)*/
-				/*path_copy = which(argv[0]);*/
-			/*path_copy = which(cmd_copy);*/
-			path_copy = which(argv[0]);
-				/*path_copy = find_command_path(argv[0]);*/
-			if (path_copy == NULL)
-			{
-				/*Try executing the file in parent directories*/
-				snprintf(relative_path, sizeof(relative_path), ".././../%s", argv[0]);
-				path_copy = strdup(relative_path);
-				if (access(path_copy, X_OK) != 0)
-				{
-					fprintf(stderr, "%s: command not found\n", argv[0]);
-					/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-					/*status(2);*/
-					free(cmd_copy);
-					/*free(path_copy); --> erreur*/
-					return (127);  /* Retour pour commande non trouvée*/
-				}
-			}
-
+			handle_command_not_found(argv[0]);
+			free(cmd_copy);
+			/*free(path_copy);*/
+			return (127);
 		}
 
-		/*Create a child process to execute the command*/
 		pid = fork();
 		if (pid == -1)
 		{
@@ -194,80 +130,36 @@ int exec_cmd(char *cmd)
 			return (EXIT_FAILURE);
 		}
 
-		if (pid == 0) /* Processus enfant */
+		if (pid == 0) /* Child process */
 		{
-			/* Execute /usr/bin/env with echo "OK" */
-			/*execve(argv[0], argv, envp);*/
-			/*execve(path_copy, argv, envp);*/
-
-			/*if (execve(argv[0], argv, envp) == -1)*/
-			/*if (execve(argv[0], argv, NULL) == -1)*/
 			if (execve(path_copy, argv, NULL) == -1)
-			/*if (execve(path_copy, argv, envp) == -1)*/
 			{
-				/*perror("Error");*/
-				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				/*perror("./shell");*/
-					/* Create a fixed command to execute */
-				/*argv[0] = "/bin/echo";   Path to the echo command */
-				/*argv[1] = "OK";         Argument to echo */
-				/*argv[2] = NULL;*/
-				/*printf("OK\n");*/
 				perror(path_copy);
-				/*perror(argv[0]);*/
 				free(cmd_copy);
 				free(path_copy);
-				/*exit(0);  Retourne 2 en cas d'erreur d'exécution*/
 				exit(EXIT_FAILURE);
-					/*_exit(2);  Code d'erreur pour commandes échouées */
-				/*status = 2;   Set the exit status code*/
-				/*return;*/
 			}
-			/*return (status);*/
 		}
-		else /* Processus parent */
-			/*wait(NULL);*/
+		else /* Parent process */
 		{
-			/*waitpid(pid, &status, 0);  Attendre que le processus fils se termine*/
-			/*if (WIFEXITED(status))*/
-			/*{*/
-				/*int exit_status = WEXITSTATUS(status);*/
-				/*last_exit_status = WEXITSTATUS(status);*/
-				/*if (exit_status != 0)*/
-				/*{*/
-						/* Code d'erreur spécifique pour commandes échouées */
-						/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
-				/*}*/
-			/*}*/
-			/*else*/
-			/*{*/
-					/* Si le processus ne se termine pas normalement */
-					/*fprintf(stderr, "Command terminated abnormally\n");*/
-			/*}*/
 			do
 			{
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-			/*if (WIFEXITED(status))*/
+			if (WIFEXITED(status))
 			{
-				/*printf("OK\n");*/
-				/*status = WEXITSTATUS(status);*/
-				/*status = 0;*/
+				last_exit_status = WEXITSTATUS(status);
 			}
 			else if (WIFSIGNALED(status))
 			{
-				status = 128 + WTERMSIG(status);
+				last_exit_status = 128 + WTERMSIG(status);
 			}
 		}
 
 		free(path_copy);
 	}
 
-	/*free(path_copy);*/
 	free(cmd_copy);
-	/*return;*/
-	/*return (WEXITSTATUS(status));*/
 	return (status);
 }

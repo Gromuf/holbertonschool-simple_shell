@@ -44,6 +44,12 @@ char *_strtok_r(char *str, const char *delim, char **saveptr);
 
 int exec_cmd(char *cmd);
 
+int file_exists(const char *path);
+
+void handle_command_not_found(char *cmd);
+
+char *construct_relative_path(const char *cmd);
+
 /*char *which(char *cmd)*/
 
 /*extern int should_exit;*/

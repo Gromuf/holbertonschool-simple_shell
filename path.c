@@ -7,6 +7,59 @@
 #define PATH_DELIM ':'
 
 /**
+ * file_exists - Checks if a file exists at the given path.
+ * @path: The path to the file.
+ *
+ * This function uses the `stat` system call to check whether
+ * a file exists at the specified path. It returns 1 if the
+ * file exists, and 0 if it does not exist.
+ *
+ * Return: 1 if the file exists, 0 otherwise.
+ */
+int file_exists(const char *path)
+{
+	struct stat buffer;
+	return (stat(path, &buffer) == 0);
+}
+
+/**
+ * handle_command_not_found - Handles the "command not found" error.
+ * @cmd: The command that was not found.
+ *
+ * This function is called when a command cannot be executed
+ * because it is not found in the system's PATH or in the
+ * specified location. It prints an appropriate error message
+ * to the standard error output, indicating that the command
+ * was not found.
+ *
+ * Return: void.
+ */
+void handle_command_not_found(char *cmd)
+{
+	fprintf(stderr, "%s: command not found\n", cmd);
+}
+
+/**
+ * construct_relative_path - Constructs a relative path for a given filename.
+ * @filename: The name of the file for which to construct the relative path.
+ *
+ * This function creates a relative path string by prepending the necessary
+ * directory levels (e.g., `../`) to the given filename. The resulting path
+ * allows access to a file located in the parent or higher-level directories.
+ * The caller is responsible for freeing the memory allocated for the returned
+ * string.
+ *
+ * Return: A pointer to the dynamically allocated string containing the
+ *         relative path, or NULL if memory allocation fails.
+ */
+char *construct_relative_path(const char *filename)
+{
+	static char path[1024];
+	snprintf(path, sizeof(path), "../../%s", filename);
+	return path;
+}
+
+/**
  * is_executable - Vérifie si un fichier est exécutable.
  *
  * @path: Le chemin du fichier à vérifier.
