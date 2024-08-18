@@ -164,6 +164,7 @@ int exec_cmd(char *cmd)
 				/*path_copy = find_command_path(argv[0]);*/
 			if (path_copy == NULL)
 			{
+				fprintf(stderr, "%s: command not found\n", argv[0]);
 				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
 				free(cmd_copy);
 				return (127);  /* Retour pour commande non trouvée*/
@@ -171,6 +172,7 @@ int exec_cmd(char *cmd)
 
 		}
 
+		/*Create a child process to execute the command*/
 		pid = fork();
 		if (pid == -1)
 		{
@@ -187,8 +189,8 @@ int exec_cmd(char *cmd)
 			{
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				perror("./shell");
-				/*perror(argv[0]);*/
+				/*perror("./shell");*/
+				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
 				exit(EXIT_FAILURE);
@@ -217,7 +219,8 @@ int exec_cmd(char *cmd)
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
 			/*}*/
-			do {
+			do
+			{
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
