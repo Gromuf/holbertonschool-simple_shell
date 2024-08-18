@@ -81,6 +81,7 @@ int exec_cmd(char *cmd)
 	/*char *executable_path;*/
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
+	char relative_path[1024];
 	/* Prepare arguments for execve */
 	/*char *argv[] = {"/usr/bin/env", "echo", "OK", NULL};*/
 	/*char *envp[] = {NULL};   Use default environment*/
@@ -167,11 +168,18 @@ int exec_cmd(char *cmd)
 				/*path_copy = find_command_path(argv[0]);*/
 			if (path_copy == NULL)
 			{
-				fprintf(stderr, "%s: command not found\n", argv[0]);
-				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-				/*status(2);*/
-				free(cmd_copy);
-				return (127);  /* Retour pour commande non trouvée*/
+				/*Try executing the file in parent directories*/
+				snprintf(relative_path, sizeof(relative_path), ".././../%s", argv[0]);
+				path_copy = strdup(relative_path);
+				if (access(path_copy, X_OK) != 0)
+				{
+					fprintf(stderr, "%s: command not found\n", argv[0]);
+					/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
+					/*status(2);*/
+					free(cmd_copy);
+					/*free(path_copy); --> erreur*/
+					return (127);  /* Retour pour commande non trouvée*/
+				}
 			}
 
 		}
