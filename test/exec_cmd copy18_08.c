@@ -217,8 +217,8 @@ int exec_cmd(char *cmd)
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
 			/*}*/
-			do
-			{
+			 do
+			 {
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
