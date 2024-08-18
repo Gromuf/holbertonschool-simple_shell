@@ -226,7 +226,7 @@ int exec_cmd(char *cmd)
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 2)
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 			/*if (WIFEXITED(status))*/
 			{
 				printf("OK\n");
