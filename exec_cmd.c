@@ -193,7 +193,8 @@ int exec_cmd(char *cmd)
 				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
-				exit(EXIT_FAILURE);
+				exit(2);
+				/*exit(EXIT_FAILURE);*/
 					/*_exit(2);  Code d'erreur pour commandes échouées */
 				/*status = 2;   Set the exit status code*/
 				/*return;*/
