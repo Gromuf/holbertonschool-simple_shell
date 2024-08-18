@@ -165,7 +165,7 @@ int exec_cmd(char *cmd)
 			if (path_copy == NULL)
 			{
 				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-				/*free(cmd_copy);*/
+				free(cmd_copy);
 				return (127);  /* Retour pour commande non trouvée*/
 			}
 
