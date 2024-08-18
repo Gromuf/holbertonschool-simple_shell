@@ -75,7 +75,7 @@ int exec_cmd(char *cmd)
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
-	int status = 0; /*ajout pour waitpid exit*/
+	int status = 2; /*ajout pour waitpid exit*/
 	static int last_exit_status = 0; /*pour  WEXITSTATUS(status);*/
 	/*char *executable_path;*/
 	char *path_copy = NULL;
@@ -226,7 +226,7 @@ int exec_cmd(char *cmd)
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 2)
 			/*if (WIFEXITED(status))*/
 			{
 				printf("OK\n");
