@@ -231,12 +231,12 @@ int exec_cmd(char *cmd)
 			{
 				printf("OK\n");
 				/*status = WEXITSTATUS(status);*/
-				status = 2;
+				/*status = 2;*/
 			}
-			else if (WIFSIGNALED(status))
-			{
-				status = 128 + WTERMSIG(status);
-			}
+			/*else if (WIFSIGNALED(status))*/
+			/*{*/
+				/*status = 128 + WTERMSIG(status);*/
+			/*}*/
 		}
 
 		free(path_copy);
