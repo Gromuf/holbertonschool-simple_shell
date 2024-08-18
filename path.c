@@ -64,7 +64,7 @@ char *which(const char *cmd)
 	{
 		if (strncmp(*env, "PATH=", 5) == 0)
 		{
-			/*path = *env + 5;   Obtenir le chemin après "PATH="*/
+			path = *env + 5;  /* Obtenir le chemin après "PATH="*/
 			break;
 		}
 	}
