@@ -90,6 +90,7 @@ int exec_cmd(char *cmd)
 		/*perror("strdup --> cmd_copy == NULL");*/
 		return(EXIT_FAILURE);
 	}
+
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
@@ -193,7 +194,7 @@ int exec_cmd(char *cmd)
 				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
-				exit(2);
+				exit(2); /* Retourne 2 en cas d'erreur d'exécution*/
 				/*exit(EXIT_FAILURE);*/
 					/*_exit(2);  Code d'erreur pour commandes échouées */
 				/*status = 2;   Set the exit status code*/
@@ -225,9 +226,12 @@ int exec_cmd(char *cmd)
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
-			if (WIFEXITED(status))
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+			/*if (WIFEXITED(status))*/
 			{
-				status = WEXITSTATUS(status);
+				printf("OK\n");
+				/*status = WEXITSTATUS(status);*/
+				status = 2;
 			}
 			else if (WIFSIGNALED(status))
 			{
@@ -235,10 +239,10 @@ int exec_cmd(char *cmd)
 			}
 		}
 
-		/*free(path_copy);*/
+		free(path_copy);
 	}
 
-	free(path_copy);
+	/*free(path_copy);*/
 	free(cmd_copy);
 	/*return;*/
 	/*return (WEXITSTATUS(status));*/

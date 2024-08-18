@@ -89,8 +89,10 @@ char *which(const char *cmd)
 		 /* Construct the full path to the command */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
 
+		/* Vérifie si la commande existe et est exécutable */
+		if (is_executable(full_path))
 		/* Check if the command exists and is executable */
-		if (access(full_path, X_OK) == 0)
+		/*if (access(full_path, X_OK) == 0)*/
 			{
 				free(path_copy);
 				return (strdup(full_path)); /*Return the full path of the cmd*/
