@@ -234,10 +234,10 @@ int exec_cmd(char *cmd)
 			}
 		}
 
-		free(path_copy);
+		/*free(path_copy);*/
 	}
 
-	/*free(path_copy);*/
+	free(path_copy);
 	free(cmd_copy);
 	/*return;*/
 	/*return (WEXITSTATUS(status));*/
