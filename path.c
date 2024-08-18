@@ -26,9 +26,9 @@ int is_executable(const char *path)
 	/* Vérifie si le fichier existe et est exécutable */
 	if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))
 	{
-		return 1; /* Le fichier est exécutable */
+		return (1); /* Le fichier est exécutable */
 	}
-	return 0; /* Le fichier n'est pas exécutable */
+	return (0); /* Le fichier n'est pas exécutable */
 }
 
 /**
@@ -51,16 +51,27 @@ int is_executable(const char *path)
 /* Fonction qui imite le comportement de 'which' */
 char *which(const char *cmd)
 {
+	extern char **environ;  /* Déclaration de la variable globale environ*/
 	char *path;
 	char *token;
 	char *path_copy;
 	char full_path[1024];
+	char **env;
 
-	path = getenv("PATH");
+	/*path = getenv("PATH");*/
+
+	/* Cherche la variable PATH dans environ*/
+	for (env = environ; *env != NULL; env++)
 	{
+		if (strncmp(*env, "PATH=", 5) == 0)
+		{
+			path = *env + 5;  /* Obtenir le chemin après "PATH="*/
+			break;
+		}
+	}
+
 	if (path == NULL)
 		return (NULL); /*Retourne NULL si PATH n'est pas défini*/
-	}
 
 	/*token = strtok(path, ":");*/
 	/*while (token != NULL)*/
@@ -88,6 +99,6 @@ char *which(const char *cmd)
 		token = strtok(NULL, ":");
 	}
 
-			free(path_copy);
-			return (NULL); /* Return NULL if the command is not found */
+	free(path_copy);
+	return (NULL); /* Return NULL if the command is not found */
 }

@@ -217,10 +217,18 @@ int exec_cmd(char *cmd)
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
 			/*}*/
-			do
-			{
+			do {
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+
+			if (WIFEXITED(status))
+			{
+				status = WEXITSTATUS(status);
+			}
+			else if (WIFSIGNALED(status))
+			{
+				status = 128 + WTERMSIG(status);
+			}
 		}
 
 		free(path_copy);
@@ -230,4 +238,5 @@ int exec_cmd(char *cmd)
 	free(cmd_copy);
 	/*return;*/
 	return (WEXITSTATUS(status));
+	return (status);
 }
