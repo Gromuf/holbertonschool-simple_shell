@@ -175,7 +175,7 @@ int exec_cmd(char *cmd)
 		if (pid == -1)
 		{
 			perror("Fork failed");
-			/*free(cmd_copy);*/
+			free(cmd_copy);
 			free(path_copy);
 			return (EXIT_FAILURE);
 		}
@@ -238,5 +238,5 @@ int exec_cmd(char *cmd)
 	free(cmd_copy);
 	/*return;*/
 	return (WEXITSTATUS(status));
-	return (status);
+	/*return (status);*/
 }
