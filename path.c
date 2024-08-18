@@ -51,7 +51,7 @@ int is_executable(const char *path)
 char *which(const char *cmd)
 {
 	extern char **environ;  /* Déclaration de la variable globale environ*/
-	char *path;
+	char *path = NULL;
 	char *token;
 	char *path_copy;
 	char full_path[1024];

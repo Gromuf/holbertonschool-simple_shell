@@ -30,7 +30,8 @@ void exec_multiple_cmd(char *cmd)
 
 	while (line != NULL)
 	{
-		exec_cmd(line);
+		if (!is_empty_cmd(line))
+			exec_cmd(line);
 		line = _strtok_r(NULL, delim, &saveptr);
 	}
 }
@@ -70,7 +71,7 @@ int is_empty_cmd(char *cmd)
 int exec_cmd(char *cmd)
 {
 	pid_t pid;
-	/*char *argv[1024];*/
+	char *argv[1024];
 	char *token;
 	/*int i = 0;*/
 	/*int argc = 0;*/
@@ -81,8 +82,8 @@ int exec_cmd(char *cmd)
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
 	/* Prepare arguments for execve */
-	char *argv[] = {"/usr/bin/env", "echo", "OK", NULL};
-	char *envp[] = {NULL};  /* Use default environment*/
+	/*char *argv[] = {"/usr/bin/env", "echo", "OK", NULL};*/
+	/*char *envp[] = {NULL};   Use default environment*/
 
 	/* Make a copy of the command string*/
 	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
@@ -90,22 +91,20 @@ int exec_cmd(char *cmd)
 	{
 		/*free(cmd_copy);*/
 		/*free (path_copy);*/
-		/*perror("strdup --> cmd_copy == NULL");*/
-		return(EXIT_FAILURE);
+		perror("strdup");
+		return (EXIT_FAILURE);
 	}
 
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
 		/*free(path_copy);*/
-		return(0);
+		return (0);
 	}
 
 	/* Initialize argc */
 	/*argc = 0;*/
-
 	token = strtok(cmd_copy, " \n");
-
 	while (token != NULL && argc < 1023)
 	/*while (token != NULL)*/
 	{
@@ -184,7 +183,7 @@ int exec_cmd(char *cmd)
 			perror("Fork failed");
 			free(cmd_copy);
 			free(path_copy);
-			return(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 
 		if (pid == 0) /* Processus enfant */
@@ -193,15 +192,21 @@ int exec_cmd(char *cmd)
 			/*execve(argv[0], argv, envp);*/
 			/*execve(path_copy, argv, envp);*/
 
+			/*if (execve(argv[0], argv, envp) == -1)*/
 			/*if (execve(argv[0], argv, NULL) == -1)*/
-			/*if (execve(path_copy, argv, NULL) == -1)*/
-			if (execve(path_copy, argv, envp) == -1)
+			if (execve(path_copy, argv, NULL) == -1)
+			/*if (execve(path_copy, argv, envp) == -1)*/
 			{
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
 				/*perror("./shell");*/
-				printf("OK\n");
-				perror(argv[0]);
+					/* Create a fixed command to execute */
+				/*argv[0] = "/bin/echo";   Path to the echo command */
+				/*argv[1] = "OK";         Argument to echo */
+				/*argv[2] = NULL;*/
+				/*printf("OK\n");*/
+				perror(path_copy);
+				/*perror(argv[0]);*/
 				free(cmd_copy);
 				free(path_copy);
 				/*exit(0);  Retourne 2 en cas d'erreur d'exécution*/
@@ -256,5 +261,5 @@ int exec_cmd(char *cmd)
 	free(cmd_copy);
 	/*return;*/
 	/*return (WEXITSTATUS(status));*/
-	return(status);
+	return (status);
 }
