@@ -37,16 +37,15 @@ int is_executable(const char *path)
  * @cmd: Le nom du fichier à rechercher.
  *
  * Description:
- * Cette fonction recherche le fichier spécifié par `filename` dans les
- * répertoires listés dans la variable d'environnement `PATH`. Elle construit
- * le chemin complet pour chaque répertoire et vérifie si le fichier est
- * exécutable en utilisant la fonction `is_executable`.
+ * Cette fonction recherche le fichier spécifié par `cmd` dans les répertoires listés
+ * dans la variable d'environnement `PATH`. Pour chaque répertoire dans `PATH`, elle
+ * construit le chemin complet vers le fichier et vérifie si le fichier est exécutable
+ * en utilisant la fonction `is_executable`.
  *
  * Return:
- * Retourne un pointeur vers une chaîne de caractères contenant le chemin
- * complet du fichier si trouvé, sinon retourne NULL.
- * La chaîne de caractères allouée dynamiquement doit être libérée par
- * l'appelant.
+ * Retourne un pointeur vers une chaîne de caractères contenant le chemin complet
+ * du fichier si le fichier est trouvé et exécutable. Sinon, retourne NULL. La chaîne
+ * de caractères allouée dynamiquement doit être libérée par l'appelant.
  */
 /* Fonction qui imite le comportement de 'which' */
 char *which(const char *cmd)
