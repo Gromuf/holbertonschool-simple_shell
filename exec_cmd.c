@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <stddef.h>
+
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
@@ -17,18 +19,19 @@
  * and executes each command using exec_cmd. Each command is
  * processed in a separate child process.
  */
+/*void exec_multiple_cmd(char *cmd)*/
 void exec_multiple_cmd(char *cmd)
 {
 	char *line;
 	const char delim[2] = "\n";
 	char *saveptr;
 
-	line = strtok_r(cmd, delim, &saveptr);
+	line = _strtok_r(cmd, delim, &saveptr);
 
 	while (line != NULL)
 	{
 		exec_cmd(line);
-		line = strtok_r(NULL, delim, &saveptr);
+		line = _strtok_r(NULL, delim, &saveptr);
 	}
 }
 
@@ -63,7 +66,8 @@ int is_empty_cmd(char *cmd)
  * printed. The parent process waits for the child process to finish
  * execution.
  */
-void exec_cmd(char *cmd)
+/*void exec_cmd(char *cmd)*/
+int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
@@ -84,13 +88,13 @@ void exec_cmd(char *cmd)
 		/*free(cmd_copy);*/
 		/*free (path_copy);*/
 		/*perror("strdup --> cmd_copy == NULL");*/
-		return;
+		return(EXIT_FAILURE);
 	}
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
 		/*free(path_copy);*/
-		return;
+		return (0);
 	}
 
 	/* Initialize argc */
@@ -139,7 +143,7 @@ void exec_cmd(char *cmd)
 					/*exit(EXIT_SUCCESS);*/
 					/*}*/
 					/*return;*/
-			return;
+			/*return;*/
 		}
 
 				/* Vérifiez si le chemin est absolu*/
@@ -162,7 +166,7 @@ void exec_cmd(char *cmd)
 			{
 				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
 				/*free(cmd_copy);*/
-				return;
+				return (127);  /* Retour pour commande non trouvée*/
 			}
 
 		}
@@ -173,7 +177,7 @@ void exec_cmd(char *cmd)
 			perror("Fork failed");
 			/*free(cmd_copy);*/
 			free(path_copy);
-			return;
+			return (EXIT_FAILURE);
 		}
 
 		if (pid == 0) /* Processus enfant */
@@ -197,11 +201,11 @@ void exec_cmd(char *cmd)
 		else /* Processus parent */
 			/*wait(NULL);*/
 		{
-			waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
-			if (WIFEXITED(status))
-			{
+			/*waitpid(pid, &status, 0);  Attendre que le processus fils se termine*/
+			/*if (WIFEXITED(status))*/
+			/*{*/
 				/*int exit_status = WEXITSTATUS(status);*/
-				last_exit_status = WEXITSTATUS(status);
+				/*last_exit_status = WEXITSTATUS(status);*/
 				/*if (exit_status != 0)*/
 				/*{*/
 						/* Code d'erreur spécifique pour commandes échouées */
@@ -212,7 +216,11 @@ void exec_cmd(char *cmd)
 			/*{*/
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
-			}
+			/*}*/
+			 do
+			 {
+				waitpid(pid, &status, WUNTRACED);
+			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 
 		free(path_copy);
@@ -221,4 +229,5 @@ void exec_cmd(char *cmd)
 	/*free(path_copy);*/
 	free(cmd_copy);
 	/*return;*/
+	return (WEXITSTATUS(status));
 }

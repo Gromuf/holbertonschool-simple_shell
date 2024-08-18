@@ -15,7 +15,7 @@ void display_prompt(void);
 
 char *read_cmd(void);
 
-void exec_cmd(char *cmd);
+/*void exec_cmd(char *cmd);*/
 
 size_t _strcspn(const char *s1, const char *s2);
 
@@ -39,6 +39,10 @@ int is_executable(const char *path);
 char *which(const char *cmd);
 
 int _isspace(int c);
+
+char *_strtok_r(char *str, const char *delim, char **saveptr);
+
+int exec_cmd(char *cmd);
 
 /*char *which(char *cmd)*/
 

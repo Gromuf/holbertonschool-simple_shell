@@ -1,3 +1,5 @@
+#include "main.h"
+
 /**
  * _isspace - Checks if a character is a whitespace character.
  *
