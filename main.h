@@ -25,7 +25,8 @@ void exec_multiple_cmd(char *cmd);
 
 int is_empty_cmd(char *cmd);
 
-int _isspace(char c);
+/*int _isspace(char c);*/
+int _isspace(int c);
 
 extern int should_exit; /* Déclaration de la variable globale exit e */
 
@@ -36,6 +37,10 @@ void exit(int status);
 int is_executable(const char *path);
 
 char *which(const char *cmd);
+
+int _isspace(int c);
+
+/*char *which(char *cmd)*/
 
 /*extern int should_exit;*/
 

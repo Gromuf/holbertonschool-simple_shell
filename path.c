@@ -49,23 +49,45 @@ int is_executable(const char *path)
  * l'appelant.
  */
 /* Fonction qui imite le comportement de 'which' */
-char *which(char *cmd)
+char *which(const char *cmd)
 {
-	char *path = getenv("PATH");
+	char *path;
 	char *token;
+	char *path_copy;
 	char full_path[1024];
 
+	path = getenv("PATH");
+	{
 	if (path == NULL)
-		return NULL;
+		return (NULL); /*Retourne NULL si PATH n'est pas défini*/
+	}
 
-	token = strtok(path, ":");
+	/*token = strtok(path, ":");*/
+	/*while (token != NULL)*/
+	/*{*/
+	/* Duplicate the PATH environment variable */
+	path_copy = strdup(path);
+	if (path_copy == NULL)
+	{
+		perror("strdup");
+		return (NULL);
+	}
+
+	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
+		 /* Construct the full path to the command */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
+
+		/* Check if the command exists and is executable */
 		if (access(full_path, X_OK) == 0)
-			return strdup(full_path);
+			{
+				free(path_copy);
+				return (strdup(full_path)); /*Return the full path of the cmd*/
+			}
 		token = strtok(NULL, ":");
 	}
 
-	return NULL;
+			free(path_copy);
+			return (NULL); /* Return NULL if the command is not found */
 }

@@ -1,4 +1,9 @@
 #include "main.h"
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/wait.h>
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
 /*extern int should_exit;  Variable globale pour control la sortie du shell*/
@@ -16,13 +21,14 @@ void exec_multiple_cmd(char *cmd)
 {
 	char *line;
 	const char delim[2] = "\n";
+	char *saveptr;
 
-	line = strtok(cmd, delim);
+	line = strtok_r(cmd, delim, &saveptr);
 
 	while (line != NULL)
 	{
 		exec_cmd(line);
-		line = strtok(NULL, delim);
+		line = strtok_r(NULL, delim, &saveptr);
 	}
 }
 
@@ -39,7 +45,8 @@ int is_empty_cmd(char *cmd)
 {
 	while (*cmd)
 	{
-		if (_isspace((unsigned char)*cmd) == 0)
+		/*if (_isspace((unsigned char)*cmd) == 0)*/
+		if (!_isspace((unsigned char)*cmd))
 			return (0);
 		cmd++;
 	}
@@ -64,7 +71,8 @@ void exec_cmd(char *cmd)
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
-	int status = 0; /* ajout pour waitpid exit*/
+	int status = 0; /*ajout pour waitpid exit*/
+	static int last_exit_status = 0; /*pour  WEXITSTATUS(status);*/
 	/*char *executable_path;*/
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
@@ -89,10 +97,12 @@ void exec_cmd(char *cmd)
 	/*argc = 0;*/
 
 	token = strtok(cmd_copy, " \n");
-	while (token != NULL)
+
+	while (token != NULL && argc < 1023)
+	/*while (token != NULL)*/
 	{
-		if (argc < 1023)
-			argv[argc++] = token;
+		/*if (argc < 1023)*/
+		argv[argc++] = token;
 		token = strtok(NULL, " \n");
 		/*argv[i++] = token;*/
 		/*token = strtok(NULL, " \n");*/
@@ -104,7 +114,8 @@ void exec_cmd(char *cmd)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;
+			/*int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;*/
+			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;
 			free(cmd_copy);
 			exit(exit_status);
 				/*should_exit = 1;*/
@@ -128,6 +139,7 @@ void exec_cmd(char *cmd)
 					/*exit(EXIT_SUCCESS);*/
 					/*}*/
 					/*return;*/
+			return;
 		}
 
 				/* Vérifiez si le chemin est absolu*/
@@ -143,35 +155,36 @@ void exec_cmd(char *cmd)
 				/*executable_path = which(argv[0]);*/
 				/*if (executable_path == NULL)*/
 				/*path_copy = which(argv[0]);*/
-			path_copy = which(cmd_copy);
+			/*path_copy = which(cmd_copy);*/
+			path_copy = which(argv[0]);
 				/*path_copy = find_command_path(argv[0]);*/
-
 			if (path_copy == NULL)
 			{
-					/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-					/*free(cmd_copy);*/
+				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
+				/*free(cmd_copy);*/
 				return;
 			}
 
 		}
+
 		pid = fork();
 		if (pid == -1)
-
 		{
 			perror("Fork failed");
-			free (cmd);
+			/*free(cmd_copy);*/
 			free(path_copy);
 			return;
 		}
 
-		if (pid == 0)
+		if (pid == 0) /* Processus enfant */
 		{
 			/*if (execve(argv[0], argv, NULL) == -1)*/
 			if (execve(path_copy, argv, NULL) == -1)
 			{
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				/*perror("./shell");*/
+				perror("./shell");
+				/*perror(argv[0]);*/
 				free(cmd_copy);
 				free(path_copy);
 				exit(EXIT_FAILURE);
@@ -181,32 +194,31 @@ void exec_cmd(char *cmd)
 			}
 			/*return (status);*/
 		}
-		else
+		else /* Processus parent */
 			/*wait(NULL);*/
 		{
 			waitpid(pid, &status, 0); /* Attendre que le processus fils se termine*/
 			if (WIFEXITED(status))
 			{
-				int exit_status = WEXITSTATUS(status);
-				if (exit_status != 0)
-				{
+				/*int exit_status = WEXITSTATUS(status);*/
+				last_exit_status = WEXITSTATUS(status);
+				/*if (exit_status != 0)*/
+				/*{*/
 						/* Code d'erreur spécifique pour commandes échouées */
 						/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
-				}
-			}
-			else
-			{
+				/*}*/
+			/*}*/
+			/*else*/
+			/*{*/
 					/* Si le processus ne se termine pas normalement */
 					/*fprintf(stderr, "Command terminated abnormally\n");*/
 			}
 		}
-		
+
 		free(path_copy);
 	}
 
 	/*free(path_copy);*/
 	free(cmd_copy);
-
 	/*return;*/
-
 }
