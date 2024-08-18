@@ -70,16 +70,19 @@ int is_empty_cmd(char *cmd)
 int exec_cmd(char *cmd)
 {
 	pid_t pid;
-	char *argv[1024];
+	/*char *argv[1024];*/
 	char *token;
 	/*int i = 0;*/
 	/*int argc = 0;*/
 	int argc = 0;
-	int status = 2; /*ajout pour waitpid exit*/
+	int status = 0; /*ajout pour waitpid exit*/
 	static int last_exit_status = 0; /*pour  WEXITSTATUS(status);*/
 	/*char *executable_path;*/
 	char *path_copy = NULL;
 	char *cmd_copy = NULL;
+	/* Prepare arguments for execve */
+	char *argv[] = {"/usr/bin/env", "echo", "OK", NULL};
+	char *envp[] = {NULL};  /* Use default environment*/
 
 	/* Make a copy of the command string*/
 	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
@@ -95,7 +98,7 @@ int exec_cmd(char *cmd)
 	{
 		free(cmd_copy);
 		/*free(path_copy);*/
-		return (0);
+		return(0);
 	}
 
 	/* Initialize argc */
@@ -181,13 +184,18 @@ int exec_cmd(char *cmd)
 			perror("Fork failed");
 			free(cmd_copy);
 			free(path_copy);
-			return (EXIT_FAILURE);
+			return(EXIT_FAILURE);
 		}
 
 		if (pid == 0) /* Processus enfant */
 		{
+			/* Execute /usr/bin/env with echo "OK" */
+			/*execve(argv[0], argv, envp);*/
+			/*execve(path_copy, argv, envp);*/
+
 			/*if (execve(argv[0], argv, NULL) == -1)*/
-			if (execve(path_copy, argv, NULL) == -1)
+			/*if (execve(path_copy, argv, NULL) == -1)*/
+			if (execve(path_copy, argv, envp) == -1)
 			{
 				/*perror("Error");*/
 				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
@@ -195,8 +203,8 @@ int exec_cmd(char *cmd)
 				perror(argv[0]);
 				free(cmd_copy);
 				free(path_copy);
-				exit(0); /* Retourne 2 en cas d'erreur d'exécution*/
-				/*exit(EXIT_FAILURE);*/
+				/*exit(0);  Retourne 2 en cas d'erreur d'exécution*/
+				exit(EXIT_FAILURE);
 					/*_exit(2);  Code d'erreur pour commandes échouées */
 				/*status = 2;   Set the exit status code*/
 				/*return;*/
@@ -247,5 +255,5 @@ int exec_cmd(char *cmd)
 	free(cmd_copy);
 	/*return;*/
 	/*return (WEXITSTATUS(status));*/
-	return (status);
+	return(status);
 }
