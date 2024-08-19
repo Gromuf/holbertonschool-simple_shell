@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define PATH1_DELIM ':'
+/*#define PATH1_DELIM ':'*/
 #define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"  /* Remplacez ceci par une valeur fixe de PATH pour la simulation*/
 
 /**
@@ -109,6 +109,7 @@ char *which(const char *cmd)
 {
 	char full_path[1024];
 	char *cwd;
+	char *path1 = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"; /*Example PATH*/
 	char *path_copy;
 	char *token;
 
@@ -117,11 +118,12 @@ char *which(const char *cmd)
 	if (cwd == NULL)
 	{
 		perror("getcwd");
-		return NULL;
+		return (NULL);
 	}
 
 	/* Construisez le chemin complet pour la commande dans le répertoire actuel */
 	snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
+	/*printf("Checking in current directory: %s\n", full_path);*/
 
 	/* Vérifiez si le fichier est exécutable dans le répertoire courant */
 	if (is_executable(full_path))
@@ -133,11 +135,12 @@ char *which(const char *cmd)
 	free(cwd);
 
 	/* Utilisation d'un PATH simulé */
-	path_copy = strdup(PATH1);
+	path_copy = strdup(path1);
+	/*path_copy = strdup(PATH1);*/
 	if (path_copy == NULL)
 	{
 		perror("strdup");
-		return NULL;
+		return (NULL);
 	}
 
 	/* Découpez PATH simulé en répertoires */
@@ -146,6 +149,7 @@ char *which(const char *cmd)
 	{
 		/* Construisez le chemin complet pour la commande dans chaque répertoire de PATH */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
+		/*printf("Checking in PATH directory: %s\n", full_path);*/
 
 		/* Vérifiez si la commande existe et est exécutable */
 		if (is_executable(full_path))
@@ -157,5 +161,5 @@ char *which(const char *cmd)
 	}
 
 	free(path_copy);
-	return NULL; /* Retourne NULL si la commande n'est pas trouvée */
+	return (NULL); /* Retourne NULL si la commande n'est pas trouvée */
 }
