@@ -122,8 +122,9 @@ char *which(const char *cmd)
 		}
 	}
 
-	if (path == NULL)
-		return (NULL); /*Retourne NULL si PATH n'est pas défini*/
+	/*if (path == NULL)*/
+	if (path == NULL || *path == '\0')
+		return (NULL); /*Retourne NULL si PATH n'est pas défini ou est vide */
 
 	/*token = strtok(path, ":");*/
 	/*while (token != NULL)*/
