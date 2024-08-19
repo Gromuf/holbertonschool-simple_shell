@@ -120,7 +120,7 @@ int exec_cmd(char *cmd)
 			free(cmd_copy);
 			/*free(path_copy);*/
 			/*return (status);*/
-			return (0);
+			exit(127);
 		}
 
 		pid = fork();
@@ -144,19 +144,35 @@ int exec_cmd(char *cmd)
 		}
 		else /* Parent process */
 		{
-			do
-			{
-				waitpid(pid, &status, WUNTRACED);
-			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+			/*Attendre que le processus enfant se termine*/
+			while (waitpid(pid, &status, WUNTRACED) > 0 && !WIFEXITED(status) && !WIFSIGNALED(status)) {
+			/*On peut ajouter un traitement supplémentaire ici si nécessaire*/
+		}
 
+			/* Traiter le statut de sortie du processus enfant*/
 			if (WIFEXITED(status))
 			{
-				last_exit_status = WEXITSTATUS(status);
+				printf("Le processus s'est terminé avec le code de sortie %d\n", WEXITSTATUS(status));
+
 			}
 			else if (WIFSIGNALED(status))
 			{
-				last_exit_status = 128 + WTERMSIG(status);
+				printf("Le processus a été terminé par le signal %d\n", WTERMSIG(status));
 			}
+
+			/*do*/
+			/*{*/
+			/*	waitpid(pid, &status, WUNTRACED);*/
+			/*} while (!WIFEXITED(status) && !WIFSIGNALED(status));*/
+
+			/*if (WIFEXITED(status))*/
+			/*{*/
+			/*	last_exit_status = WEXITSTATUS(status);*/
+			/*}*/
+			/*else if (WIFSIGNALED(status))*/
+			/*{*/
+			/*	last_exit_status = 128 + WTERMSIG(status);*/
+			/*}*/
 		}
 
 		free(path_copy);
