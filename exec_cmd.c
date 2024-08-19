@@ -120,7 +120,7 @@ int exec_cmd(char *cmd)
 			free(cmd_copy);
 			/*free(path_copy);*/
 			/*return (status);*/
-			return (127);
+			return (status);
 		}
 
 		pid = fork();
