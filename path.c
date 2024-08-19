@@ -36,7 +36,7 @@ int file_exists(const char *path)
  */
 void handle_command_not_found(char *cmd)
 {
-	fprintf(stderr, "%s: command not found\n", cmd);
+	fprintf(stderr, "%s: not found\n", cmd);
 }
 
 /**

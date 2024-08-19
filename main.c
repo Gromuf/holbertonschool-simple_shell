@@ -16,6 +16,8 @@ int main(void)
 {
 	char *cmd = NULL;
 	/*char input[1024];*/
+	/*char command1[] = "./hbtn_ls /var";  Cas où on exécute un chemin relatif */
+	/*char command2[] = "ls";              Cas où PATH est vide */
 
 	while (1)
 	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
@@ -26,6 +28,9 @@ int main(void)
 		cmd = read_cmd();
 		if (cmd == NULL)
 			break;
+
+		/*exec_cmd(command1);*/
+		/*exec_cmd(command2);*/
 
 		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3)) /*Gérer la commande "exit" */
 		{ /*3 est le code ASCII pour Ctrl+C*/
