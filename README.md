@@ -134,7 +134,7 @@ This code is write with _Visual Studio Code software_ https://code.visualstudio.
 
 shell, C...
 
-## 🚀 About We
+## 🚀 About us
 
 We are junior developers...
 
