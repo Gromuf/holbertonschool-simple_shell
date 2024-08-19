@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define PATH_DELIM ':'
+#define PATH1_DELIM ':'
 #define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"  /* Remplacez ceci par une valeur fixe de PATH pour la simulation*/
 
 /**
