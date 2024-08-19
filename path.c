@@ -1,3 +1,4 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -85,7 +86,7 @@ int is_executable(const char *path)
 /*return (0);  Le fichier n'est pas exécutable */
 /*}*/
 {
-	return access(path, X_OK) == 0;
+	return (access(path, X_OK) == 0);
 }
 
 /**
@@ -129,7 +130,7 @@ char *which(const char *cmd)
 	if (is_executable(full_path))
 	{
 		free(cwd);
-		return strdup(full_path); /* Retourne le chemin complet du fichier */
+		return (strdup(full_path)); /* Retourne le chemin complet du fichier */
 	}
 
 	free(cwd);
@@ -144,7 +145,7 @@ char *which(const char *cmd)
 	}
 
 	/* Découpez PATH simulé en répertoires */
-	token = strtok(path_copy, ":");
+	token = my_strtok(path_copy, ":");
 	while (token != NULL)
 	{
 		/* Construisez le chemin complet pour la commande dans chaque répertoire de PATH */
@@ -157,7 +158,8 @@ char *which(const char *cmd)
 			free(path_copy);
 			return strdup(full_path); /* Retourne le chemin complet du fichier */
 		}
-		token = strtok(NULL, ":");
+
+		token = my_strtok(NULL, ":");
 		/*token = strtok(NULL, &PATH1_DELIM);*/
 	}
 

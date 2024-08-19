@@ -41,6 +41,7 @@ char *which(const char *cmd);
 int _isspace(int c);
 
 char *_strtok_r(char *str, const char *delim, char **saveptr);
+char *my_strtok(char *str, const char *delim);
 
 int exec_cmd(char *cmd);
 

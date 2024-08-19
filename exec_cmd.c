@@ -72,7 +72,7 @@ int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
-	char *token = strtok(cmd, " \n");
+	char *token = my_strtok(cmd, " \n");
 	int argc = 0;
 	int status;
 	static int last_exit_status = 0;
@@ -94,7 +94,7 @@ int exec_cmd(char *cmd)
 	while (token != NULL && argc < 1023)
 	{
 		argv[argc++] = token;
-		token = strtok(NULL, " \n");
+		token = my_strtok(NULL, " \n");
 	}
 	argv[argc] = NULL;
 
