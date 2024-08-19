@@ -15,6 +15,7 @@
 int main(void)
 {
 	char *cmd = NULL;
+	
 	/*char input[1024];*/
 	/*char command1[] = "./hbtn_ls /var";  Cas où on exécute un chemin relatif */
 	/*char command2[] = "ls";              Cas où PATH est vide */

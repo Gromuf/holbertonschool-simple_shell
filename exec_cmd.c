@@ -129,7 +129,9 @@ int exec_cmd(char *cmd)
 			perror("Fork failed");
 			free(cmd_copy);
 			free(path_copy);
-			return (EXIT_FAILURE);
+			/*return (EXIT_FAILURE);*/
+			continue;
+
 		}
 
 		if (pid == 0) /* Child process */
@@ -139,7 +141,8 @@ int exec_cmd(char *cmd)
 				perror(path_copy);
 				free(cmd_copy);
 				free(path_copy);
-				exit(EXIT_FAILURE);
+				/*exit(EXIT_FAILURE);*/
+				exit(1);
 			}
 		}
 		else /* Parent process */
