@@ -75,7 +75,7 @@ int exec_cmd(char *cmd)
 	char *token = strtok(cmd, " \n");
 	int argc = 0;
 	int status;
-	static int last_exit_status = 0;
+	/*static int last_exit_status = 0;*/
 	char *path_copy = NULL;
 	char *cmd_copy = strdup(cmd);
 
@@ -100,11 +100,13 @@ int exec_cmd(char *cmd)
 
 	if (argv[0] != NULL)
 	{
+		/*Handle 'exit' command without arguments*/
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;
+			/*int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;*/
 			free(cmd_copy);
-			exit(exit_status);
+			/*exit(exit_status);*/
+			exit(EXIT_SUCCESS); /* Exit without error*/
 		}
 
 		path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
