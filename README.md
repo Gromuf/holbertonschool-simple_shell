@@ -31,7 +31,7 @@ or in this way in non interractive mode (where command is a shell command as ls 
 All our files should end with a new line, with a maximum of 5 functions per file and 40 lines per function.
 All your files will be compiled on Ubuntu 20.04 LTS.
 
-#### -Autorized functions and system calls
+### Autorized functions and system calls
 
 #### -all functions from string.h
 
