@@ -119,7 +119,7 @@ int exec_cmd(char *cmd)
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
 			/*free(path_copy);*/
-			return (EXIT_FAILURE);
+			return (status);
 		}
 
 		pid = fork();
