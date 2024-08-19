@@ -58,7 +58,7 @@ char *construct_relative_path(const char *filename)
 {
 	static char path[1024];
 	snprintf(path, sizeof(path), "../../%s", filename);
-	return path;
+	return (path);
 }
 
 /**
