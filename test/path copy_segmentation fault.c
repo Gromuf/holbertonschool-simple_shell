@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #define PATH_DELIM ':'
-#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"  /* Remplacez ceci par une valeur fixe de PATH pour la simulation*/
 
 /**
  * file_exists - Checks if a file exists at the given path.
@@ -75,14 +74,14 @@ char *construct_relative_path(const char *filename)
 /* Fonction pour vérifier si un fichier est exécutable */
 int is_executable(const char *path)
 /*{*/
-/*struct stat st;*/
+	/*struct stat st;*/
 
-/* Vérifie si le fichier existe et est exécutable */
-/*if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))*/
-/*{*/
-/*	return (1);  Le fichier est exécutable */
-/*}*/
-/*return (0);  Le fichier n'est pas exécutable */
+	/* Vérifie si le fichier existe et est exécutable */
+	/*if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))*/
+	/*{*/
+	/*	return (1);  Le fichier est exécutable */
+	/*}*/
+	/*return (0);  Le fichier n'est pas exécutable */
 /*}*/
 {
 	return access(path, X_OK) == 0;
@@ -109,8 +108,10 @@ char *which(const char *cmd)
 {
 	char full_path[1024];
 	char *cwd;
+	char *path = NULL;
 	char *path_copy;
 	char *token;
+	/*char **env;*/
 
 	/* Obtenez le répertoire de travail actuel */
 	cwd = getcwd(NULL, 0);
@@ -132,15 +133,28 @@ char *which(const char *cmd)
 
 	free(cwd);
 
-	/* Utilisation d'un PATH simulé */
-	path_copy = strdup(PATH1);
+	/* Cherche la variable PATH dans environ */
+	/*for (env = environ; *env != NULL; env++)*/
+	/*{*/
+		/*if (strncmp(*env, "PATH=", 5) == 0)*/
+		/*{*/
+			/*path = *env + 5;  Obtenir le chemin après "PATH=" */
+			/*break;*/
+		/*}*/
+	/*}*/
+
+	/* Retourne NULL si PATH n'est pas défini ou est vide */
+	/*if (path == NULL || *path == '\0')*/
+		/*return (NULL);*/
+
+	/* Duplicate the PATH environment variable */
+	path_copy = strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("strdup");
 		return NULL;
 	}
 
-	/* Découpez PATH simulé en répertoires */
 	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
