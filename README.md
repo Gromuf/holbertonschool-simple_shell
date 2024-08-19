@@ -128,7 +128,7 @@ If you want more informations and install Betty linter: https://github.com/hs-hq
 For support, email 9540@holbertonstudents.com or 9546@holbertonstudents.com or join our Slack channel on Holberton School.
 This code is write with _Visual Studio Code software_ https://code.visualstudio.com/download and _vim_ on sandbox.
 
-# Hi, We are Louis et Stéphane! 👋
+# Hi, We are Louis and Stéphane! 👋
 
 ## 🛠 Skills:
 
