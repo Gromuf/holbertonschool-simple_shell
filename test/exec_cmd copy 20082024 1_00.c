@@ -1,12 +1,10 @@
 #include "main.h"
 #include <string.h>
-#include <stdlib.h> /*for strtok_r*/
-#include <unistd.h> /*for execve and fork*/
+#include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <stddef.h>
-#include <ctype.h> /* for isspace*/
-#include <sys/stat.h> /* for stat*/
 
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
@@ -147,7 +145,7 @@ int exec_cmd(char *cmd)
 			}
 		}
 		else /* Parent process */
-{
+		{
 			/*Attendre que le processus enfant se termine*/
 			while (waitpid(pid, &status, WUNTRACED) > 0 && !WIFEXITED(status) && !WIFSIGNALED(status)) {
 			/*On peut ajouter un traitement supplémentaire ici si nécessaire*/
