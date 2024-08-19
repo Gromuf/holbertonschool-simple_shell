@@ -113,11 +113,11 @@ int exec_cmd(char *cmd)
 			path_copy = construct_relative_path(argv[0]);
 		}
 
-		if (!path_copy || !is_executable(path_copy))
+		if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
 		{
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
-			/*free(path_copy);*/
+			free(path_copy);
 			return (127);
 		}
 
