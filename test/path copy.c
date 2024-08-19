@@ -4,8 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-/*#define PATH1_DELIM ':'*/
-/*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"   Remplacez ceci par une valeur fixe de PATH pour la simulation*/
+#define PATH_DELIM ':'
 
 /**
  * file_exists - Checks if a file exists at the given path.
@@ -74,18 +73,15 @@ char *construct_relative_path(const char *filename)
  */
 /* Fonction pour vérifier si un fichier est exécutable */
 int is_executable(const char *path)
-/*{*/
-/*struct stat st;*/
-
-/* Vérifie si le fichier existe et est exécutable */
-/*if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))*/
-/*{*/
-/*	return (1);  Le fichier est exécutable */
-/*}*/
-/*return (0);  Le fichier n'est pas exécutable */
-/*}*/
 {
-	return access(path, X_OK) == 0;
+	struct stat st;
+
+	/* Vérifie si le fichier existe et est exécutable */
+	if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))
+	{
+		return (1); /* Le fichier est exécutable */
+	}
+	return (0); /* Le fichier n'est pas exécutable */
 }
 
 /**
@@ -107,60 +103,57 @@ int is_executable(const char *path)
 /* Fonction qui imite le comportement de 'which' */
 char *which(const char *cmd)
 {
-	char full_path[1024];
-	char *cwd;
-	char *path1 = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"; /*Example PATH*/
-	char *path_copy;
+	extern char **environ;  /*Déclaration de la variable globale environ*/
+	char *path = NULL;
 	char *token;
+	char *path_copy;
+	char full_path[1024];
+	char **env;
 
-	/* Obtenez le répertoire de travail actuel */
-	cwd = getcwd(NULL, 0);
-	if (cwd == NULL)
+	/*path = getenv("PATH");*/
+
+	/* Cherche la variable PATH dans environ*/
+	for (env = environ; *env != NULL; env++)
 	{
-		perror("getcwd");
-		return (NULL);
+		if (strncmp(*env, "PATH=", 5) == 0)
+		{
+			path = *env + 5; /* Obtenir le chemin après "PATH="*/
+			break;
+		}
 	}
 
-	/* Construisez le chemin complet pour la commande dans le répertoire actuel */
-	snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
-	/*printf("Checking in current directory: %s\n", full_path);*/
+	/*if (path == NULL)*/
+	if (path == NULL || *path == '\0')
+		return (NULL); /*Retourne NULL si PATH n'est pas défini ou est vide */
 
-	/* Vérifiez si le fichier est exécutable dans le répertoire courant */
-	if (is_executable(full_path))
-	{
-		free(cwd);
-		return strdup(full_path); /* Retourne le chemin complet du fichier */
-	}
-
-	free(cwd);
-
-	/* Utilisation d'un PATH simulé */
-	path_copy = strdup(path1);
-	/*path_copy = strdup(PATH1);*/
+	/*token = strtok(path, ":");*/
+	/*while (token != NULL)*/
+	/*{*/
+	/* Duplicate the PATH environment variable */
+	path_copy = strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("strdup");
 		return (NULL);
 	}
 
-	/* Découpez PATH simulé en répertoires */
 	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
-		/* Construisez le chemin complet pour la commande dans chaque répertoire de PATH */
+		/* Construct the full path to the command */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
-		/*printf("Checking in PATH directory: %s\n", full_path);*/
 
-		/* Vérifiez si la commande existe et est exécutable */
+		/* Vérifie si la commande existe et est exécutable */
 		if (is_executable(full_path))
+		/* Check if the command exists and is executable */
+		/*if (access(full_path, X_OK) == 0)*/
 		{
 			free(path_copy);
-			return strdup(full_path); /* Retourne le chemin complet du fichier */
+			return (strdup(full_path)); /*Return the full path of the cmd*/
 		}
 		token = strtok(NULL, ":");
-		/*token = strtok(NULL, &PATH1_DELIM);*/
 	}
 
 	free(path_copy);
-	return (NULL); /* Retourne NULL si la commande n'est pas trouvée */
+	return (NULL); /* Return NULL if the command is not found */
 }

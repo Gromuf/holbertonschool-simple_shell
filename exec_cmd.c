@@ -30,7 +30,8 @@ void exec_multiple_cmd(char *cmd)
 
 	while (line != NULL)
 	{
-		exec_cmd(line);
+		if (!is_empty_cmd(line))
+			exec_cmd(line);
 		line = _strtok_r(NULL, delim, &saveptr);
 	}
 }
@@ -71,104 +72,54 @@ int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
-	char *token;
-	/*int i = 0;*/
-	/*int argc = 0;*/
+	char *token = strtok(cmd, " \n");
 	int argc = 0;
-	int status = 0; /*ajout pour waitpid exit*/
-	static int last_exit_status = 0; /*pour  WEXITSTATUS(status);*/
-	/*char *executable_path;*/
+	int status;
+	static int last_exit_status = 0;
 	char *path_copy = NULL;
-	char *cmd_copy = NULL;
+	char *cmd_copy = strdup(cmd);
 
-	/* Make a copy of the command string*/
-	cmd_copy = strdup(cmd); /* Allocate memory and copy cmd into cmd_copy*/
-	if (cmd_copy == NULL)
+	if (!cmd_copy)
 	{
-		/*free(cmd_copy);*/
-		/*free (path_copy);*/
-		/*perror("strdup --> cmd_copy == NULL");*/
-		return(EXIT_FAILURE);
+		perror("strdup");
+		return (EXIT_FAILURE);
 	}
+
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
-		/*free(path_copy);*/
 		return (0);
 	}
 
-	/* Initialize argc */
-	/*argc = 0;*/
-
-	token = strtok(cmd_copy, " \n");
-
 	while (token != NULL && argc < 1023)
-	/*while (token != NULL)*/
 	{
-		/*if (argc < 1023)*/
 		argv[argc++] = token;
 		token = strtok(NULL, " \n");
-		/*argv[i++] = token;*/
-		/*token = strtok(NULL, " \n");*/
 	}
-		/*argv[i] = NULL;*/
 	argv[argc] = NULL;
 
 	if (argv[0] != NULL)
 	{
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			/*int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : 0;*/
 			int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;
 			free(cmd_copy);
 			exit(exit_status);
-				/*should_exit = 1;*/
-				/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*Si la commande est "exit", sortir du shell*/
-					/*if (strcmp(argv[0], "exit") == 0)*/
-					/* Si un argument est fourni, utiliser ce code de sortie */
-					/*if (argv[1] != NULL)*/
-					/*{*/
-					/*should_exit = 1;*/
-					/*return;  Sortir de la fonction après avoir mis à jour should_exit */
-					/*int exit_code = atoi(argv[1]);*/
-					/*exit(exit_code);*/
-					/*should_exit = exit_code;*/
-					/*should_exit = atoi(argv[1]);  Mettre à jour should_exit */
-					/*}*/
-					/*else*/
-					/*{*/
-					/*should_exit = 0;*/
-					/* Sinon, utiliser le code de sortie 0 */
-					/*exit(EXIT_SUCCESS);*/
-					/*}*/
-					/*return;*/
-			/*return;*/
 		}
 
-				/* Vérifiez si le chemin est absolu*/
-		if (argv[0][0] == '/')
+		path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
+		if (!path_copy)
 		{
-				/* Commande avec chemin absolu*/
-				/*executable_path = strdup(argv[0]);*/
-			path_copy = strdup(argv[0]);
+			path_copy = construct_relative_path(argv[0]);
 		}
-		else
-		{
-				/* Trouver le chemin complet de la commande */
-				/*executable_path = which(argv[0]);*/
-				/*if (executable_path == NULL)*/
-				/*path_copy = which(argv[0]);*/
-			/*path_copy = which(cmd_copy);*/
-			path_copy = which(argv[0]);
-				/*path_copy = find_command_path(argv[0]);*/
-			if (path_copy == NULL)
-			{
-				/*fprintf(stderr, "Command not found: %s\n", argv[0]);*/
-				/*free(cmd_copy);*/
-				return (127);  /* Retour pour commande non trouvée*/
-			}
 
+		if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
+		{
+			/*printf("./hsh: 1: ");*/
+			handle_command_not_found(argv[0]);
+			free(cmd_copy);
+			/*free(path_copy);*/
+			return (status);
 		}
 
 		pid = fork();
@@ -180,63 +131,36 @@ int exec_cmd(char *cmd)
 			return (EXIT_FAILURE);
 		}
 
-		if (pid == 0) /* Processus enfant */
+		if (pid == 0) /* Child process */
 		{
-			/*if (execve(argv[0], argv, NULL) == -1)*/
 			if (execve(path_copy, argv, NULL) == -1)
 			{
-				/*perror("Error");*/
-				/*perror(argv[0]); Afficher l'erreur spécifique à la commande*/
-				perror("./shell");
-				/*perror(argv[0]);*/
+				perror(path_copy);
 				free(cmd_copy);
 				free(path_copy);
 				exit(EXIT_FAILURE);
-					/*_exit(2);  Code d'erreur pour commandes échouées */
-				/*status = 2;   Set the exit status code*/
-				/*return;*/
 			}
-			/*return (status);*/
 		}
-		else /* Processus parent */
-			/*wait(NULL);*/
+		else /* Parent process */
 		{
-			/*waitpid(pid, &status, 0);  Attendre que le processus fils se termine*/
-			/*if (WIFEXITED(status))*/
-			/*{*/
-				/*int exit_status = WEXITSTATUS(status);*/
-				/*last_exit_status = WEXITSTATUS(status);*/
-				/*if (exit_status != 0)*/
-				/*{*/
-						/* Code d'erreur spécifique pour commandes échouées */
-						/*fprintf(stderr, "Command failed with exit status %d\n", exit_status);*/
-				/*}*/
-			/*}*/
-			/*else*/
-			/*{*/
-					/* Si le processus ne se termine pas normalement */
-					/*fprintf(stderr, "Command terminated abnormally\n");*/
-			/*}*/
-			do {
+			do
+			{
 				waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
 			if (WIFEXITED(status))
 			{
-				status = WEXITSTATUS(status);
+				last_exit_status = WEXITSTATUS(status);
 			}
 			else if (WIFSIGNALED(status))
 			{
-				status = 128 + WTERMSIG(status);
+				last_exit_status = 128 + WTERMSIG(status);
 			}
 		}
 
 		free(path_copy);
 	}
 
-	/*free(path_copy);*/
 	free(cmd_copy);
-	/*return;*/
-	/*return (WEXITSTATUS(status));*/
 	return (status);
 }
