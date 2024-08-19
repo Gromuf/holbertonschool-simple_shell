@@ -115,6 +115,7 @@ int exec_cmd(char *cmd)
 
 		if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
 		{
+			perror("./hsh : ");
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
 			/*free(path_copy);*/
