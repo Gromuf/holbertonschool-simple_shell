@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 /*#define PATH1_DELIM ':'*/
-#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"  /* Remplacez ceci par une valeur fixe de PATH pour la simulation*/
+/*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"   Remplacez ceci par une valeur fixe de PATH pour la simulation*/
 
 /**
  * file_exists - Checks if a file exists at the given path.
@@ -158,6 +158,7 @@ char *which(const char *cmd)
 			return strdup(full_path); /* Retourne le chemin complet du fichier */
 		}
 		token = strtok(NULL, ":");
+		/*token = strtok(NULL, &PATH1_DELIM);*/
 	}
 
 	free(path_copy);
