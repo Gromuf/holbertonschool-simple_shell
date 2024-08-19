@@ -12,6 +12,6 @@
 char *my_strtok(char *str, const char *delim)
 {
 	static char *saveptr;
-	return strtok_r(str, delim, &saveptr);
+	return (_strtok_r(str, delim, &saveptr));
 }
 
