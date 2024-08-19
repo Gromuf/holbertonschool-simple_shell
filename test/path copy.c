@@ -103,70 +103,57 @@ int is_executable(const char *path)
 /* Fonction qui imite le comportement de 'which' */
 char *which(const char *cmd)
 {
-	char full_path[1024];
-	char *cwd;
+	extern char **environ;  /*Déclaration de la variable globale environ*/
 	char *path = NULL;
-	char *path_copy;
 	char *token;
+	char *path_copy;
+	char full_path[1024];
 	char **env;
 
-	/* Obtenez le répertoire de travail actuel */
-	cwd = getcwd(NULL, 0);
-	if (cwd == NULL)
-	{
-		perror("getcwd");
-		return NULL;
-	}
+	/*path = getenv("PATH");*/
 
-	/* Construisez le chemin complet pour la commande dans le répertoire actuel */
-	snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
-
-	/* Vérifiez si le fichier est exécutable dans le répertoire courant */
-	if (is_executable(full_path))
-	{
-		free(cwd);
-		return strdup(full_path); /* Retourne le chemin complet du fichier */
-	}
-
-	free(cwd);
-
-	/* Cherche la variable PATH dans environ */
+	/* Cherche la variable PATH dans environ*/
 	for (env = environ; *env != NULL; env++)
 	{
 		if (strncmp(*env, "PATH=", 5) == 0)
 		{
-			path = *env + 5; /* Obtenir le chemin après "PATH=" */
+			path = *env + 5; /* Obtenir le chemin après "PATH="*/
 			break;
 		}
 	}
 
-	/* Retourne NULL si PATH n'est pas défini ou est vide */
+	/*if (path == NULL)*/
 	if (path == NULL || *path == '\0')
-		return NULL;
+		return (NULL); /*Retourne NULL si PATH n'est pas défini ou est vide */
 
+	/*token = strtok(path, ":");*/
+	/*while (token != NULL)*/
+	/*{*/
 	/* Duplicate the PATH environment variable */
 	path_copy = strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("strdup");
-		return NULL;
+		return (NULL);
 	}
 
 	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
-		/* Construisez le chemin complet pour la commande dans chaque répertoire de PATH */
+		/* Construct the full path to the command */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
 
-		/* Vérifiez si la commande existe et est exécutable */
+		/* Vérifie si la commande existe et est exécutable */
 		if (is_executable(full_path))
+		/* Check if the command exists and is executable */
+		/*if (access(full_path, X_OK) == 0)*/
 		{
 			free(path_copy);
-			return strdup(full_path); /* Retourne le chemin complet du fichier */
+			return (strdup(full_path)); /*Return the full path of the cmd*/
 		}
 		token = strtok(NULL, ":");
 	}
 
 	free(path_copy);
-	return NULL; /* Retourne NULL si la commande n'est pas trouvée */
+	return (NULL); /* Return NULL if the command is not found */
 }
