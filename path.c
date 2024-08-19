@@ -36,7 +36,7 @@ int file_exists(const char *path)
  */
 void handle_command_not_found(char *cmd)
 {
-	fprintf(stderr, "%s: not found\n", cmd);
+	fprintf(stderr, "./hsh: 1: %s: not found\n", cmd);
 }
 
 /**
@@ -103,7 +103,7 @@ int is_executable(const char *path)
 /* Fonction qui imite le comportement de 'which' */
 char *which(const char *cmd)
 {
-	extern char **environ;  /* Déclaration de la variable globale environ*/
+	extern char **environ; /* Déclaration de la variable globale environ*/
 	char *path = NULL;
 	char *token;
 	char *path_copy;
@@ -117,7 +117,7 @@ char *which(const char *cmd)
 	{
 		if (strncmp(*env, "PATH=", 5) == 0)
 		{
-			path = *env + 5;  /* Obtenir le chemin après "PATH="*/
+			path = *env + 5; /* Obtenir le chemin après "PATH="*/
 			break;
 		}
 	}
@@ -140,17 +140,17 @@ char *which(const char *cmd)
 	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
-		 /* Construct the full path to the command */
+		/* Construct the full path to the command */
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
 
 		/* Vérifie si la commande existe et est exécutable */
 		if (is_executable(full_path))
 		/* Check if the command exists and is executable */
 		/*if (access(full_path, X_OK) == 0)*/
-			{
-				free(path_copy);
-				return (strdup(full_path)); /*Return the full path of the cmd*/
-			}
+		{
+			free(path_copy);
+			return (strdup(full_path)); /*Return the full path of the cmd*/
+		}
 		token = strtok(NULL, ":");
 	}
 
