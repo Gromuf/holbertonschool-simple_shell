@@ -72,7 +72,7 @@ int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
-	char *token = my_strtok(cmd, " \n");
+	char *token = strtok(cmd, " \n");
 	int argc = 0;
 	int status;
 	static int last_exit_status = 0;
@@ -94,7 +94,7 @@ int exec_cmd(char *cmd)
 	while (token != NULL && argc < 1023)
 	{
 		argv[argc++] = token;
-		token = my_strtok(NULL, " \n");
+		token = strtok(NULL, " \n");
 	}
 	argv[argc] = NULL;
 
@@ -129,9 +129,7 @@ int exec_cmd(char *cmd)
 			perror("Fork failed");
 			free(cmd_copy);
 			free(path_copy);
-			/*return (EXIT_FAILURE);*/
-			continue;
-
+			return (EXIT_FAILURE);
 		}
 
 		if (pid == 0) /* Child process */
@@ -141,8 +139,7 @@ int exec_cmd(char *cmd)
 				perror(path_copy);
 				free(cmd_copy);
 				free(path_copy);
-				/*exit(EXIT_FAILURE);*/
-				exit(1);
+				exit(EXIT_FAILURE);
 			}
 		}
 		else /* Parent process */
