@@ -120,7 +120,7 @@ int exec_cmd(char *cmd)
 			free(cmd_copy);
 			/*free(path_copy);*/
 			/*return (status);*/
-			exit(127);
+			return (127);
 		}
 
 		pid = fork();
@@ -150,10 +150,10 @@ int exec_cmd(char *cmd)
 		}
 
 			/* Traiter le statut de sortie du processus enfant*/
-			if (WIFEXITED(status))
+			if (WIFEXITED(status) && WEXITSTATUS (status) == 127)
 			{
 				printf("Le processus s'est terminé avec le code de sortie %d\n", WEXITSTATUS(status));
-
+				exit(127); /*use 127 to signal command not found*/
 			}
 			else if (WIFSIGNALED(status))
 			{
