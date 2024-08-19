@@ -120,7 +120,7 @@ int exec_cmd(char *cmd)
 			/*printf("./hsh: 1: ");*/
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
-			/*free(path_copy);*/
+			free(path_copy);
 			/*return (status);*/
 			return (127);
 		}
