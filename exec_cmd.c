@@ -104,11 +104,11 @@ int exec_cmd(char *cmd)
 	if (argv[0] != NULL)
 	{
 		/* Handle 'exit' command without arguments */
-		if (strcmp(argv[0], "exit") == 0)
-		{
-			free(cmd_copy);
-			exit(EXIT_SUCCESS);
-		}
+		/*if (strcmp(argv[0], "exit") == 0)*/
+		/*{*/
+			/*free(cmd_copy);*/
+			/*exit(EXIT_SUCCESS);*/
+		/*}*/
 
 		/* Check if PATH is empty */
 		env_path = _getenv("PATH");
