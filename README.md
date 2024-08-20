@@ -111,6 +111,10 @@ All your files will be compiled on Ubuntu 20.04 LTS.
 
 In this project, we developed a simplified shell. It can execute commands by providing a direct path, such as `/bin/ls` or simply by entering a command like `ls` which it locates using the PATH environment variable. The shell operates in both interactive and non-interactive modes. It supports single-argument commands and can be closed using the exit command or the CTRL + C shortcut.
 
+## Flowchart :
+
+![alt text](C_Simple_Shell.png)
+
 ## Verification of Betty style and Betty doc:
 
 ```bash
