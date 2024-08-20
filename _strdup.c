@@ -16,7 +16,7 @@ char *_strdup(const char *s)
 
 	duplicate = (char *)malloc(len);
 	if (duplicate == NULL)
-		return NULL;
+		return (NULL);
 
 	memcpy(duplicate, s, len);
 	return (duplicate);

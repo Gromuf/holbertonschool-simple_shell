@@ -113,7 +113,7 @@ int exec_cmd(char *cmd)
 		}
 
 		/* Check if PATH is empty */
-		env_path = getenv("PATH");
+		env_path = _getenv("PATH");
 		if (env_path == NULL || strlen(env_path) == 0)
 		{
 			/* If PATH is empty, only execute if the command contains '/' */

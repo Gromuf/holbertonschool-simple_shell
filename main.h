@@ -59,6 +59,7 @@ int _strcmp(const char *s1, const char *s2);
 char *_strchr(const char *s, int c);
 char *_strdup(const char *s);
 size_t _strlen(const char *s);
+char *_getenv(const char *name);
 
 /*int main(int argc, char *argv[]);*/
 
