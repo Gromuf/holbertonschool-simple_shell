@@ -123,13 +123,13 @@ Clone the project
 	git clone https://github.com/Gromuf/holbertonschool-simple_shell.git
 ```
 
-Go to the projeect directory
+Go to the project directory
 
 ```bash
 	cd holbertonschool-simple_shell
 ```
 
-## Compilation GCC : 
+## Compilation GCC :
 
 ```bash
 	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
