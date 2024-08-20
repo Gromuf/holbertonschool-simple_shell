@@ -9,6 +9,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>  /* Inclure pour struct stat et les constantes S_IXUSR */
 
+/* Macro pour le chemin par défaut */
+#define PATH1 "/usr/local/bin:/usr/bin:/bin:/custom/path"
+/*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"*/
 
 /* Prototypes des fonctions */
 void display_prompt(void);
@@ -60,6 +63,11 @@ char *_strchr(const char *s, int c);
 char *_strdup(const char *s);
 size_t _strlen(const char *s);
 char *_getenv(const char *name);
+/*void set_default_path();*/
+void set_PATH1(void);
+char *normalize_path(const char *path);
+
+int my_setenv(const char *name, const char *value, int overwrite);
 
 /*int main(int argc, char *argv[]);*/
 

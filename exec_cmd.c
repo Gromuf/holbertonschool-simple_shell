@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <stddef.h>
-#include <ctype.h> /* for isspace*/
+#include <ctype.h>	  /* for isspace*/
 #include <sys/stat.h> /* for stat*/
 
 /*#include <stdbool.h>  Inclure pour le type bool*/
@@ -74,10 +74,9 @@ int exec_cmd(char *cmd)
 {
 	pid_t pid;
 	char *argv[1024];
-	char *token = strtok(cmd, " \n");
+	char *token;
 	int argc = 0;
 	int status = 0;
-	/*static int last_exit_status = 0;*/
 	char *path_copy = NULL;
 	char *cmd_copy = strdup(cmd);
 	char *env_path;
@@ -94,56 +93,48 @@ int exec_cmd(char *cmd)
 		return (0);
 	}
 
+	token = my_strtok(cmd_copy, " \n");
 	while (token != NULL && argc < 1023)
 	{
 		argv[argc++] = token;
-		token = strtok(NULL, " \n");
+		token = my_strtok(NULL, " \n");
 	}
 	argv[argc] = NULL;
 
 	if (argv[0] != NULL)
 	{
-		/*Handle 'exit' command without arguments*/
+		/* Handle 'exit' command without arguments */
 		if (strcmp(argv[0], "exit") == 0)
 		{
-			/*int exit_status = (argv[1] != NULL) ? atoi(argv[1]) : last_exit_status;*/
 			free(cmd_copy);
-			/*exit(exit_status);*/
-			exit(EXIT_SUCCESS); /* Exit without error*/
+			exit(EXIT_SUCCESS);
 		}
 
 		/* Check if PATH is empty */
 		env_path = _getenv("PATH");
 		if (env_path == NULL || strlen(env_path) == 0)
 		{
-			/* If PATH is empty, only execute if the command contains '/' */
-			if (strchr(argv[0], '/') == NULL)
+			/* PATH is empty, check if command contains '/' */
+			if (strchr(argv[0], '/') != NULL)
 			{
-		/*path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);*/
-		/*if (!path_copy)*/
-		/*{*/
-		/*path_copy = construct_relative_path(argv[0]);*/
-		/*}*/
-
-				if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
-				{
-					/*printf("./hsh: 1: ");*/
-					handle_command_not_found(argv[0]);
-					free(cmd_copy);
-					free(path_copy);
-					/*return (status);*/
-					return (127); /*Command not found*/
-				}
-				else
-					path_copy = strdup(argv[0]);
+				/* Command includes a path */
+				path_copy = strdup(argv[0]);
+			}
+			else
+			{
+				/* Command does not include a path, cannot execute */
+				handle_command_not_found(argv[0]);
+				free(cmd_copy);
+				return (127);
 			}
 		}
 		else
 		{
+			/* PATH is not empty */
 			path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
 		}
 
-		if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
+		if (!path_copy || !is_executable(path_copy))
 		{
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
@@ -154,7 +145,7 @@ int exec_cmd(char *cmd)
 		pid = fork();
 		if (pid == -1)
 		{
-			perror("Fork failed");
+			perror("fork");
 			free(cmd_copy);
 			free(path_copy);
 			return (EXIT_FAILURE);
@@ -164,7 +155,7 @@ int exec_cmd(char *cmd)
 		{
 			if (execve(path_copy, argv, NULL) == -1)
 			{
-				perror(path_copy);
+				perror("execve");
 				free(cmd_copy);
 				free(path_copy);
 				exit(EXIT_FAILURE);
@@ -172,34 +163,7 @@ int exec_cmd(char *cmd)
 		}
 		else /* Parent process */
 		{
-			/*Attendre que le processus enfant se termine*/
-			while (waitpid(pid, &status, WUNTRACED) > 0 && !WIFEXITED(status) && !WIFSIGNALED(status))
-			/*On peut ajouter un traitement supplémentaire ici si nécessaire*/
-
-			/* Traiter le statut de sortie du processus enfant*/
-			if (WIFEXITED(status) && WEXITSTATUS (status) == 127)
-			{
-				printf("Le processus s'est terminé avec le code de sortie %d\n", WEXITSTATUS(status));
-				exit(127); /*use 127 to signal command not found*/
-			}
-			else if (WIFSIGNALED(status))
-			{
-				printf("Le processus a été terminé par le signal %d\n", WTERMSIG(status));
-			}
-
-			/*do*/
-			/*{*/
-			/*	waitpid(pid, &status, WUNTRACED);*/
-			/*} while (!WIFEXITED(status) && !WIFSIGNALED(status));*/
-
-			/*if (WIFEXITED(status))*/
-			/*{*/
-			/*	last_exit_status = WEXITSTATUS(status);*/
-			/*}*/
-			/*else if (WIFSIGNALED(status))*/
-			/*{*/
-			/*	last_exit_status = 128 + WTERMSIG(status);*/
-			/*}*/
+			waitpid(pid, &status, 0);
 		}
 
 		free(path_copy);

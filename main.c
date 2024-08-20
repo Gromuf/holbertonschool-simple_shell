@@ -2,6 +2,16 @@
 
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
+void set_PATH1(void)
+{
+	/* Assigner la valeur par défaut au PATH*/
+	if (my_setenv("PATH", PATH1, 1) != 0)
+	{
+		perror("my_setenv");
+		exit(EXIT_FAILURE);
+	}
+}
+
 /**
  * main - Entry point of the simple shell program.
  *
@@ -15,7 +25,10 @@
 int main(void)
 {
 	char *cmd = NULL;
-	
+
+	/*Initialiser PATH avec la valeur par défaut*/
+	/*set_PATH1();*/
+
 	/*char input[1024];*/
 	/*char command1[] = "./hbtn_ls /var";  Cas où on exécute un chemin relatif */
 	/*char command2[] = "ls";              Cas où PATH est vide */
@@ -39,6 +52,9 @@ int main(void)
 			/*should_exit = 1;*/
 			break;
 		}
+
+		/*Afficher le PATH pour vérifier*/
+		/*printf("PATH: %s\n", _getenv("PATH"));*/
 
 		exec_multiple_cmd(cmd);
 		free(cmd);

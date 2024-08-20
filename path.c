@@ -5,8 +5,20 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-/*#define PATH1_DELIM ':'*/
+#define PATH_DELIM ':'
 /*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"   Remplacez ceci par une valeur fixe de PATH pour la simulation*/
+
+/* Utility function to resolve relative paths */
+char *normalize_path(const char *path)
+{
+	char *resolved_path = realpath(path, NULL);
+	if (resolved_path == NULL)
+	{
+		perror("realpath");
+		return (NULL);
+	}
+	return (resolved_path);
+}
 
 /**
  * file_exists - Checks if a file exists at the given path.
@@ -42,6 +54,17 @@ void handle_command_not_found(char *cmd)
 }
 
 /**
+ * is_executable - Checks if a file is executable.
+ * @path: The path of the file to check.
+ *
+ * Return: 1 if the file is executable, otherwise 0.
+ */
+int is_executable(const char *path)
+{
+	return (access(path, X_OK) == 0);
+}
+
+/**
  * construct_relative_path - Constructs a relative path for a given filename.
  * @filename: The name of the file for which to construct the relative path.
  *
@@ -56,37 +79,14 @@ void handle_command_not_found(char *cmd)
  */
 char *construct_relative_path(const char *filename)
 {
-	static char path[1024];
-	snprintf(path, sizeof(path), "../../%s", filename);
+	char *path = malloc(1024);
+	if (path == NULL)
+	{
+		perror("malloc");
+		return (NULL);
+	}
+	snprintf(path, 1024, "../../%s", filename);
 	return (path);
-}
-
-/**
- * is_executable - Vérifie si un fichier est exécutable.
- *
- * @path: Le chemin du fichier à vérifier.
- *
- * Description:
- * Cette fonction utilise la fonction `stat` pour vérifier si le fichier
- * spécifié par `path` existe et s'il est exécutable par l'utilisateur.
- *
- * Return:
- * Retourne 1 si le fichier est exécutable, sinon 0.
- */
-/* Fonction pour vérifier si un fichier est exécutable */
-int is_executable(const char *path)
-/*{*/
-/*struct stat st;*/
-
-/* Vérifie si le fichier existe et est exécutable */
-/*if (stat(path, &st) == 0 && (st.st_mode & S_IXUSR))*/
-/*{*/
-/*	return (1);  Le fichier est exécutable */
-/*}*/
-/*return (0);  Le fichier n'est pas exécutable */
-/*}*/
-{
-	return (access(path, X_OK) == 0);
 }
 
 /**
@@ -109,60 +109,61 @@ int is_executable(const char *path)
 char *which(const char *cmd)
 {
 	char full_path[1024];
-	char *cwd;
-	char *path1 = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"; /*Example PATH*/
+	char *cwd = getcwd(NULL, 0);
+	/*char *path1 = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"; Example PATH*/
 	char *path_copy;
 	char *token;
 
-	/* Obtenez le répertoire de travail actuel */
-	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
 		perror("getcwd");
 		return (NULL);
 	}
 
-	/* Construisez le chemin complet pour la commande dans le répertoire actuel */
-	snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
-	/*printf("Checking in current directory: %s\n", full_path);*/
-
-	/* Vérifiez si le fichier est exécutable dans le répertoire courant */
-	if (is_executable(full_path))
+	/* Check if the command is an absolute path or relative path */
+	if (cmd[0] == '/')
 	{
-		free(cwd);
-		return (strdup(full_path)); /* Retourne le chemin complet du fichier */
+		if (is_executable(cmd))
+		{
+			free(cwd);
+			return strdup(cmd);
+		}
+	}
+	else
+	{
+		/* Check in current directory */
+		snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
+		if (is_executable(full_path))
+		{
+			free(cwd);
+			return strdup(full_path);
+		}
+
+		/* Check in PATH directories */
+		path_copy = strdup(PATH1);
+		if (path_copy == NULL)
+		{
+			perror("strdup");
+			free(cwd);
+			return NULL;
+		}
+
+		token = my_strtok(path_copy, ":");
+		while (token != NULL)
+		{
+			snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
+			if (is_executable(full_path))
+			{
+				free(path_copy);
+				free(cwd);
+				return strdup(full_path);
+			}
+			token = my_strtok(NULL, ":");
+		}
+
+		free(path_copy);
 	}
 
 	free(cwd);
-
-	/* Utilisation d'un PATH simulé */
-	path_copy = strdup(path1);
-	/*path_copy = strdup(PATH1);*/
-	if (path_copy == NULL)
-	{
-		perror("strdup");
-		return (NULL);
-	}
-
-	/* Découpez PATH simulé en répertoires */
-	token = my_strtok(path_copy, ":");
-	while (token != NULL)
-	{
-		/* Construisez le chemin complet pour la commande dans chaque répertoire de PATH */
-		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
-		/*printf("Checking in PATH directory: %s\n", full_path);*/
-
-		/* Vérifiez si la commande existe et est exécutable */
-		if (is_executable(full_path))
-		{
-			free(path_copy);
-			return strdup(full_path); /* Retourne le chemin complet du fichier */
-		}
-
-		token = my_strtok(NULL, ":");
-		/*token = strtok(NULL, &PATH1_DELIM);*/
-	}
-
-	free(path_copy);
-	return (NULL); /* Retourne NULL si la commande n'est pas trouvée */
+	return (NULL);
 }
