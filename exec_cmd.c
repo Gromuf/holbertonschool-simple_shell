@@ -222,9 +222,9 @@ int exec_cmd(char *cmd)
 			{
 				status = WEXITSTATUS(status);
 				/* Si le code de sortie est 127, et que stderr n'est pas vide, on retourne ERR_CODE*/
-				if (status == 127)
+				if (status != 0)
 				{
-					return (ERR_CODE);
+					return (status); /* Retourner le code de sortie d'exécution */
 				}
 			}
 			else if (WIFSIGNALED(status))
@@ -233,7 +233,7 @@ int exec_cmd(char *cmd)
 			}
 		}
 	}
-	
+
 	free(cmd_copy);
 	free(path_copy);
 	return (status);
