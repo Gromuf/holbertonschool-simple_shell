@@ -76,7 +76,7 @@ int exec_cmd(char *cmd)
 	char *argv[1024];
 	char *token = strtok(cmd, " \n");
 	int argc = 0;
-	int status;
+	int status = 0;
 	/*static int last_exit_status = 0;*/
 	char *path_copy = NULL;
 	char *cmd_copy = strdup(cmd);
