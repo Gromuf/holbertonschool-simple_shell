@@ -80,6 +80,7 @@ int exec_cmd(char *cmd)
 	/*static int last_exit_status = 0;*/
 	char *path_copy = NULL;
 	char *cmd_copy = strdup(cmd);
+	char *env_path;
 
 	if (!cmd_copy)
 	{
@@ -111,20 +112,43 @@ int exec_cmd(char *cmd)
 			exit(EXIT_SUCCESS); /* Exit without error*/
 		}
 
-		path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
-		if (!path_copy)
+		/* Check if PATH is empty */
+		env_path = getenv("PATH");
+		if (env_path == NULL || strlen(env_path) == 0)
 		{
-			path_copy = construct_relative_path(argv[0]);
+			/* If PATH is empty, only execute if the command contains '/' */
+			if (strchr(argv[0], '/') == NULL)
+			{
+		/*path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);*/
+		/*if (!path_copy)*/
+		/*{*/
+		/*path_copy = construct_relative_path(argv[0]);*/
+		/*}*/
+
+				if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
+				{
+					/*printf("./hsh: 1: ");*/
+					handle_command_not_found(argv[0]);
+					free(cmd_copy);
+					free(path_copy);
+					/*return (status);*/
+					return (127); /*Command not found*/
+				}
+				else
+					path_copy = strdup(argv[0]);
+			}
+		}
+		else
+		{
+			path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
 		}
 
 		if (!path_copy || !is_executable(path_copy) || !file_exists(path_copy))
 		{
-			/*printf("./hsh: 1: ");*/
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
 			free(path_copy);
-			/*return (status);*/
-			return (127); /*Command not found*/
+			return (127);
 		}
 
 		pid = fork();
@@ -147,11 +171,10 @@ int exec_cmd(char *cmd)
 			}
 		}
 		else /* Parent process */
-{
+		{
 			/*Attendre que le processus enfant se termine*/
-			while (waitpid(pid, &status, WUNTRACED) > 0 && !WIFEXITED(status) && !WIFSIGNALED(status)) {
+			while (waitpid(pid, &status, WUNTRACED) > 0 && !WIFEXITED(status) && !WIFSIGNALED(status))
 			/*On peut ajouter un traitement supplémentaire ici si nécessaire*/
-		}
 
 			/* Traiter le statut de sortie du processus enfant*/
 			if (WIFEXITED(status) && WEXITSTATUS (status) == 127)

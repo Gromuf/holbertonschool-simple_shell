@@ -55,6 +55,10 @@ char *construct_relative_path(const char *cmd);
 
 /*extern int should_exit;*/
 
+int _strcmp(const char *s1, const char *s2);
+char *_strchr(const char *s, int c);
+char *_strdup(const char *s);
+size_t _strlen(const char *s);
 
 /*int main(int argc, char *argv[]);*/
 
