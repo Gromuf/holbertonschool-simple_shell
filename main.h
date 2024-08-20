@@ -69,6 +69,7 @@ char *normalize_path(const char *path);
 
 int my_setenv(const char *name, const char *value, int overwrite);
 int set_file_permissions(const char *path, mode_t mode);
+/*int change_permissions_in_dir(const char *dir_path, mode_t new_permissions);*/
 
 /*int main(int argc, char *argv[]);*/
 

@@ -47,8 +47,8 @@ int main(void)
 		/*exec_cmd(command2);*/
 
 		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3)) /*Gérer la commande "exit" */
-		{																   /*3 est le code ASCII pour Ctrl+C*/
-			free(cmd);													   /*Libérer la mémoire avant de quitter */
+		{	   /*3 est le code ASCII pour Ctrl+C*/
+			free(cmd);		   /*Libérer la mémoire avant de quitter */
 			/*should_exit = 1;*/
 			break;
 		}

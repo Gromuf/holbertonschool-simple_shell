@@ -158,7 +158,7 @@ int exec_cmd(char *cmd)
 				perror("execve");
 				free(cmd_copy);
 				free(path_copy);
-				exit(EXIT_FAILURE);
+				exit(127); /*Retourner 127 en cas d'échec d'exécution*/
 			}
 		}
 		else /* Parent process */
@@ -189,4 +189,3 @@ int set_file_permissions(const char *path, mode_t mode)
 	}
 	return (0);
 }
-
