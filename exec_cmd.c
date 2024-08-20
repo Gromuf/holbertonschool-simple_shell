@@ -158,7 +158,7 @@ int exec_cmd(char *cmd)
 				perror("execve");
 				free(cmd_copy);
 				free(path_copy);
-				exit(127); /*Retourner 127 en cas d'échec d'exécution*/
+				exit(2); /* Return code 2 for execution failure */
 			}
 		}
 		else /* Parent process */
