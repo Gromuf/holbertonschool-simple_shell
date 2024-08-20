@@ -47,8 +47,8 @@ int main(void)
 		/*exec_cmd(command2);*/
 
 		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3)) /*Gérer la commande "exit" */
-		{ /*3 est le code ASCII pour Ctrl+C*/
-			free(cmd); /*Libérer la mémoire avant de quitter */
+		{																   /*3 est le code ASCII pour Ctrl+C*/
+			free(cmd);													   /*Libérer la mémoire avant de quitter */
 			/*should_exit = 1;*/
 			break;
 		}
@@ -56,19 +56,41 @@ int main(void)
 		/*Afficher le PATH pour vérifier*/
 		/*printf("PATH: %s\n", _getenv("PATH"));*/
 
-		exec_multiple_cmd(cmd);
+		/*exec_multiple_cmd(cmd);*/
+		/*free(cmd);*/
+	/*}*/
+
+		/* Vérifier si la commande est un chmod 777 */
+		if (strncmp(cmd, "chmod 777", 9) == 0)
+		{
+			char *file_path = cmd + 10; /* Extraire le chemin du fichier après 'chmod 777 ' */
+			if (set_file_permissions(file_path, 0777) == -1)
+			{
+				fprintf(stderr, "Failed to change permissions for %s\n", file_path);
+			}
+			else
+			{
+				printf("Permissions 777 applied successfully for %s\n", file_path);
+			}
+		}
+		else
+		{
+			/* Sinon, exécutez la commande normale */
+			exec_multiple_cmd(cmd);
+		}
+
 		free(cmd);
 	}
 
-	/* Affiche un message ou non, selon les besoins */
-	/*printf("Exiting shell with code %d\n", should_exit);*/
+/* Affiche un message ou non, selon les besoins */
+/*printf("Exiting shell with code %d\n", should_exit);*/
 
-	/*printf("Exiting shell\n");*/
-	/*Retourner un code de sortie approprié, selon les besoins*/
-	/* code 0 pour exit et 2 pour /bin/ls: cannot*/
-	/* access '/test_hbtn': No such file or directory*/
-	/*return (should_exit ? 2 : 0);*/
-	/*return (should_exit);*/
+/*printf("Exiting shell\n");*/
+/*Retourner un code de sortie approprié, selon les besoins*/
+/* code 0 pour exit et 2 pour /bin/ls: cannot*/
+/* access '/test_hbtn': No such file or directory*/
+/*return (should_exit ? 2 : 0);*/
+/*return (should_exit);*/
 
-	return (0); /* Sortir avec code 0 lorsque le shell se termine */
+return (0); /* Sortir avec code 0 lorsque le shell se termine */
 }

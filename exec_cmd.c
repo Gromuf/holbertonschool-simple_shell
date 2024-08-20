@@ -172,3 +172,21 @@ int exec_cmd(char *cmd)
 	free(cmd_copy);
 	return (status);
 }
+
+/**
+ * set_file_permissions - Change the permissions of a file.
+ * @path: The path to the file or directory.
+ * @mode: The new permissions for the file or directory (octal mode).
+ *
+ * Return: 0 on success, -1 on failure with errno set.
+ */
+int set_file_permissions(const char *path, mode_t mode)
+{
+	if (chmod(path, mode) == -1)
+	{
+		perror("chmod");
+		return (-1);
+	}
+	return (0);
+}
+
