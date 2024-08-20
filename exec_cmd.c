@@ -106,6 +106,12 @@ int exec_cmd(char *cmd)
 		/* Handle 'exit' command without arguments */
 		/*if (strcmp(argv[0], "exit") == 0)*/
 		/*{*/
+			/*int exit_status = 0;*/
+
+			/*if (argv[1] != NULL)*/
+			/*{*/
+				/*exit_status = atoi(argv[1]);*/
+			/*}*/
 			/*free(cmd_copy);*/
 			/*exit(EXIT_SUCCESS);*/
 		/*}*/
@@ -139,7 +145,7 @@ int exec_cmd(char *cmd)
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
 			free(path_copy);
-			return (127);
+			return (2); /* Return code 2 for command not found */
 		}
 
 		pid = fork();
