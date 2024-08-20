@@ -115,6 +115,26 @@ In this project, we developed a simplified shell. It can execute commands by pro
 
 ![alt text](C_Simple_Shell.png)
 
+## Run Locally
+
+Clone the project
+
+```bash
+	git clone https://github.com/Gromuf/holbertonschool-simple_shell.git
+```
+
+Go to the projeect directory
+
+```bash
+	cd holbertonschool-simple_shell
+```
+
+## Compilation GCC : 
+
+```bash
+	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+```
+
 ## Verification of Betty style and Betty doc:
 
 ```bash
