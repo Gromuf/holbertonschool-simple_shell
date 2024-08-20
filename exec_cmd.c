@@ -10,7 +10,7 @@
 
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
-/*extern int should_exit;  Variable globale pour control la sortie du shell*/
+extern int should_exit;/*  Variable globale pour control la sortie du shell*/
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell */
 
 /**

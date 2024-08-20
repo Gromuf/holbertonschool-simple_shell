@@ -1,6 +1,6 @@
 #include "main.h"
 
-/*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
+int should_exit = 0; /*Variable globale pour contrôler la sortie du shell*/
 
 void set_PATH1(void)
 {
@@ -33,8 +33,8 @@ int main(void)
 	/*char command1[] = "./hbtn_ls /var";  Cas où on exécute un chemin relatif */
 	/*char command2[] = "ls";              Cas où PATH est vide */
 
-	while (1)
-	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
+	/*while (1)*/
+	while (!should_exit) /*utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
@@ -92,5 +92,6 @@ int main(void)
 /*return (should_exit ? 2 : 0);*/
 /*return (should_exit);*/
 
-return (0); /* Sortir avec code 0 lorsque le shell se termine */
+/*return (0);  Sortir avec code 0 lorsque le shell se termine */
+return (should_exit ? 2 : 0);
 }
