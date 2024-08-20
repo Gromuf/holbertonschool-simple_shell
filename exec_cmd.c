@@ -10,8 +10,9 @@
 
 /*#include <stdbool.h>  Inclure pour le type bool*/
 
-extern int should_exit;/*  Variable globale pour control la sortie du shell*/
+extern int should_exit; /*  Variable globale pour control la sortie du shell*/
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell */
+#define ERR_CODE 2  /* Code de sortie pour les erreurs*/
 
 /**
  * exec_multiple_cmd - Executes multiple commands from a string.
@@ -72,27 +73,42 @@ int is_empty_cmd(char *cmd)
 /*void exec_cmd(char *cmd)*/
 int exec_cmd(char *cmd)
 {
-	pid_t pid;
+	pid_t pid = -1; /*Initialiser pid à une valeur connue*/
 	char *argv[1024];
 	char *token;
 	int argc = 0;
-	int status = 0;
+	int status;
 	char *path_copy = NULL;
 	char *cmd_copy = strdup(cmd);
 	char *env_path;
+	int pipefd[2];
+	ssize_t bytesRead;
+	char buffer[1024];  /* Buffer pour lire les erreurs*/
+
+	/* Redirection de stderr pour capturer les erreurs*/
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		return (EXIT_FAILURE);
+	}
 
 	if (!cmd_copy)
 	{
 		perror("strdup");
+		close(pipefd[0]);
+		close(pipefd[1]);
 		return (EXIT_FAILURE);
 	}
 
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
+		close(pipefd[0]);
+		close(pipefd[1]);
 		return (0);
 	}
 
+	/* Préparer les arguments */
 	token = my_strtok(cmd_copy, " \n");
 	while (token != NULL && argc < 1023)
 	{
@@ -106,20 +122,21 @@ int exec_cmd(char *cmd)
 		/* Handle 'exit' command without arguments */
 		/*if (strcmp(argv[0], "exit") == 0)*/
 		/*{*/
-			/*int exit_status = 0;*/
+		/*int exit_status = 0;*/
 
-			/*if (argv[1] != NULL)*/
-			/*{*/
-				/*exit_status = atoi(argv[1]);*/
-			/*}*/
-			/*free(cmd_copy);*/
-			/*exit(EXIT_SUCCESS);*/
+		/*if (argv[1] != NULL)*/
+		/*{*/
+		/*exit_status = atoi(argv[1]);*/
+		/*}*/
+		/*free(cmd_copy);*/
+		/*exit(EXIT_SUCCESS);*/
 		/*}*/
 
 		/* Check if PATH is empty */
 		env_path = _getenv("PATH");
 		if (env_path == NULL || strlen(env_path) == 0)
 		{
+			printf("Debug: PATH is empty.\n");
 			/* PATH is empty, check if command contains '/' */
 			if (strchr(argv[0], '/') != NULL)
 			{
@@ -131,6 +148,8 @@ int exec_cmd(char *cmd)
 				/* Command does not include a path, cannot execute */
 				handle_command_not_found(argv[0]);
 				free(cmd_copy);
+				close(pipefd[0]);
+				close(pipefd[1]);
 				return (127);
 			}
 		}
@@ -145,6 +164,8 @@ int exec_cmd(char *cmd)
 			handle_command_not_found(argv[0]);
 			free(cmd_copy);
 			free(path_copy);
+			close(pipefd[0]);
+			close(pipefd[1]);
 			return (2); /* Return code 2 for command not found */
 		}
 
@@ -154,30 +175,76 @@ int exec_cmd(char *cmd)
 			perror("fork");
 			free(cmd_copy);
 			free(path_copy);
+			close(pipefd[0]);
+			close(pipefd[1]);
 			return (EXIT_FAILURE);
 		}
 
-		if (pid == 0) /* Child process */
+		if (pid == 0)		  /* Child process */
 		{
+			close(pipefd[0]); /* Fermer le descripteur de lecture du pipe*/
+			/*Rediriger stderr vers le pipe*/
+			dup2(pipefd[1], STDERR_FILENO);
+			close(pipefd[1]);
+
+		/* Préparer les arguments*/
+		/*token = strtok(cmd_copy, " \n");*/
+		/*while (token != NULL && argc < 1023)*/
+		/*{*/
+		/*	argv[argc++] = token;*/
+		/*	token = strtok(NULL, " \n");*/
+		/*}*/
+		/*argv[argc] = NULL;*/
+
 			if (execve(path_copy, argv, NULL) == -1)
 			{
 				perror("execve");
 				free(cmd_copy);
 				free(path_copy);
-				exit(2); /* Return code 2 for execution failure */
+				exit(ERR_CODE); /* Return code 2 for execution failure */
 			}
 		}
 		else /* Parent process */
 		{
-			waitpid(pid, &status, 0);
+			close(pipefd[1]); /*Fermer le descripteur d'écriture du pipe*/
+			waitpid(pid, &status, 0); /*Attendre que le processus enfant se termine*/
+
+			/* Lire le contenu de stderr*/
+			while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
+			{
+				buffer[bytesRead] = '\0';
+				fprintf(stderr, "%s", buffer); /* Afficher les erreurs capturées*/
+			}
+			close(pipefd[0]);
+
+		/* Vérifier le code de sortie du processus enfant*/
+			if (WIFEXITED(status))
+			{
+				status = WEXITSTATUS(status);
+				/* Si le code de sortie est 127, et que stderr n'est pas vide, on retourne ERR_CODE*/
+				if (status == 127)
+				{
+					return (ERR_CODE);
+				}
+			}
+			else if (WIFSIGNALED(status))
+			{
+				status = 128 + WTERMSIG(status);
+			}
 		}
-
-		free(path_copy);
 	}
-
+	
 	free(cmd_copy);
+	free(path_copy);
 	return (status);
 }
+
+/*free(path_copy);*/
+/*}*/
+
+/*free(cmd_copy);*/
+/*return (status);*/
+/*}*/
 
 /**
  * set_file_permissions - Change the permissions of a file.
