@@ -1,6 +1,4 @@
 #include "main.h"
-#include <stddef.h>
-#include <string.h>
 
 /**
  * my_strtok - Simule la fonction strtok.
@@ -12,6 +10,6 @@
 char *my_strtok(char *str, const char *delim)
 {
 	static char *saveptr;
+
 	return (_strtok_r(str, delim, &saveptr));
 }
-
