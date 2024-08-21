@@ -147,11 +147,11 @@ Functions in this file are searching to check the absolute path, the current dir
 
 Functions in this file are searching our written command in the PATH.
 
-### 10. `string_functions.c`
+### 10. `8-string_functions.c`
 
 Functions in this file are rewritten simple string functions.
 
-### 11. `subfunction.c`
+### 11. `9-subfunction.c`
 
 In this file we can find some little sub-function used to make the shell work correctly.
 
@@ -186,7 +186,7 @@ Go to the project directory
 ## Compilation whith Makefile:
 script:
 ```bash
-# Compileer name
+# Compiler name
 CC = gcc
 
 # Compilation options
@@ -231,6 +231,11 @@ Command to compile the second time if executable hsh exist
 
 ```bash
   betty <file.c>
+```
+or
+
+```bash
+  betty *.c
 ```
 
 If you want more informations and install Betty linter: https://github.com/hs-hq/Betty

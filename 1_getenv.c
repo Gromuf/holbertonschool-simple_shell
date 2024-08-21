@@ -11,7 +11,7 @@
  */
 char *_getenv(const char *name)
 {
-	extern char **environ; /* Access the environment variables */
+	/*extern char **environ;  Access the environment variables */
 	char **env = environ;
 	size_t name_len = strlen(name);
 	char *equals;
