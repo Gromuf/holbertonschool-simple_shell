@@ -135,19 +135,15 @@ This file get the environnement variable.
 
 This file is our rewritten strtok function.
 
-### 6. `my_setenv.c`
-
-This file is to set or modifie an environnement variable.
-
-### 7. `path.c`
+### 6. `path.c`
 
 Functions in this file are searching our written command in the PATH.
 
-### 8. `string_functions.c`
+### 7. `string_functions.c`
 
 Functions in this file are rewritten simple string functions.
 
-### 9. `subfunction.c`
+### 8. `subfunction.c`
 
 In this file we can find some little sub-function used to make the shell work correctly.
 
