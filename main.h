@@ -68,7 +68,7 @@ char *_getenv(const char *name);
 void set_PATH1(void);
 char *normalize_path(const char *path);
 
-int my_setenv(const char *name, const char *value, int overwrite);
+/*int my_setenv(const char *name, const char *value, int overwrite);*/
 
 /*int main(int argc, char *argv[]);*/
 

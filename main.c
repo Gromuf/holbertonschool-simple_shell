@@ -2,15 +2,15 @@
 
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
-void set_PATH1(void)
-{
+/*void set_PATH1(void)*/
+/*{*/
 	/* Assigner la valeur par défaut au PATH*/
-	if (my_setenv("PATH", PATH1, 1) != 0)
-	{
-		perror("my_setenv");
-		exit(EXIT_FAILURE);
-	}
-}
+/*	if (my_setenv("PATH", PATH1, 1) != 0)*/
+/*	{*/
+		/*perror("my_setenv");*/
+		/*exit(EXIT_FAILURE);*/
+	/*}*/
+/*}*/
 
 /**
  * main - Entry point of the simple shell program.
