@@ -2,6 +2,7 @@
 #include <stddef.h> /* for NULL */
 #include <string.h> /* for strcmp */
 
+extern char **environ; /* Access the environment variables */
 /**
  * _getenv - Get the value of an environment variable.
  * @name: The name of the environment variable to retrieve.
@@ -11,7 +12,6 @@
  */
 char *_getenv(const char *name)
 {
-	char **environ; /* Access the environment variables */
 	char **env = environ;
 	size_t name_len = strlen(name);
 	char *equals;
