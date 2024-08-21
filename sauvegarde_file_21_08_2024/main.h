@@ -10,8 +10,8 @@
 #include <sys/stat.h>  /* Inclure pour struct stat et les constantes S_IXUSR */
 
 /* Macro pour le chemin par défaut */
-#define PATH1 "/usr/local/bin:/usr/bin:/bin:/custom/path"
-/*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"*/
+/*#define PATH1 "/usr/local/bin:/usr/bin:/bin:/custom/path"*/
+#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"
 
 /* Prototypes des fonctions */
 void display_prompt(void);
@@ -56,7 +56,7 @@ char *construct_relative_path(const char *cmd);
 
 /*char *which(char *cmd)*/
 
-/*extern int should_exit;*/
+extern int should_exit;
 
 int _strcmp(const char *s1, const char *s2);
 char *_strchr(const char *s, int c);
@@ -68,6 +68,9 @@ void set_PATH1(void);
 char *normalize_path(const char *path);
 
 int my_setenv(const char *name, const char *value, int overwrite);
+int set_file_permissions(const char *path, mode_t mode);
+int copy_file(const char *src, const char *dest);
+/*int change_permissions_in_dir(const char *dir_path, mode_t new_permissions);*/
 
 /*int main(int argc, char *argv[]);*/
 
