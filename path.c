@@ -4,14 +4,23 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+/*#define PATH_DELIM ':'*/
 
-#define PATH_DELIM ':'
-/*#define PATH1 "bin:sbin:/usr/bin:/usr/local/bin"   Remplacez ceci par une valeur fixe de PATH pour la simulation*/
-
-/* Utility function to resolve relative paths */
+/**
+ * normalize_path - Resolves an absolute path from a given relative path.
+ * @path: The relative path to be resolved.
+ *
+ * Description: This function uses the `realpath` system call to convert
+ * the provided relative path into an absolute path. If `realpath` fails,
+ * it prints an error message and returns NULL.
+ *
+ * Return: A string containing the absolute path if successful,
+ *         or NULL if the path cannot be resolved.
+ */
 char *normalize_path(const char *path)
 {
 	char *resolved_path = realpath(path, NULL);
+
 	if (resolved_path == NULL)
 	{
 		perror("realpath");
@@ -33,6 +42,7 @@ char *normalize_path(const char *path)
 int file_exists(const char *path)
 {
 	struct stat buffer;
+
 	return (stat(path, &buffer) == 0);
 }
 
@@ -80,6 +90,7 @@ int is_executable(const char *path)
 char *construct_relative_path(const char *filename)
 {
 	char *path = malloc(1024);
+
 	if (path == NULL)
 	{
 		perror("malloc");
@@ -89,81 +100,3 @@ char *construct_relative_path(const char *filename)
 	return (path);
 }
 
-/**
- * which - Recherche le chemin complet d'un fichier exécutable dans PATH.
- *
- * @cmd: Le nom du fichier à rechercher.
- *
- * Description:
- * Cette fonction recherche le fichier spécifié par `cmd` dans les répertoires listés
- * dans la variable d'environnement `PATH`. Pour chaque répertoire dans `PATH`, elle
- * construit le chemin complet vers le fichier et vérifie si le fichier est exécutable
- * en utilisant la fonction `is_executable`.
- *
- * Return:
- * Retourne un pointeur vers une chaîne de caractères contenant le chemin complet
- * du fichier si le fichier est trouvé et exécutable. Sinon, retourne NULL. La chaîne
- * de caractères allouée dynamiquement doit être libérée par l'appelant.
- */
-/* Fonction qui imite le comportement de 'which' */
-char *which(const char *cmd)
-{
-	char full_path[1024];
-	char *cwd = getcwd(NULL, 0);
-	/*char *path1 = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"; Example PATH*/
-	char *path_copy;
-	char *token;
-
-	if (cwd == NULL)
-	{
-		perror("getcwd");
-		return (NULL);
-	}
-
-	/* Check if the command is an absolute path or relative path */
-	if (cmd[0] == '/')
-	{
-		if (is_executable(cmd))
-		{
-			free(cwd);
-			return strdup(cmd);
-		}
-	}
-	else
-	{
-		/* Check in current directory */
-		snprintf(full_path, sizeof(full_path), "%s/%s", cwd, cmd);
-		if (is_executable(full_path))
-		{
-			free(cwd);
-			return strdup(full_path);
-		}
-
-		/* Check in PATH directories */
-		path_copy = strdup(PATH1);
-		if (path_copy == NULL)
-		{
-			perror("strdup");
-			free(cwd);
-			return NULL;
-		}
-
-		token = my_strtok(path_copy, ":");
-		while (token != NULL)
-		{
-			snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
-			if (is_executable(full_path))
-			{
-				free(path_copy);
-				free(cwd);
-				return strdup(full_path);
-			}
-			token = my_strtok(NULL, ":");
-		}
-
-		free(path_copy);
-	}
-
-	free(cwd);
-	return (NULL);
-}

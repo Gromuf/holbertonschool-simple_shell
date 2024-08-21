@@ -65,7 +65,7 @@ char *_strdup(const char *s);
 size_t _strlen(const char *s);
 char *_getenv(const char *name);
 /*void set_default_path();*/
-void set_PATH1(void);
+/*void set_PATH1(void);*/
 char *normalize_path(const char *path);
 
 /*int my_setenv(const char *name, const char *value, int overwrite);*/

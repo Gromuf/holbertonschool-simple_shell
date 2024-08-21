@@ -161,12 +161,12 @@ int exec_cmd(char *cmd)
 			exit(EXIT_SUCCESS);
 		}
 
-		path_copy = get_command_path(argv);
-		if (!path_copy)
-		{
-			free(cmd_copy);
-			return (127);
-		}
+	path_copy = get_command_path(argv);
+	if (!path_copy)
+	{
+		free(cmd_copy);
+		return (127);
+	}
 
 		status = execute_command(path_copy, argv, cmd_copy);
 		free(path_copy);
