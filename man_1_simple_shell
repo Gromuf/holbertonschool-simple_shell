@@ -1,0 +1,131 @@
+.\" Manpage for simple_shell
+.Dd 21/08/2024
+.Dt _PRINTF 3 "1.0" "User Commands (1)"
+.TH SIMPLE_SHELL 1 " 21 August 2024" "1.0" "Simple-Shell Manual"
+.Os Ubuntu
+
+.SH NAME
+simple_shell \- A simple command-line interpreter
+
+.SH SYNOPSIS
+.B simple_shell
+
+
+.SH DESCRIPTION
+.B simple_shell
+is a basic command-line interpreter that reads and executes commands entered by the user. It provides a prompt for the user to type a command, which is then executed. The shell does not support advanced features like pipes, redirections, or commands with arguments. Commands must be specified with their full path.
+
+.SH OVERVIEW
+The simple shell takes input from either the terminal or scripts and executes them as they appear.
+
+
+.SH FEATURE
+.B Interactive Mode:
+The shell displays a prompt, waits for the user to input a command, and then executes it.
+
+.B Non-Interactive Mode:
+The shell can process commands from a file or pipeline input.
+
+.B Built-In Commands:
+Includes built-in commands like exit and env.
+
+.B Environment Variable Management:
+The shell can access and modify environment variables.
+
+.SH USAGE
+The shell can be launched by typing ./hsh in the terminal. Once started, it displays a prompt ":) " where the user can enter commands. Commands can include executables (as come as ls or pwd or /bin/ls or exit), shell built-ins, or pipelines.
+
+
+.SH EXIT STATUS
+The shell exits with a status code of 0 if the exit command is used. It returns an appropriate status code based on command execution results.
+
+
+.SH INVOCATION
+The gcc (GNU Compiler Collection) is recommended for compiling simple_shell with the following options:
+.P
+.RS
+.B $ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+.P
+.RE
+In interactive mode, the simple_shell works by taking user input on the terminal after pressing the enter key. Note that the prompt ('$') will appear and you will then be in interactive mode and able to enter commands followed by "enter."
+.P
+.RS
+.B $ ./hsh
+.P
+.RE
+In non-interactive mode, users can specify shell scripts to be executed by simple_shell usually through the use of pipes '|'.
+.P
+.RS
+.B $ echo 'ls' | ./hsh
+.P
+.RE
+
+
+.SH EXECUTABLES
+
+Example of executables with prompt :) after the command ./hsh
+.P
+.RS
+.B :) ls
+.P
+.RE
+
+.P
+.RS
+.B :) /bin/ls
+.P
+.RE
+
+.P
+.RS
+.B :) pwd
+.P
+.RE
+
+.P
+.RS
+.B :) exit
+.P
+.RE for exit the simple shell and return in command terminal on sandbox
+
+Example of executables in interactive mode with pipe
+.P
+.RS
+.B $ echo "/bin/ls" | ./hsh
+.P
+.RE
+
+Example of test executables in interactive mode with pipe to test the status. Below is an example using the Unix echo command combined with pipes to interact with a shell executable hsh.
+.P
+.RS
+.B $ echo "/bin/ls /test_hbtn; exit" | ./hsh
+.P
+.B $ echo "echo $?" | ./hsh
+.P
+.RE
+
+.SH MAN
+This man can open on sandbox with this command on your terminal:
+.P
+.RS
+.B man ./man_1_simple_shell
+.P
+.RE
+
+
+.SH AUTHOR
+
+.I BEAUMOIS Louis
+.br
+.UR https://github.com/Gromuf
+.UE
+.br
+.I DINAHET Stéphane
+.br
+.UR https://github.com/SDINAHET
+.UE
+
+
+.SH SEE ALSO
+.BR bash (1),
+.BR sh (1)

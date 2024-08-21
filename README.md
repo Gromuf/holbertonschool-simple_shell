@@ -111,39 +111,47 @@ All your files will be compiled on Ubuntu 20.04 LTS.
 
 Here are the main project files :
 
-### 1. `main.c`
+### 01. `main.c`
 
 This file is the final code to execute the simple shell.
 
-### 2. `main.h`
+### 02. `main.h`
 
 The header file, it contains the declarations and prototypes of all our functions.
 
-### 3. `exec_cmd.c`
-
-This file contains function execute the command we write in our simple shell.
-
-### 3. `exec_multiple_cmd.c`
-
-This file is for multiple command given to the simple shell, it splits every of them and execute them one by one.
-
-### 4. `_getenv.c`
+### 03. `1_getenv.c`
 
 This file get the environnement variable.
 
-### 5. `_strtok_r.c`
+### 04. `2_strtok_r.c`
 
-This file is our rewritten strtok function.
+This file is our rewritten strtok_r function.
 
-### 6. `path.c`
+### 05. `3_which.c`
+
+This file contains the function as come as which. This function help to locate a command in the directories listed in PATH.
+
+### 06. `4_exec_cmd.c`
+
+This file contains function execute the command we write in our simple shell.
+
+### 07. `5_exec_multiple_cmd.c`
+
+This file is for multiple command given to the simple shell, it splits every of them and execute them one by one.
+
+### 08. `6_handle_which_path.c`
+
+Functions in this file are searching to check the absolute path, the current directory and the command in directorie listed in path.
+
+### 09. `7-path.c`
 
 Functions in this file are searching our written command in the PATH.
 
-### 7. `string_functions.c`
+### 10. `string_functions.c`
 
 Functions in this file are rewritten simple string functions.
 
-### 8. `subfunction.c`
+### 11. `subfunction.c`
 
 In this file we can find some little sub-function used to make the shell work correctly.
 
@@ -175,6 +183,50 @@ Go to the project directory
 	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
+## Compilation whith Makefile:
+script:
+```bash
+# Compileer name
+CC = gcc
+
+# Compilation options
+CFLAGS = -Wall -Werror -Wextra -pedantic -std=gnu89
+
+# Executable name
+EXECUTABLE = hsh
+
+# Source files (all .c files in the current directory)
+SOURCES = $(wildcard *.c)
+
+# Default target
+all: $(EXECUTABLE)
+
+# Rule to create the executable
+$(EXECUTABLE): $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
+
+# Rule to clean generated files clean:
+	rm -f $(EXECUTABLE)
+
+# Rule to clean everything and rebuild the project
+fclean: clean
+
+# Rule to clean everything and rebuild the project
+re: fclean all
+
+# To not interfere with files in the directories
+.PHONY: all clean fclean re
+```
+
+Command to compile the first time if executable hsh does not exist
+```bash
+	make
+```
+Command to compile the second time if executable hsh exist
+```bash
+	make re
+```
+
 ## Verification of Betty style and Betty doc:
 
 ```bash
@@ -196,7 +248,7 @@ This code is write with _Visual Studio Code software_ https://code.visualstudio.
 
 ## 🛠 Skills:
 
-shell, C...
+shell, C... and now simple shell
 
 ## 🚀 About us
 
@@ -210,17 +262,24 @@ We are junior developers...
 ## Appendix:
 
 Any additional information goes here
-Secret of printf:
-https://intranet.hbtn.io/rltoken/xVFYmqhB09g6odagWE5n_w
+
+Intranet simple shell
+https://intranet.hbtn.io/projects/2174
+
+Approching a project:
+https://intranet.hbtn.io/concepts/881
 
 Flowcharts:
 https://intranet.hbtn.io/concepts/895
 
-Approaching a Project:
-https://intranet.hbtn.io/concepts/881
+Everything you need to know to start coding your own shell
+https://intranet.hbtn.io/concepts/900
 
-Group Projects:
-https://intranet.hbtn.io/concepts/893
+Unix shell:
+https://en.wikipedia.org/wiki/Unix_shell
 
-Pair Programming - How To:
-https://intranet.hbtn.io/concepts/894
+Thompson shell:
+https://en.wikipedia.org/wiki/Thompson_shell
+
+Ken Thompson:
+https://en.wikipedia.org/wiki/Ken_Thompson
