@@ -38,11 +38,11 @@ int parse_command_args(char *cmd_copy, char **argv)
 	char *token;
 	int argc = 0;
 
-	token = my_strtok(cmd_copy, " \n");
+	token = strtok(cmd_copy, " \n");
 	while (token != NULL && argc < 1023)
 	{
 		argv[argc++] = token;
-		token = my_strtok(NULL, " \n");
+		token = strtok(NULL, " \n");
 	}
 	argv[argc] = NULL;
 
@@ -74,7 +74,9 @@ char *get_command_path(char *argv[])
 	}
 	else
 	{
-		path_copy = (argv[0][0] == '/') ? strdup(argv[0]) : which(argv[0]);
+		path_copy = (argv[0][0] == '/')
+			? strdup(argv[0])
+			: which(argv[0]);
 	}
 
 	if (!path_copy || !is_executable(path_copy))

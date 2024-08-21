@@ -77,7 +77,7 @@ char *check_path_directories(const char *cmd)
 		return (NULL);
 	}
 
-	token = my_strtok(path_copy, ":");
+	token = strtok(path_copy, ":");
 	while (token != NULL)
 	{
 		snprintf(full_path, sizeof(full_path), "%s/%s", token, cmd);
@@ -86,7 +86,7 @@ char *check_path_directories(const char *cmd)
 			free(path_copy);
 			return (strdup(full_path));
 		}
-		token = my_strtok(NULL, ":");
+		token = strtok(NULL, ":");
 	}
 
 	free(path_copy);

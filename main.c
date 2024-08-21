@@ -25,8 +25,8 @@ int main(void)
 			break;
 
 		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))
-		{ /*3 est le code ASCII pour Ctrl+C*/
-			free(cmd); /*Libérer la mémoire avant de quitter */
+		{
+			free(cmd); /*free memory before quit */
 			break;
 		}
 
@@ -34,5 +34,5 @@ int main(void)
 		free(cmd);
 	}
 
-	return (0); /* Sortir avec code 0 lorsque le shell se termine */
+	return (0); /* Exit with code 0 when the shell terminates */
 }
