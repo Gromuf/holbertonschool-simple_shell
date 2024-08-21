@@ -1,0 +1,63 @@
+.\" Manpage for simple_shell
+.\" Original version by Julien
+.TH SIMPLE_SHELL 1 "August 2024" "1.0" "Simple Shell Manual"
+.SH NAME
+simple_shell \- A simple command-line interpreter
+.SH SYNOPSIS
+.B simple_shell
+.SH DESCRIPTION
+.B simple_shell
+is a basic command-line interpreter that reads and executes commands entered by the user. It provides a prompt for the user to type a command, which is then executed. The shell does not support advanced features like pipes, redirections, or commands with arguments. Commands must be specified with their full path.
+
+The shell handles the following:
+
+.TP
+.B Prompt
+The prompt displayed is
+.RS
+#cisfun$
+.RE
+.TP
+.B Command Execution
+Commands are executed as if they were located in the current directory. If a command cannot be found, an error message is displayed.
+
+.TP
+.B End of File (EOF)
+Pressing
+.B Ctrl+D
+terminates the shell gracefully.
+
+.TP
+.B Interrupt
+Pressing
+.B Ctrl+C
+interrupts the current process and returns to the shell prompt.
+.SH OPTIONS
+None. This shell does not accept any command-line options.
+.SH EXAMPLES
+.TP
+.B Launch the shell
+.PP
+.B $ ./simple_shell
+.PP
+Displays the prompt and waits for user input.
+
+.TP
+.B Execute the command
+.PP
+.B #cisfun$ /bin/ls
+.PP
+Lists the files in the current directory.
+
+.TP
+.B Exit the shell
+.PP
+.B #cisfun$ exit
+.PP
+Attempts to execute the `exit` command and displays an error if not found.
+.SH AUTHOR
+Beaumois Louis <9540@holbertonstudents.com>
+Dinahet stéphane <9546@holbertonstudents.com>
+.SH SEE ALSO
+.BR bash (1),
+.BR sh (1)

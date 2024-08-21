@@ -2,15 +2,7 @@
 
 /*int should_exit = 0; Variable globale pour contrôler la sortie du shell*/
 
-/*void set_PATH1(void)*/
-/*{*/
-	/* Assigner la valeur par défaut au PATH*/
-	/*if (my_setenv("PATH", PATH1, 1) != 0)*/
-	/*{*/
-		/*perror("my_setenv");*/
-		/*exit(EXIT_FAILURE);*/
-	/*}*/
-/*}*/
+/*#define BUFFER_SIZE 1024*/
 
 /**
  * main - Entry point of the simple shell program.
@@ -24,14 +16,19 @@
  */
 int main(void)
 {
-	char *cmd = NULL;
+	char *cmd;
 
-	/*Initialiser PATH avec la valeur par défaut*/
-	/*set_PATH1();*/
-
+	/*const char *path = getenv("PATH");*/
 	/*char input[1024];*/
-	/*char command1[] = "./hbtn_ls /var";  Cas où on exécute un chemin relatif */
-	/*char command2[] = "ls";              Cas où PATH est vide */
+
+	/*if (setenv("PATH",*/
+	/*"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)*/
+
+	/*if (setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)*/
+	/*{*/
+	/*	perror("setenv");*/
+	/*	return (EXIT_FAILURE);*/
+	/*}*/
 
 	while (1)
 	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
@@ -41,24 +38,23 @@ int main(void)
 
 		cmd = read_cmd();
 		if (cmd == NULL)
+		{
+			/*free(cmd);*/
 			break;
+		}
 
-		/*exec_cmd(command1);*/
-		/*exec_cmd(command2);*/
-
-		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3)) /*Gérer la commande "exit" */
-		{ /*3 est le code ASCII pour Ctrl+C*/
-			free(cmd); /*Libérer la mémoire avant de quitter */
+		if (strcmp(cmd, "exit") == 0)  /*Gérer la commande "exit" */
+		{
+			free(cmd);  /*Libérer la mémoire avant de quitter */
 			/*should_exit = 1;*/
 			break;
 		}
 
-		/*Afficher le PATH pour vérifier*/
-		/*printf("PATH: %s\n", _getenv("PATH"));*/
-
+		/*exec_cmd(cmd);*/
 		exec_multiple_cmd(cmd);
 		free(cmd);
 	}
+	/*free(cmd);*/
 
 	/* Affiche un message ou non, selon les besoins */
 	/*printf("Exiting shell with code %d\n", should_exit);*/
@@ -70,5 +66,13 @@ int main(void)
 	/*return (should_exit ? 2 : 0);*/
 	/*return (should_exit);*/
 
-	return (0); /* Sortir avec code 0 lorsque le shell se termine */
+	/*return (0);  Sortir avec code 0 lorsque le shell se termine */
+
+	/* Afficher OK à la fin si tout s'est bien passé */
+	/*printf("OK");*/
+	/*free (cmd); cette commande provoque segmentation fault*/
+
+	/*return (should_exit ? 2 : 0);*/
+
+	return (0);
 }

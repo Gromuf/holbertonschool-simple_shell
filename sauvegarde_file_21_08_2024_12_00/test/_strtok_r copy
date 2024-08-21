@@ -1,0 +1,44 @@
+#include "main.h"
+#include <stddef.h>
+#include <string.h>
+
+/**
+ * _strtok_r - Custom implementation of strtok_r
+ * @str: The string to be tokenized, or NULL to continue tokenizing
+ * @delim: The delimiters used to tokenize the string
+ * @saveptr: Pointer to a char* variable that stores the state between calls
+ *
+ * Return: A pointer to the next token, or NULL if no more tokens are found
+ */
+char *_strtok_r(char *str, const char *delim, char **saveptr)
+{
+	char *token;
+
+	if (str == NULL)
+	{
+		str = *saveptr;
+	}
+
+	/* Skip leading delimiters */
+	str += strspn(str, delim);
+	if (*str == '\0')
+	{
+		*saveptr = str;
+		return (NULL);
+	}
+
+	/* Find the end of the token */
+	token = str;
+	str = strpbrk(token, delim);
+	if (str == NULL)
+	{
+		*saveptr = strchr(token, '\0');
+	}
+	else
+	{
+		*str = '\0';
+		*saveptr = str + 1;
+	}
+
+	return (token);
+}
