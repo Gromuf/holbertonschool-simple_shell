@@ -23,7 +23,6 @@
 # -----------------------------------
 # Ignorer les fichiers de Visual Studio Code
 .vscode/
-.vscode
 
 # Ignorer les fichiers de JetBrains IDEs (comme IntelliJ IDEA, PyCharm, WebStorm)
 .idea/
