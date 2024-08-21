@@ -107,6 +107,50 @@ All your files will be compiled on Ubuntu 20.04 LTS.
 
 #### -write (man 2 write)
 
+## File list :
+
+Here are the main project files :
+
+### 1. `main.c`
+
+This file is the final code to execute the simple shell.
+
+### 2. `main.h`
+
+The header file, it contains the declarations and prototypes of all our functions.
+
+### 3. `exec_cmd.c`
+
+This file contains function execute the command we write in our simple shell.
+
+### 3. `exec_multiple_cmd.c`
+
+This file is for multiple command given to the simple shell, it splits every of them and execute them one by one.
+
+### 4. `_getenv.c`
+
+This file get the environnement variable.
+
+### 5. `_strtok_r.c`
+
+This file is our rewritten strtok function.
+
+### 6. `my_setenv.c`
+
+This file is to set or modifie an environnement variable.
+
+### 7. `path.c`
+
+Functions in this file are searching our written command in the PATH.
+
+### 8. `string_functions.c`
+
+Functions in this file are rewritten simple string functions.
+
+### 9. `subfunction.c`
+
+In this file we can find some little sub-function used to make the shell work correctly.
+
 ## Project goal :
 
 In this project, we developed a simplified shell. It can execute commands by providing a direct path, such as `/bin/ls` or simply by entering a command like `ls` which it locates using the PATH environment variable. The shell operates in both interactive and non-interactive modes. It supports single-argument commands and can be closed using the exit command or the CTRL + C shortcut.
