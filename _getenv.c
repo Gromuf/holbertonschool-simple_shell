@@ -11,7 +11,7 @@
  */
 char *_getenv(const char *name)
 {
-	extern char **environ; /* Access the environment variables */
+	char **environ; /* Access the environment variables */
 	char **env = environ;
 	size_t name_len = strlen(name);
 	char *equals;
@@ -23,7 +23,8 @@ char *_getenv(const char *name)
 		if (equals != NULL)
 		{
 			/* Compare the variable name with the part before '=' */
-			if ((size_t)(equals - *env) == name_len && strncmp(*env, name, name_len) == 0)
+			if ((size_t)(equals - *env) == name_len &&
+				strncmp(*env, name, name_len) == 0)
 			{
 				/* Return the value (after '=') */
 				return (equals + 1);
