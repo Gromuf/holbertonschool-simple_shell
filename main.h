@@ -71,5 +71,10 @@ char *normalize_path(const char *path);
 /*int my_setenv(const char *name, const char *value, int overwrite);*/
 
 /*int main(int argc, char *argv[]);*/
+char *check_path_directories(const char *cmd);
+char *check_current_directory(const char *cmd);
+char *check_absolute_path(const char *cmd);
+
+
 
 #endif
