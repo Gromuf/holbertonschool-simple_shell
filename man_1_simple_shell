@@ -27,7 +27,7 @@ The shell displays a prompt, waits for the user to input a command, and then exe
 The shell can process commands from a file or pipeline input.
 
 .B Built-In Commands:
-Includes built-in commands like exit and env.
+Includes built-in commands like env.
 
 .B Environment Variable Management:
 The shell can access and modify environment variables.
