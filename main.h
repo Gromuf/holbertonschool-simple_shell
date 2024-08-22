@@ -20,6 +20,7 @@ char *_getenv(const char *name);
 
 /*2_strtok_r.c*/
 char *_strtok_r(char *str, const char *delim, char **saveptr);
+char *my_strtok(char *str, const char *delim);
 
 /*3_which.c*/
 char *which(const char *cmd);
