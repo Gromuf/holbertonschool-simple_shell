@@ -63,3 +63,21 @@ char *read_cmd(void)
 	cmd[_strcspn(cmd, "\n")] = 0;
 	return (cmd);
 }
+
+
+/**
+ * print_env - Prints the current environment variables.
+ *
+ * Description: Iterates through the environment variables array and
+ *              prints each variable on a new line.
+ */
+void print_env(void)
+{
+	char **env = environ;
+
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+}

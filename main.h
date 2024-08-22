@@ -60,4 +60,6 @@ int is_interactive(void);
 int _isspace(int c);
 char *read_cmd(void);
 
+void print_env(void);
+
 #endif

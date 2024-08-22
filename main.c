@@ -23,7 +23,11 @@ int main(void)
 		if (cmd == NULL)
 			break;
 
-		if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))
+		if (_strcmp(cmd, "env") == 0)
+		{
+			print_env();
+		}
+		else if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))
 		{
 			free(cmd); /*free memory before quit */
 			break;
