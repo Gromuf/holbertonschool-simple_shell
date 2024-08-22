@@ -108,7 +108,7 @@ int parse_exit_status(char *cmd)
 		{
 			if (!isdigit(arg[i]))  /* Check if the argument is not a digit */
 			{
-				return 0;  /* Return 0 to keep the shell running */
+				return (0);  /* Return 0 to keep the shell running */
 			}
 		}
 		status = atoi(arg);  /* Convert the argument to an integer */
