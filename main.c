@@ -13,6 +13,7 @@
 int main(void)
 {
 	char *cmd = NULL;
+	int exit_status = 0;
 
 	while (1)
 	{
@@ -20,7 +21,7 @@ int main(void)
 			display_prompt();
 
 		cmd = read_cmd();
-		if (cmd == NULL)
+		if (cmd == NULL) /* Handle end of file (Ctrl+D) or read error */
 			break;
 
 		if (_strcmp(cmd, "env") == 0)
@@ -29,8 +30,10 @@ int main(void)
 			free(cmd);
 			continue;
 		}
-		else if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))
+/*else if (_strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))*/
+		else if (strncmp(cmd, "exit", 4) == 0)
 		{
+			exit_status = parse_exit_status(cmd);
 			free(cmd); /*free memory before quit */
 			break;
 		}
@@ -39,5 +42,5 @@ int main(void)
 		free(cmd);
 	}
 
-	return (0); /* Exit with code 0 when the shell terminates */
+	return (exit_status);
 }

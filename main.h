@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 /* Macro pour le chemin par défaut */
 #define PATH1 "/usr/local/bin:/usr/bin:/bin:/custom/path"
@@ -30,6 +31,7 @@ int is_empty_cmd(char *cmd);
 int parse_command_args(char *cmd_copy, char **argv);
 char *get_command_path(char *argv[]);
 int execute_command(char *path_copy, char *argv[], char *cmd_copy);
+/*int execute_command(char *cmd, char *path_copy, char *cmd_copy);*/
 int exec_cmd(char *cmd);
 
 /*5-exec_multiple_cmd.c*/
@@ -39,6 +41,7 @@ void exec_multiple_cmd(char *cmd);
 char *check_absolute_path(const char *cmd);
 char *check_current_directory(const char *cmd);
 char *check_path_directories(const char *cmd);
+int parse_exit_status(char *cmd);
 
 /*7-path.c*/
 char *normalize_path(const char *path);
@@ -59,7 +62,6 @@ void display_prompt(void);
 int is_interactive(void);
 int _isspace(int c);
 char *read_cmd(void);
-
 void print_env(void);
 
 #endif
