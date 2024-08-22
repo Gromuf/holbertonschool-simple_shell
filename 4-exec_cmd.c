@@ -112,7 +112,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 			perror("execve");
 			free(cmd_copy);
 			free(path_copy);
-			exit(127);
+			_exit(2);
 		}
 	}
 	else /* Parent process */
@@ -120,7 +120,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			return WEXITSTATUS(status);  /* Return child's exit status */
+			return (WEXITSTATUS(status));  /* Return child's exit status */
 		}
 	}
 
@@ -158,7 +158,7 @@ int exec_cmd(char *cmd)
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			free(cmd_copy);
-			exit(EXIT_SUCCESS);
+			exit(0);
 		}
 
 		path_copy = get_command_path(argv);
