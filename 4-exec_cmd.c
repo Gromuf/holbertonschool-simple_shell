@@ -102,7 +102,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 		perror("fork");
 		free(cmd_copy);
 		free(path_copy);
-		return (-1);
+		return (EXIT_FAILURE);
 	}
 
 	if (pid == 0) /* Child process */
@@ -112,7 +112,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 			perror("execve");
 			free(cmd_copy);
 			free(path_copy);
-			_exit(2);
+			return (127);
 		}
 	}
 	else /* Parent process */
@@ -124,7 +124,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 		}
 	}
 
-	return (status);
+	return (EXIT_FAILURE);
 }
 
 /**
@@ -158,18 +158,23 @@ int exec_cmd(char *cmd)
 		if (strcmp(argv[0], "exit") == 0)
 		{
 			free(cmd_copy);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 
 		path_copy = get_command_path(argv);
 		if (!path_copy)
 		{
 			free(cmd_copy);
-			return (2);
+			return (127);
 		}
 
 		status = execute_command(path_copy, argv, cmd_copy);
 		free(path_copy);
+	}
+	else
+	{
+		free(cmd_copy);
+		return (127);
 	}
 
 	free(cmd_copy);
