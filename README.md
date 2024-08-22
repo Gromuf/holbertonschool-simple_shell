@@ -42,7 +42,7 @@ or in this way in non interractive mode (where command is a shell command as ls 
 ## Requirements :
 
 All our files should end with a new line, with a maximum of 5 functions per file and 40 lines per function.
-All your files will be compiled on Ubuntu 20.04 LTS.
+All your files will be compiled on Ubuntu 22.04 LTS.
 
 ### Autorized functions and system calls
 
