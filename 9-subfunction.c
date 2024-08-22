@@ -64,7 +64,6 @@ char *read_cmd(void)
 	return (cmd);
 }
 
-
 /**
  * print_env - Prints the current environment variables.
  *

@@ -26,6 +26,8 @@ int main(void)
 		if (_strcmp(cmd, "env") == 0)
 		{
 			print_env();
+			free(cmd);
+			continue;
 		}
 		else if (strcmp(cmd, "exit") == 0 || (strlen(cmd) == 1 && cmd[0] == 3))
 		{
