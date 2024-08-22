@@ -102,7 +102,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 		perror("fork");
 		free(cmd_copy);
 		free(path_copy);
-		return (EXIT_FAILURE);
+		return (-1);
 	}
 
 	if (pid == 0) /* Child process */
@@ -112,12 +112,16 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 			perror("execve");
 			free(cmd_copy);
 			free(path_copy);
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 	else /* Parent process */
 	{
 		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			return WEXITSTATUS(status);  /* Return child's exit status */
+		}
 	}
 
 	return (status);
