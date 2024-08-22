@@ -15,7 +15,6 @@ int main(void)
 	char *cmd = NULL;
 
 	while (1)
-	/*while (!should_exit) utiliser should_exit pour contrôler la boucle*/
 	{
 		if (is_interactive())
 			display_prompt();
