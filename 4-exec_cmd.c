@@ -77,7 +77,7 @@ char *get_command_path(char *argv[])
 	{
 		handle_command_not_found(argv[0]);
 		free(path_copy);
-		exit(2);
+		exit(0);
 	}
 
 	return (path_copy);
