@@ -1,11 +1,4 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-/*#define PATH_DELIM ':'*/
 
 /**
  * check_absolute_path - Checks if the command is an absolute path.

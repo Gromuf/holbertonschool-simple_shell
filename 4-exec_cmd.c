@@ -1,9 +1,4 @@
 #include "main.h"
-#include <string.h>
-#include <stdlib.h> /*for strtok_r*/
-#include <unistd.h> /*for execve and fork*/
-#include <stdio.h>
-#include <sys/wait.h>
 
 /**
  * is_empty_cmd - Checks if a command string is empty or contains only
@@ -18,7 +13,6 @@ int is_empty_cmd(char *cmd)
 {
 	while (*cmd)
 	{
-		/*if (_isspace((unsigned char)*cmd) == 0)*/
 		if (!_isspace((unsigned char)*cmd))
 			return (0);
 		cmd++;
@@ -75,8 +69,8 @@ char *get_command_path(char *argv[])
 	else
 	{
 		path_copy = (argv[0][0] == '/')
-			? strdup(argv[0])
-			: which(argv[0]);
+						? strdup(argv[0])
+						: which(argv[0]);
 	}
 
 	if (!path_copy || !is_executable(path_copy))
@@ -163,12 +157,12 @@ int exec_cmd(char *cmd)
 			exit(EXIT_SUCCESS);
 		}
 
-	path_copy = get_command_path(argv);
-	if (!path_copy)
-	{
-		free(cmd_copy);
-		return (127);
-	}
+		path_copy = get_command_path(argv);
+		if (!path_copy)
+		{
+			free(cmd_copy);
+			return (127);
+		}
 
 		status = execute_command(path_copy, argv, cmd_copy);
 		free(path_copy);
