@@ -196,7 +196,7 @@ Go to the project directory
 	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
-## Compilation whith Makefile:
+## Compilation with Makefile:
 
 script:
 
