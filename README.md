@@ -26,6 +26,19 @@ or in this way in non interractive mode (where command is a shell command as ls 
 	echo command | ./hsh
 ```
 
+## EXECUTABLES
+
+#### Example of executables with prompt :) after the command ./hsh
+
+    :) ls
+    :) /bin/ls
+    :) pwd
+    :) exit
+
+#### Example of executables in interactive mode with pipe
+
+    $ echo /bin/ls | ./hsh
+
 ## Requirements :
 
 All our files should end with a new line, with a maximum of 5 functions per file and 40 lines per function.
@@ -184,7 +197,9 @@ Go to the project directory
 ```
 
 ## Compilation whith Makefile:
+
 script:
+
 ```bash
 # Compiler name
 CC = gcc
@@ -219,10 +234,13 @@ re: fclean all
 ```
 
 Command to compile the first time if executable hsh does not exist
+
 ```bash
 	make
 ```
+
 Command to compile the second time if executable hsh exist
+
 ```bash
 	make re
 ```
@@ -232,6 +250,7 @@ Command to compile the second time if executable hsh exist
 ```bash
   betty <file.c>
 ```
+
 or
 
 ```bash
