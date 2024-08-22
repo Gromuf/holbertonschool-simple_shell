@@ -165,7 +165,7 @@ int exec_cmd(char *cmd)
 		if (!path_copy)
 		{
 			free(cmd_copy);
-			return (127);
+			return (2);
 		}
 
 		status = execute_command(path_copy, argv, cmd_copy);
