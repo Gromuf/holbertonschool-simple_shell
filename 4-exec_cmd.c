@@ -120,7 +120,7 @@ int execute_command(char *path_copy, char *argv[], char *cmd_copy)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			return (WEXITSTATUS(status));  /* Return child's exit status */
+			return (WEXITSTATUS(status)); /* Return child's exit status */
 		}
 	}
 
@@ -145,13 +145,11 @@ int exec_cmd(char *cmd)
 		perror("strdup");
 		return (EXIT_FAILURE);
 	}
-
 	if (is_empty_cmd(cmd))
 	{
 		free(cmd_copy);
 		return (0);
 	}
-
 	parse_command_args(cmd_copy, argv);
 	if (argv[0] != NULL)
 	{
@@ -160,14 +158,12 @@ int exec_cmd(char *cmd)
 			free(cmd_copy);
 			exit(EXIT_SUCCESS);
 		}
-
 		path_copy = get_command_path(argv);
 		if (!path_copy)
 		{
 			free(cmd_copy);
 			return (127);
 		}
-
 		status = execute_command(path_copy, argv, cmd_copy);
 		free(path_copy);
 	}
@@ -176,7 +172,6 @@ int exec_cmd(char *cmd)
 		free(cmd_copy);
 		return (127);
 	}
-
 	free(cmd_copy);
 	return (status);
 }
