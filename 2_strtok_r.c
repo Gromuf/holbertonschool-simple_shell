@@ -55,11 +55,11 @@ char *_strtok_r(char *str, const char *delim, char **saveptr)
 }
 
 /**
- * my_strtok - Simule la fonction strtok.
- * @str: La chaîne à découper.
- * @delim: La chaîne des délimiteurs.
+ * my_strtok - Tokenizes a string using a specified delimiter
+ * @str: The string to be tokenized
+ * @delim: The delimiter used to split the string
  *
- * Return: Le prochain token ou NULL si aucun token n'est trouvé.
+ * Return: Pointer to the next token or NULL if there are no more tokens
  */
 char *my_strtok(char *str, const char *delim)
 {

@@ -1,6 +1,4 @@
 #include "main.h"
-#include <stddef.h> /* for NULL */
-#include <string.h> /* for strcmp */
 
 /**
  * _getenv - Get the value of an environment variable.
