@@ -31,7 +31,6 @@ int is_empty_cmd(char *cmd);
 int parse_command_args(char *cmd_copy, char **argv);
 char *get_command_path(char *argv[]);
 int execute_command(char *path_copy, char *argv[], char *cmd_copy);
-/*int execute_command(char *cmd, char *path_copy, char *cmd_copy);*/
 int exec_cmd(char *cmd);
 
 /*5-exec_multiple_cmd.c*/
